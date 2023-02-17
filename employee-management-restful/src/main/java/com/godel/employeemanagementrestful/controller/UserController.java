@@ -83,11 +83,6 @@ public class UserController {
 
 
 	
-//	@PostMapping("")
-//	public User saveUser(@RequestBody User user) {
-//	    return userRepository.save(user);
-//	}
-	
 	@PutMapping("/{userId}")
 	public User editUser(@RequestBody User user) {
 		return userRepository.save(user);

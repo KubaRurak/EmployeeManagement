@@ -20,15 +20,14 @@ public class TimetableService {
 	
 	
 	public void populateTimetable(User user, LocalDate startDate, LocalDate endDate) {
-      
-	  for (LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
-	    Timetable entry = new Timetable();
-	    entry.setUser(user);
-	    entry.setDate(date);
-	    entry.setCheckIn(null);
-	    entry.setCheckOut(null);
-	    timetableRepository.save(entry);
-	  }
+		for (LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
+		    Timetable entry = new Timetable();
+		    entry.setUser(user);
+		    entry.setDate(date);
+		    entry.setCheckIn(null);
+		    entry.setCheckOut(null);
+		    timetableRepository.save(entry);
+		}
 	}
 
 }

@@ -76,70 +76,7 @@ public class PayrollService {
         // Save the payrolls
         payrollRepository.saveAll(payrolls);
     }    
-//    @Transactional
-//    public void generatePayroll(YearMonth yearMonth) {
-//        List<Payroll> payrolls = new ArrayList<>();
-//
-//        // Retrieve the users and their timetables for the specified month
-//        List<Object[]> results = timetableRepository.findTimetablesAndUsersForMonth(yearMonth.getYear(),yearMonth.getMonthValue());
-//
-//        // Loop through the results, calculating the hours worked and money generated for each user
-//        for (Object[] result : results) {
-//            User user = (User) result[1];
-//            Timetable timetable = (Timetable) result[0];
-//
-//            BigDecimal hoursWorked = BigDecimal.ZERO;
-//            if (timetable.getCheckIn() != null && timetable.getCheckOut() != null) {
-//                Duration duration = Duration.between(timetable.getCheckIn(), timetable.getCheckOut());
-//                BigDecimal hours = BigDecimal.valueOf(duration.toMinutes()).divide(BigDecimal.valueOf(60));
-//                hoursWorked = hoursWorked.add(hours);
-//            }
-//
-//            BigDecimal moneyGenerated = BigDecimal.ZERO;
-//            LocalDateTime endOfMonth = LocalDateTime.of(yearMonth.atEndOfMonth(), LocalTime.MAX);
-//            List<WorkOrder> workOrders = workOrderRepository.findByUserAndEndTimeStampBefore(user, endOfMonth);
-//            for (WorkOrder workOrder : workOrders) {
-//                moneyGenerated = moneyGenerated.add(workOrder.getPrice());
-//            }
-//
-//            LocalDate localDate = yearMonth.atDay(1);
-//            Payroll payroll = new Payroll(user, localDate, hoursWorked, moneyGenerated);
-//            payrolls.add(payroll);
-//        }
-//
-//        // Save the payrolls
-//        payrollRepository.saveAll(payrolls);
-//    }
 
-//    public void generatePayroll(YearMonth yearMonth) {
-//    	
-//    	List<User> users = userRepository.findAll();
-//        for (User user : users) {
-//            BigDecimal hoursWorked = BigDecimal.ZERO;
-//            List<Timetable> timetables = timetableRepository.findByUser(user);
-//            for (Timetable timetable : timetables) {
-//                LocalDate timetableDate = timetable.getDate();
-//                if (timetableDate.getYear() == yearMonth.getYear() && timetableDate.getMonth() == yearMonth.getMonth()) {
-//                    if (timetable.getCheckIn() != null && timetable.getCheckOut() != null) {
-//                        Duration duration = Duration.between(timetable.getCheckIn(), timetable.getCheckOut());
-//                        BigDecimal hours = BigDecimal.valueOf(duration.toMinutes()).divide(BigDecimal.valueOf(60));
-//                        hoursWorked = hoursWorked.add(hours);
-//                    }
-//                }
-//            }
-//            // Calculate money generated from work orders that ended in this month
-//            BigDecimal moneyGenerated = BigDecimal.ZERO;
-//            LocalDateTime endOfMonth = LocalDateTime.of(yearMonth.atEndOfMonth(), LocalTime.MAX);
-//            List<WorkOrder> workOrders = workOrderRepository.findByUserAndEndTimeStampBefore(user, endOfMonth);
-//            for (WorkOrder workOrder : workOrders) {
-//                moneyGenerated = moneyGenerated.add(workOrder.getPrice());
-//            }
-//            // Save the payroll for this user and month
-//            LocalDate localDate = yearMonth.atDay(1);
-//            Payroll payroll = new Payroll(user, localDate, hoursWorked, moneyGenerated);
-//            payrollRepository.save(payroll);
-//        }
-//    }
     
 	public void updatePayroll(WorkOrder workOrder) {
 		
