@@ -53,7 +53,7 @@ public class TimetableController {
 		}
 	}	
 	
-	@PutMapping("{userId}/checkin")
+	@PutMapping("{userId}/checkout")
 	public ResponseEntity<String> checkOut(@PathVariable Long userId) {
 		try {
 			timetableService.checkOut(userId);
