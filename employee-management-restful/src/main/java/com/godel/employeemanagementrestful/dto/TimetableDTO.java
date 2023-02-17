@@ -18,7 +18,7 @@ public class TimetableDTO {
 	private LocalTime checkOut;
 	private Duration workedHours;
 	private Long userId;
-	private String assigneeEmail;
+	private String userEmail;
 	
 	public TimetableDTO(Timetable timetable) {
 		this.timetableId = timetable.getTimetableId();
@@ -30,7 +30,7 @@ public class TimetableDTO {
         User user = timetable.getUser();
         if (user != null) {
             this.userId = user.getUserId();
-            this.assigneeEmail = user.getEmailId();
+            this.userEmail = user.getEmailId();
         }
 		
 	}
