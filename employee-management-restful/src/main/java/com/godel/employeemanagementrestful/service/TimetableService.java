@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.godel.employeemanagementrestful.entity.Timetable;
 import com.godel.employeemanagementrestful.entity.User;
+import com.godel.employeemanagementrestful.exceptions.TimetableException;
 import com.godel.employeemanagementrestful.repository.TimetableRepository;
 
 @Service
@@ -47,5 +48,36 @@ public class TimetableService {
                 LocalDateTime.of(after, LocalTime.MIN),
                 LocalDateTime.of(before, LocalTime.MAX));
     }
+    
+    public void checkIn(Long userId) throws TimetableException {
+        LocalTime now = LocalTime.now();
+        LocalDate currentDate = LocalDate.now();
+        Timetable timetable = timetableRepository.findByUserUserIdAndDate(userId, currentDate);
+        if (timetable.getCheckIn() != null) {
+            throw new TimetableException("User has already checked in for today");
+        } else {
+        	timetable.setCheckIn(now);
+        	System.out.println("checked in");
+        }
+        timetableRepository.save(timetable);
+    }
+    
+    public void checkOut(Long userId) throws TimetableException {
+        LocalTime now = LocalTime.now();
+        LocalDate currentDate = LocalDate.now();
+        Timetable timetable = timetableRepository.findByUserUserIdAndDate(userId, currentDate);
+        if (timetable.getCheckOut() != null) {
+            throw new TimetableException("User has already checked out for today");
+        }
+        else if (timetable.getCheckIn() == null) {
+            throw new TimetableException("User hasn't checked in");        	
+        }
+        else {
+        	timetable.setCheckOut(now);
+        	System.out.println("checked out");
+        }
+        timetableRepository.save(timetable);
+    }    
+    
 
 }
