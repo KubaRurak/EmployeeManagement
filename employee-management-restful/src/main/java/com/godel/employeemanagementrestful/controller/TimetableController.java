@@ -41,6 +41,7 @@ public class TimetableController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(workOrderDTOS);
 	}
+	
 	@PutMapping("{userId}/checkin")
 	public ResponseEntity<String> checkIn(@PathVariable Long userId) {
 		try {
@@ -51,6 +52,7 @@ public class TimetableController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}	
+	
 	@PutMapping("{userId}/checkin")
 	public ResponseEntity<String> checkOut(@PathVariable Long userId) {
 		try {
