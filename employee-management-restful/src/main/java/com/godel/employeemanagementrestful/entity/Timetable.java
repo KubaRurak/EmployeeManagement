@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 public class Timetable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer timetableId;
+  private Long timetableId;
   
   @ManyToOne(
 			cascade = CascadeType.ALL)

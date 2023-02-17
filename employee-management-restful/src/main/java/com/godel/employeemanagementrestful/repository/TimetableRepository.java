@@ -1,6 +1,7 @@
 package com.godel.employeemanagementrestful.repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
 
@@ -24,4 +25,10 @@ public interface TimetableRepository extends JpaRepository<Timetable, Long> {
 	List<Object[]> findTimetablesAndUsersForMonth(@Param("year") int year, @Param("month") int month);
 
 	List<Timetable> findByUserAndDateBetween(User user, LocalDate atDay, LocalDate atEndOfMonth);
+
+	List<Timetable> findByDateBetween(LocalDateTime of, LocalDateTime of2);
+
+	List<Timetable> findByUserUserId(Long userId);
+
+	List<Timetable> findByUserUserIdAndDateBetween(Long userId, LocalDateTime of, LocalDateTime of2);
 }

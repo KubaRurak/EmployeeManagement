@@ -8,13 +8,10 @@ import java.time.LocalTime;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.godel.employeemanagementrestful.dto.PayrollDTO;
 import com.godel.employeemanagementrestful.entity.Payroll;
 import com.godel.employeemanagementrestful.entity.Timetable;
 import com.godel.employeemanagementrestful.entity.User;

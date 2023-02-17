@@ -3,7 +3,6 @@ package com.godel.employeemanagementrestful.controller;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.godel.employeemanagementrestful.dto.UserDTO;
-import com.godel.employeemanagementrestful.dto.WorkOrderDTO;
 import com.godel.employeemanagementrestful.entity.User;
 import com.godel.employeemanagementrestful.exceptions.ResourceNotFoundException;
 import com.godel.employeemanagementrestful.repository.UserRepository;
-import com.godel.employeemanagementrestful.repository.WorkOrderRepository;
 import com.godel.employeemanagementrestful.service.TimetableService;
-
-import jakarta.transaction.Transactional;
 
 
 @RestController

@@ -1,16 +1,16 @@
 package com.godel.employeemanagementrestful.service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.godel.employeemanagementrestful.entity.Timetable;
 import com.godel.employeemanagementrestful.entity.User;
 import com.godel.employeemanagementrestful.repository.TimetableRepository;
-import com.godel.employeemanagementrestful.repository.UserRepository;
-import com.godel.employeemanagementrestful.entity.Timetable;
 
 @Service
 public class TimetableService {
@@ -29,5 +29,23 @@ public class TimetableService {
 		    timetableRepository.save(entry);
 		}
 	}
+	
+    public List<Timetable> getFilteredTimetable(Long userId, LocalDate after, LocalDate before) {
+        if (userId == null && after == null && before == null) {
+            return timetableRepository.findAll();
+        }
+        if (userId == null) {
+            return timetableRepository.findByDateBetween(
+                    LocalDateTime.of(after, LocalTime.MIN),
+                    LocalDateTime.of(before, LocalTime.MAX));
+        }
+        if (after == null && before == null) {
+            return timetableRepository.findByUserUserId(userId);
+        }
+        return timetableRepository.findByUserUserIdAndDateBetween(
+                userId,
+                LocalDateTime.of(after, LocalTime.MIN),
+                LocalDateTime.of(before, LocalTime.MAX));
+    }
 
 }
