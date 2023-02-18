@@ -30,24 +30,35 @@ public class TimetableService {
 		    timetableRepository.save(entry);
 		}
 	}
-	
-    public List<Timetable> getFilteredTimetable(Long userId, LocalDate after, LocalDate before) {
-        if (userId == null && after == null && before == null) {
-            return timetableRepository.findAll();
-        }
-        if (userId == null) {
-            return timetableRepository.findByDateBetween(
-                    LocalDateTime.of(after, LocalTime.MIN),
-                    LocalDateTime.of(before, LocalTime.MAX));
-        }
-        if (after == null && before == null) {
-            return timetableRepository.findByUserUserId(userId);
-        }
-        return timetableRepository.findByUserUserIdAndDateBetween(
-                userId,
-                LocalDateTime.of(after, LocalTime.MIN),
-                LocalDateTime.of(before, LocalTime.MAX));
-    }
+	public List<Timetable> getFilteredTimetable(Long userId, LocalDate after, LocalDate before) {
+	    if (userId == null && after == null && before == null) {
+	        return timetableRepository.findAll();
+	    }
+	    if (userId == null) {
+	        return timetableRepository.findByDateBetween(after, before);
+	    }
+	    if (after == null && before == null) {
+	        return timetableRepository.findByUserUserId(userId);
+	    }
+	    return timetableRepository.findByUserUserIdAndDateBetween(userId,after,before);
+	}	
+//    public List<Timetable> getFilteredTimetable(Long userId, LocalDate after, LocalDate before) {
+//        if (userId == null && after == null && before == null) {
+//            return timetableRepository.findAll();
+//        }
+//        if (userId == null) {
+//            return timetableRepository.findByDateBetween(
+//                    LocalDateTime.of(after, LocalTime.MIN),
+//                    LocalDateTime.of(before, LocalTime.MAX));
+//        }
+//        if (after == null && before == null) {
+//            return timetableRepository.findByUserUserId(userId);
+//        }
+//        return timetableRepository.findByUserUserIdAndDateBetween(
+//                userId,
+//                LocalDateTime.of(after, LocalTime.MIN),
+//                LocalDateTime.of(before, LocalTime.MAX));
+//    }
     
     public void checkIn(Long userId) throws TimetableException {
         LocalTime now = LocalTime.now();

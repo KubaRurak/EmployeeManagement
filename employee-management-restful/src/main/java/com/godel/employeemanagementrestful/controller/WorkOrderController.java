@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.godel.employeemanagementrestful.dto.WorkOrderDTO;
 import com.godel.employeemanagementrestful.entity.WorkOrder;
 import com.godel.employeemanagementrestful.repository.WorkOrderRepository;
+import com.godel.employeemanagementrestful.service.PayrollService;
 import com.godel.employeemanagementrestful.service.WorkOrderService;
 
 @RestController
@@ -33,6 +34,9 @@ public class WorkOrderController {
 	
 	@Autowired
 	private WorkOrderRepository workOrderRepository;
+	
+	@Autowired
+	private PayrollService payrollService;
 		
 	
 	@GetMapping("")
@@ -58,13 +62,13 @@ public class WorkOrderController {
 	}
 	
 	@GetMapping("/{orderId}")
-	public WorkOrderDTO fetchWokrOderById(@PathVariable Long orderId) {
+	public WorkOrderDTO fetchWorkOrderById(@PathVariable Long orderId) {
 		WorkOrder workOrder = workOrderRepository.findByOrderId(orderId);
 		WorkOrderDTO workOrderDTO = new WorkOrderDTO(workOrder);
 		return workOrderDTO;
 	}
 	
-	@PostMapping("/assign")
+	@PutMapping("/assign")
 	public ResponseEntity<?> assignUserToWorkOrder(
 			@RequestParam(required = true) Long userId,
 			@RequestParam(required = true) Long orderId) {
@@ -128,6 +132,7 @@ public class WorkOrderController {
 	public WorkOrderDTO completeWorkOrder(@PathVariable Long orderId) {
 		WorkOrder workOrder = workOrderRepository.findByOrderId(orderId);
 		workOrderService.completeWorkOrder(workOrder);
+		payrollService.updatePayroll(workOrder);
 		WorkOrderDTO workOrderDTO = new WorkOrderDTO(workOrder);
 		return workOrderDTO;
 	}

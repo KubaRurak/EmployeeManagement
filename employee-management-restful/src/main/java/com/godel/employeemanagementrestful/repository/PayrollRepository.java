@@ -22,5 +22,8 @@ public interface PayrollRepository extends JpaRepository<Payroll, Long> {
 	List<Payroll> findByUserUserIdAndPayrollMonth(Long userId, LocalDate payrollMonth);
 
 	List<Payroll> findByPayrollMonth(LocalDate payrollMonth);
+
+
+	Payroll findByUserAndPayrollMonth(User user, LocalDate localDate);
 	
 }

@@ -35,4 +35,8 @@ public interface TimetableRepository extends JpaRepository<Timetable, Long> {
 
 	Timetable findByUserUserIdAndDate(Long userId, LocalDate currentDate);
 
+	List<Timetable> findByDateBetween(LocalDate after, LocalDate before);
+
+	List<Timetable> findByUserUserIdAndDateBetween(Long userId, LocalDate after, LocalDate before);
+
 }

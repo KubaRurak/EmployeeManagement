@@ -66,8 +66,15 @@ public class PayrollService {
             }
 
             LocalDate localDate = yearMonth.atDay(1);
-            Payroll payroll = new Payroll(user, localDate, hoursWorked, moneyGenerated);
-            payrolls.add(payroll);
+            Payroll existingPayroll = payrollRepository.findByUserAndPayrollMonth(user, localDate);
+            if (existingPayroll != null) {
+                existingPayroll.setHoursWorked(hoursWorked);
+                existingPayroll.setMoneyGenerated(moneyGenerated);
+                payrolls.add(existingPayroll);
+            } else {
+                Payroll payroll = new Payroll(user, localDate, hoursWorked, moneyGenerated);
+                payrolls.add(payroll);
+            }
         }
 
         // Save the payrolls

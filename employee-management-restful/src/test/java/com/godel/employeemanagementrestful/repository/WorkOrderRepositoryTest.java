@@ -22,21 +22,13 @@ class WorkOrderRepositoryTest {
 	@Test
 	public void saveWorkOrder() {
 		
-//				User user = User.builder()
-//				.firstName("Kuba2")
-//				.lastName("Rurak2")
-//				.role("Projektant")
-//				.officeCode(OfficeCode.WAW)
-//				.isEmployed(true)
-//				.emailId("Godello3@bbb.com")
-//				.build();		
 				
 		WorkOrder workOrder = WorkOrder.builder()
 				.orderName("WAR0005")
 				.price(new BigDecimal("3000"))
 				.completed(false)
 				.canceled(false)
-				.startTimeStamp(LocalDateTime.now())
+				.isActive(false)
 				.comments("third workorder")
 				.user(null)
 				.build();
@@ -60,6 +52,7 @@ class WorkOrderRepositoryTest {
 				.price(new BigDecimal("3000"))
 				.completed(false)
 				.canceled(false)
+				.isActive(false)
 				.startTimeStamp(LocalDateTime.now())
 				.comments("fourth workorder")
 				.user(user)

@@ -76,7 +76,6 @@ public class UserController {
 	        		LocalDate.now().plusYears(1));
 	}
 
-
 	
 	@PutMapping("/{userId}")
 	public User editUser(@RequestBody User user) {
