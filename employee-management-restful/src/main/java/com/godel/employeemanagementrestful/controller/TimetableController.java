@@ -34,10 +34,10 @@ public class TimetableController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate after,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate before) {
         List<Timetable> timetables = timetableService.getFilteredTimetable(userId, after, before);
-        List<TimetableDTO> workOrderDTOS = timetables.stream()
+        List<TimetableDTO> timetableDTOS = timetables.stream()
                 .map(workOrder -> new TimetableDTO(workOrder))
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(workOrderDTOS);
+        return ResponseEntity.ok(timetableDTOS);
 	}
 	
 	@PutMapping("{userId}/checkin")

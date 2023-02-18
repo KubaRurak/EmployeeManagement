@@ -1,5 +1,6 @@
 package com.godel.employeemanagementrestful.repository;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 
@@ -14,5 +15,12 @@ import com.godel.employeemanagementrestful.entity.User;
 public interface PayrollRepository extends JpaRepository<Payroll, Long> {
 
 	Payroll findByUser(User user);
+
+
+	List<Payroll> findByUserUserId(Long userId);
+
+	List<Payroll> findByUserUserIdAndPayrollMonth(Long userId, LocalDate payrollMonth);
+
+	List<Payroll> findByPayrollMonth(LocalDate payrollMonth);
 	
 }

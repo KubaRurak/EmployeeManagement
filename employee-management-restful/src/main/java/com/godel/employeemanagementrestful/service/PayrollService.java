@@ -81,5 +81,18 @@ public class PayrollService {
 		payroll.addAmount(workOrder.getPrice());
 		payrollRepository.save(payroll);
 	}
+	
+    public List<Payroll> getFilteredPayroll(Long userId, LocalDate payrollMonth) {
+        if (userId == null && payrollMonth == null) {
+            return payrollRepository.findAll();
+        }
+        if (userId == null) {
+            return payrollRepository.findByPayrollMonth(payrollMonth);
+        }
+        if (payrollMonth== null) {
+            return payrollRepository.findByUserUserId(userId);
+        }
+        return payrollRepository.findByUserUserIdAndPayrollMonth(userId,payrollMonth);
+    }
 
 }
