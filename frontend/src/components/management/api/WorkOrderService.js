@@ -2,17 +2,17 @@ import axios from 'axios'
 
 const apiClient = axios.create(
     {
-        baseURL: 'http://localhost:8080/workorders'
+        baseURL: 'http://localhost:8080/api/v1/workorders/'
     }
 );
 
-export const retrieveAllWorkOrders
+export const retrieveAllWorkOrdersApi
     = () => apiClient.get(``)
 
 // export const retrieveFilteredWorkOrders
 //     = (userId,after,before) => apiClient.get(`?userId=${userId}&before=${before}&after=${after}`)
 
-export const getFilteredWorkOrders = (userId, after, before) => {
+export const getFilteredWorkOrdersApi = (userId, after, before) => {
     const params = {};
     if (userId) {
       params.userId = userId;
@@ -24,7 +24,7 @@ export const getFilteredWorkOrders = (userId, after, before) => {
     return apiClient.get({ params });
   };
 
-  export const getActiveWorkOrders = (userId) => {
+  export const getActiveWorkOrdersApi = (userId) => {
     const params = {};
     if (userId) {
       params.userId = userId;

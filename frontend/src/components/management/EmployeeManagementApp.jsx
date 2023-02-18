@@ -6,6 +6,7 @@ import ErrorComponent from './ErrorComponent'
 import WelcomeComponent from './WelcomeComponent'
 import LoginComponent from './LoginComponent'
 import TodoComponent from './TodoComponent'
+import ListActiveWorkOrdersComponent from './ListActiveWorkOrdersComponent'
 import AuthProvider, { useAuth } from './security/AuthContext'
 
 import './EmployeeManagementApp.css'
@@ -41,6 +42,11 @@ export default function EmployeeManagementApp() {
                             </AuthenticatedRoute>
                         } />
 
+                        <Route path='/activeWorkOrders' element={
+                            <AuthenticatedRoute>
+                                <ListActiveWorkOrdersComponent /> 
+                            </AuthenticatedRoute>
+                        } />
                         <Route path='/todo/:id' element={
                             <AuthenticatedRoute>
                                 <TodoComponent /> 

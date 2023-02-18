@@ -17,17 +17,19 @@ function HeaderComponent() {
             <div className="container">
                 <div className="row">
                     <nav className="navbar navbar-expand-lg">
-                        <a className="navbar-brand ms-2 fs-2 fw-bold text-black" href="https://www.in28minutes.com">in28minutes</a>
                         <div className="collapse navbar-collapse">
                             <ul className="navbar-nav">
-                                <li className="nav-item">
-                                    {isAuthenticated 
-                                        && <Link className="nav-link" to="/welcome/${username}">Home</Link>}
-                                    
-                                </li>
+                                {isAuthenticated &&
+                                 <li className="nav-item">
+                                <Link className="nav-link" to={`/welcome/${username}`}>Home</Link>
+                                </li>}
                                 <li className="nav-item">
                                     {isAuthenticated 
                                             && <Link className="nav-link" to="/todos">Todos</Link>}                                    
+                                </li>
+                                <li className="nav-item">
+                                    {isAuthenticated 
+                                            && <Link className="nav-link" to="/activeWorkOrders">WorkOrders</Link>}                                    
                                 </li>
                             </ul>
                         </div>
