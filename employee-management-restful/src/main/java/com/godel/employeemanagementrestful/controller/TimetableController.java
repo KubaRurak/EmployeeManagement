@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.godel.employeemanagementrestful.dto.TimetableDTO;
-import com.godel.employeemanagementrestful.dto.WorkOrderDTO;
 import com.godel.employeemanagementrestful.entity.Timetable;
-import com.godel.employeemanagementrestful.entity.WorkOrder;
 import com.godel.employeemanagementrestful.exceptions.TimetableException;
 import com.godel.employeemanagementrestful.service.TimetableService;
 
