@@ -20,8 +20,7 @@ public class WorkOrderService{
 	private WorkOrderRepository workOrderRepository;
 	@Autowired
 	private UserRepository userRepository;
-//	@Autowired
-//	private PayrollService payrollService;
+
 
 
     public List<WorkOrder> getFilteredWorkOrders(Long userId, LocalDate after, LocalDate before) {
@@ -68,12 +67,6 @@ public class WorkOrderService{
 		 List<WorkOrder> workOrders = workOrderRepository.findByUserUserId(userId);
 		 return workOrders;
 	}
-
-//	public List<WorkOrder> getActiveWorkOrdersByUser(Long userId) {
-//		 User user = userRepository.findById(userId).orElse(null);
-//		 List<WorkOrder> workOrders = workOrderRepository.findByUserUserId(userId);
-//		 return workOrders;
-//	}
 
 	public WorkOrder completeWorkOrder(WorkOrder workOrder) {
 		workOrder.setEndTimeStamp(LocalDateTime.now());
