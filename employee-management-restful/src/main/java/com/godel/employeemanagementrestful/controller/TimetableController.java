@@ -55,7 +55,7 @@ public class TimetableController {
 	public ResponseEntity<String> checkOut(@PathVariable Long userId) {
 		try {
 			timetableService.checkOut(userId);
-			return ResponseEntity.ok("Checked in successfully");
+			return ResponseEntity.ok("Checked out successfully");
 		}
 		catch (TimetableException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

@@ -47,14 +47,14 @@ public class PayrollService {
 
         // Loop through the results, calculating the hours worked and money generated for each user
         for (User user : users) {
-            BigDecimal hoursWorked = BigDecimal.ZERO;
+            BigDecimal timeWorked = BigDecimal.ZERO;
             
             List<Timetable> timetables = timetableRepository.findByUserAndDateBetween(user, yearMonth.atDay(1), yearMonth.atEndOfMonth());
             for (Timetable timetable : timetables) {
 	            if (timetable.getCheckIn() != null && timetable.getCheckOut() != null) {
 	                Duration duration = Duration.between(timetable.getCheckIn(), timetable.getCheckOut());
 	                BigDecimal hours = BigDecimal.valueOf(duration.toMinutes()).divide(BigDecimal.valueOf(60));
-	                hoursWorked = hoursWorked.add(hours);
+	                timeWorked = timeWorked.add(hours);
 	            }
             }
 
@@ -68,11 +68,11 @@ public class PayrollService {
             LocalDate localDate = yearMonth.atDay(1);
             Payroll existingPayroll = payrollRepository.findByUserAndPayrollMonth(user, localDate);
             if (existingPayroll != null) {
-                existingPayroll.setHoursWorked(hoursWorked);
+                existingPayroll.setTimeWorked(timeWorked);
                 existingPayroll.setMoneyGenerated(moneyGenerated);
                 payrolls.add(existingPayroll);
             } else {
-                Payroll payroll = new Payroll(user, localDate, hoursWorked, moneyGenerated);
+                Payroll payroll = new Payroll(user, localDate, timeWorked, moneyGenerated);
                 payrolls.add(payroll);
             }
         }
@@ -82,11 +82,20 @@ public class PayrollService {
     }    
 
     
-	public void updatePayroll(WorkOrder workOrder) {
+	public void updatePayrollMoney(WorkOrder workOrder) {
 		
 		Payroll payroll = payrollRepository.findByUser(workOrder.getUser());
 		payroll.addAmount(workOrder.getPrice());
 		payrollRepository.save(payroll);
+	}
+	
+	public void updatePayrollTime(Timetable timetable) {
+	    User user = timetable.getUser();
+	    LocalDate date = timetable.getDate();
+	    BigDecimal workedTime = BigDecimal.valueOf(timetable.getTimeWorked().toSeconds()).divide(BigDecimal.valueOf(3600));
+	    Payroll payroll = payrollRepository.findByUserAndPayrollMonth(user, date);
+	    payroll.addTimeWorked(workedTime);
+	    payrollRepository.save(payroll);
 	}
 	
     public List<Payroll> getFilteredPayroll(Long userId, LocalDate payrollMonth) {

@@ -43,7 +43,7 @@ public class Payroll {
 	
 	private LocalDate payrollMonth;
 	  
-	private BigDecimal hoursWorked;
+	private BigDecimal timeWorked;
 	  
 	private BigDecimal moneyGenerated;
 	
@@ -61,11 +61,11 @@ public class Payroll {
 			)
 	private List<WorkOrder> workOrders;
 
-	public Payroll(User user, LocalDate payrollMonth, BigDecimal hoursWorked, BigDecimal moneyGenerated) {
+	public Payroll(User user, LocalDate payrollMonth, BigDecimal timeWorked, BigDecimal moneyGenerated) {
 		super();
 		this.user = user;
 		this.payrollMonth = payrollMonth;
-		this.hoursWorked = hoursWorked;
+		this.timeWorked = timeWorked;
 		this.moneyGenerated = moneyGenerated;
 	}
 	
@@ -73,5 +73,8 @@ public class Payroll {
 		this.moneyGenerated = this.moneyGenerated.add(amount);
 	}
 	
+	public void addTimeWorked(BigDecimal hours) {
+		this.timeWorked = this.timeWorked.add(hours);
+	}	
 }
 

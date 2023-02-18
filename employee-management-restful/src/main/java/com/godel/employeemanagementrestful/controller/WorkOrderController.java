@@ -132,7 +132,7 @@ public class WorkOrderController {
 	public WorkOrderDTO completeWorkOrder(@PathVariable Long orderId) {
 		WorkOrder workOrder = workOrderRepository.findByOrderId(orderId);
 		workOrderService.completeWorkOrder(workOrder);
-		payrollService.updatePayroll(workOrder);
+		payrollService.updatePayrollMoney(workOrder);
 		WorkOrderDTO workOrderDTO = new WorkOrderDTO(workOrder);
 		return workOrderDTO;
 	}

@@ -19,6 +19,9 @@ public class TimetableService {
 	@Autowired
 	TimetableRepository timetableRepository;
 	
+	@Autowired
+	PayrollService payrollService;
+	
 	
 	public void populateTimetable(User user, LocalDate startDate, LocalDate endDate) {
 		for (LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
@@ -87,6 +90,7 @@ public class TimetableService {
         	timetable.setCheckOut(now);
         	System.out.println("checked out");
         }
+//        payrollService.updatePayrollTime(timetable);
         timetableRepository.save(timetable);
     }    
     

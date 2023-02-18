@@ -14,7 +14,7 @@ public class PayrollDTO {
 	
 	private Long payrollId;
 	private LocalDate payrollMonth;
-	private BigDecimal hoursWorked;
+	private BigDecimal timeWorked;
 	private BigDecimal moneyGenerated;
 	private Long userId;
 	private String userEmail;
@@ -24,7 +24,7 @@ public class PayrollDTO {
 	public PayrollDTO(Payroll payroll) {
 		this.payrollId=payroll.getPayrollId();
 		this.payrollMonth=payroll.getPayrollMonth();
-		this.hoursWorked=payroll.getHoursWorked();
+		this.timeWorked=payroll.getTimeWorked();
 		this.moneyGenerated=payroll.getMoneyGenerated();
 
         User user = payroll.getUser();

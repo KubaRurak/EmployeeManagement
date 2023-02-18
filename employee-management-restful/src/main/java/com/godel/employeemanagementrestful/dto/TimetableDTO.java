@@ -16,7 +16,7 @@ public class TimetableDTO {
 	private LocalDate date;
 	private LocalTime checkIn;
 	private LocalTime checkOut;
-	private Duration workedHours;
+	private Duration timeWorked;
 	private Long userId;
 	private String userEmail;
 	
@@ -25,7 +25,7 @@ public class TimetableDTO {
 		this.date = timetable.getDate();
 		this.checkIn = timetable.getCheckIn();
 		this.checkOut = timetable.getCheckOut();
-		this.workedHours = timetable.getWorkedHours();
+		this.timeWorked = timetable.getTimeWorked();
 
         User user = timetable.getUser();
         if (user != null) {

@@ -47,9 +47,9 @@ public class Timetable {
   private LocalTime checkOut;
   
   @Transient
-  private Duration workedHours;
+  private Duration timeWorked;
   
-  public Duration getWorkedHours() {
+  public Duration getTimeWorked() {
       if (checkIn != null && checkOut != null) {
           return Duration.between(checkIn, checkOut);
       }
