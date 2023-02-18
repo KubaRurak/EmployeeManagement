@@ -90,7 +90,7 @@ public class TimetableService {
         	timetable.setCheckOut(now);
         	System.out.println("checked out");
         }
-//        payrollService.updatePayrollTime(timetable);
+        payrollService.updatePayrollTime(userId,timetable);
         timetableRepository.save(timetable);
     }    
     

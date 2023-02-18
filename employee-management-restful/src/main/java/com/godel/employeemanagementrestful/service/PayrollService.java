@@ -1,6 +1,7 @@
 package com.godel.employeemanagementrestful.service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -89,11 +90,12 @@ public class PayrollService {
 		payrollRepository.save(payroll);
 	}
 	
-	public void updatePayrollTime(Timetable timetable) {
-	    User user = timetable.getUser();
-	    LocalDate date = timetable.getDate();
-	    BigDecimal workedTime = BigDecimal.valueOf(timetable.getTimeWorked().toSeconds()).divide(BigDecimal.valueOf(3600));
-	    Payroll payroll = payrollRepository.findByUserAndPayrollMonth(user, date);
+	public void updatePayrollTime(Long userId, Timetable timetable) {
+		LocalDate date = LocalDate.now().withDayOfMonth(1);
+	    List<Payroll> payrolls = payrollRepository.findByUserUserIdAndPayrollMonth(userId, date);
+	    BigDecimal workedTime = BigDecimal.valueOf(timetable.getTimeWorked().getSeconds())
+	    	    .divide(BigDecimal.valueOf(3600), 2, RoundingMode.HALF_UP);
+	    Payroll payroll=payrolls.get(0);
 	    payroll.addTimeWorked(workedTime);
 	    payrollRepository.save(payroll);
 	}
