@@ -6,7 +6,7 @@ const apiClient = axios.create(
     }
 );
 
-export const retrieveAll
+export const retrieveAllTodosForUsernameApi
     = (username) => apiClient.get(`/users/${username}/todos`)
 
 export const deleteTodoApi

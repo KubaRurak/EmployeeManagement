@@ -5,6 +5,7 @@ function HeaderComponent() {
 
     const authContext = useAuth()
     const isAuthenticated = authContext.isAuthenticated
+    const username = authContext.username
 
     function logout() {
         authContext.logout()
@@ -21,7 +22,7 @@ function HeaderComponent() {
                             <ul className="navbar-nav">
                                 <li className="nav-item">
                                     {isAuthenticated 
-                                        && <Link className="nav-link" to="/welcome/in28minutes">Home</Link>}
+                                        && <Link className="nav-link" to="/welcome/${username}">Home</Link>}
                                     
                                 </li>
                                 <li className="nav-item">

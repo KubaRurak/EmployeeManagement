@@ -8,7 +8,7 @@ import LoginComponent from './LoginComponent'
 import TodoComponent from './TodoComponent'
 import AuthProvider, { useAuth } from './security/AuthContext'
 
-import './TodoApp.css'
+import './EmployeeManagementApp.css'
 
 function AuthenticatedRoute({children}) {
     const authContext = useAuth()
@@ -19,9 +19,9 @@ function AuthenticatedRoute({children}) {
     return <Navigate to="/" />
 }
 
-export default function TodoApp() {
+export default function EmployeeManagementApp() {
     return (
-        <div className="TodoApp">
+        <div className="EmployeeManagementApp">
             <AuthProvider>
                 <BrowserRouter>
                     <HeaderComponent />
