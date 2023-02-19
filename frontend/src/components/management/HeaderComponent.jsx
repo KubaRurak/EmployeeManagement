@@ -1,5 +1,11 @@
 import {Link} from 'react-router-dom'
 import { useAuth } from './security/AuthContext'
+import Navbar from 'react-bootstrap/Navbar';
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+
+import './HeaderComponent.css';
 
 function HeaderComponent() {
 
@@ -12,42 +18,39 @@ function HeaderComponent() {
     }
 
     return (
-        
         <header className="border-bottom border-light border-5 mb-5 p-2">
-            <div className="container">
-                <div className="row">
-                    <nav className="navbar navbar-expand-lg">
-                        <div className="collapse navbar-collapse">
-                            <ul className="navbar-nav">
-                                {isAuthenticated &&
-                                 <li className="nav-item">
-                                <Link className="nav-link" to={`/welcome/${username}`}>Home</Link>
-                                </li>}
-                                <li className="nav-item">
-                                    {isAuthenticated 
-                                            && <Link className="nav-link" to="/todos">Todos</Link>}                                    
-                                </li>
-                                <li className="nav-item">
-                                    {isAuthenticated 
-                                            && <Link className="nav-link" to="/activeWorkOrders">WorkOrders</Link>}                                    
-                                </li>
-                            </ul>
-                        </div>
-                        <ul className="navbar-nav">
-                            <li className="nav-item">
-                                {!isAuthenticated &&
-                                    <Link className="nav-link" to="/login">Login</Link> }
-                            </li>
-                            <li className="nav-item">
-                                {isAuthenticated &&
-                                    <Link className="nav-link" to="/logout" onClick={logout}>Logout</Link>}
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </header>
-
+        <Container>
+        {/* <Navbar collapseOnSelect expand="lg" bg="light">
+                <Navbar.Brand href="#">Navbar</Navbar.Brand>
+        </Navbar> */}
+        </Container>
+        <Container>
+            <Navbar collapseOnSelect expand="lg" bg="light">
+                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                <Navbar.Collapse id="responsive-navbar-nav">
+                    <Nav className="me-auto">
+                        {isAuthenticated &&
+                        <Nav.Link as={Link} to={`/welcome/${username}`}>Home</Nav.Link>
+                        }
+                        {isAuthenticated &&
+                            <Nav.Link as={Link} to="/todos">Todos</Nav.Link>
+                        }
+                        {isAuthenticated &&
+                        <NavDropdown title="Work Orders" id="collasible-nav-dropdown">
+                            <Nav.Link as={Link} to="/activeWorkOrders" className='nav-link'>Your Work Orders</Nav.Link>
+                            <Nav.Link as={Link} to="/activeWorkOrders" className='nav-link'>All Work Orders</Nav.Link>
+                            <Nav.Link as={Link} to="/activeWorkOrders" className='nav-link'>Edit Work Orders</Nav.Link>
+                        </NavDropdown>}
+                    </Nav>
+                    <Nav>
+                        {isAuthenticated &&
+                            <Nav.Link as={Link} to="/logout" onClick={logout}>Logout</Nav.Link>
+                        }
+                    </Nav>
+                </Navbar.Collapse>
+            </Navbar>
+        </Container>
+    </header>
     )
 }
 
