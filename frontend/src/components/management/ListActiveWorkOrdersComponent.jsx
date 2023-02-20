@@ -7,7 +7,6 @@ function ListActiveWorkOrdersComponent() {
 
     const authContext = useAuth()
 
-    const username = authContext.username
     const userId = authContext.userId
     const [message,setMessage] = useState(null)
   

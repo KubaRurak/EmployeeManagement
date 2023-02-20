@@ -7,9 +7,10 @@ import WelcomeComponent from './WelcomeComponent'
 import LoginComponent from './LoginComponent'
 import TodoComponent from './TodoComponent'
 import ListActiveWorkOrdersComponent from './ListActiveWorkOrdersComponent'
+import ListWorkOrdersComponent from './ListWorkOrdersComponent'
 import AuthProvider, { useAuth } from './security/AuthContext'
-
 import './EmployeeManagementApp.css'
+import FilterTableComponent from './FilterTableComponent'
 
 function AuthenticatedRoute({children}) {
     const authContext = useAuth()
@@ -41,10 +42,19 @@ export default function EmployeeManagementApp() {
                                 <ListTodosComponent /> 
                             </AuthenticatedRoute>
                         } />
-
+                        <Route path='/WorkOrders' element={
+                            <AuthenticatedRoute>
+                                <ListWorkOrdersComponent /> 
+                            </AuthenticatedRoute>
+                        } />
                         <Route path='/activeWorkOrders' element={
                             <AuthenticatedRoute>
                                 <ListActiveWorkOrdersComponent /> 
+                            </AuthenticatedRoute>
+                        } />
+                        <Route path='/activeWorkOrders2' element={
+                            <AuthenticatedRoute>
+                                <FilterTableComponent /> 
                             </AuthenticatedRoute>
                         } />
                         <Route path='/todo/:id' element={

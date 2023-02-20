@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const apiClient = axios.create(
     {
-        baseURL: 'http://localhost:8080/api/v1/workorders/'
+        baseURL: 'http://localhost:8080/api/v1/workorders'
     }
 );
 
@@ -21,7 +21,7 @@ export const getFilteredWorkOrdersApi = (userId, after, before) => {
       params.after = after;
       params.before = before;
     }
-    return apiClient.get({ params });
+    return apiClient.get('',{ params });
   };
 
   export const getActiveWorkOrdersApi = (userId) => {

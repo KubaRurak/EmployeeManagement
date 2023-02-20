@@ -38,8 +38,8 @@ function HeaderComponent() {
                         {isAuthenticated &&
                         <NavDropdown title="Work Orders" id="collasible-nav-dropdown">
                             <Nav.Link as={Link} to="/activeWorkOrders" className='nav-link'>Your Work Orders</Nav.Link>
-                            <Nav.Link as={Link} to="/activeWorkOrders" className='nav-link'>All Work Orders</Nav.Link>
-                            <Nav.Link as={Link} to="/activeWorkOrders" className='nav-link'>Edit Work Orders</Nav.Link>
+                            <Nav.Link as={Link} to="/WorkOrders" className='nav-link'>All Work Orders</Nav.Link>
+                            <Nav.Link as={Link} to="/activeWorkOrders2" className='nav-link'>Your Work Orders test</Nav.Link>
                         </NavDropdown>}
                     </Nav>
                     <Nav>
