@@ -4,6 +4,8 @@ package com.godel.employeemanagementrestful.entity;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import com.godel.employeemanagementrestful.enums.OfficeCode;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

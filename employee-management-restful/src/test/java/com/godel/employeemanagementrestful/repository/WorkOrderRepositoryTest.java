@@ -9,9 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.godel.employeemanagementrestful.entity.OfficeCode;
 import com.godel.employeemanagementrestful.entity.User;
 import com.godel.employeemanagementrestful.entity.WorkOrder;
+import com.godel.employeemanagementrestful.enums.OfficeCode;
 
 @SpringBootTest
 class WorkOrderRepositoryTest {

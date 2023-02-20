@@ -3,6 +3,7 @@ package com.godel.employeemanagementrestful.dto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.godel.employeemanagementrestful.entity.User;
 import com.godel.employeemanagementrestful.entity.WorkOrder;
 
@@ -18,8 +19,11 @@ public class WorkOrderDTO {
 	private Boolean completed;
 	private Boolean canceled;
 	private	Boolean isActive;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime startTimeStamp;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime endTimeStamp;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime lastModificationTimeStamp;
 	private String comments;
 	private Long userId;

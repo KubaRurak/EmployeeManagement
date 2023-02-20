@@ -2,35 +2,7 @@ import { useTable, useFilters, useGlobalFilter, useAsyncDebounce, } from 'react-
 import { useEffect, useState, useMemo} from "react"
 import { getFilteredWorkOrdersApi } from "./api/WorkOrderService"
 import { useAuth } from "./security/AuthContext"
-import { all } from 'axios'
 
-// Define a default UI for filtering
-function GlobalFilter({
-    preGlobalFilteredRows,
-    globalFilter,
-    setGlobalFilter,
-}) {
-    const count = preGlobalFilteredRows.length
-    const [value, setValue] = useState(globalFilter)
-    const onChange = useAsyncDebounce(value => {
-        setGlobalFilter(value || undefined)
-    }, 200)
-
-    return (
-        <span>
-            Search:{' '}
-            <input
-                className="form-control"
-                value={value || ""}
-                onChange={e => {
-                    setValue(e.target.value);
-                    onChange(e.target.value);
-                }}
-                placeholder={`${count} records...`}
-            />
-        </span>
-    )
-}
 
 function DefaultColumnFilter({
     column: { filterValue, preFilteredRows, setFilter },
@@ -66,8 +38,6 @@ function Table({ columns, data }) {
         rows,
         prepareRow,
         state,
-        preGlobalFilteredRows,
-        setGlobalFilter,
     } = useTable(
         {
             columns,
@@ -75,16 +45,10 @@ function Table({ columns, data }) {
             defaultColumn
         },
         useFilters,
-        useGlobalFilter
     )
 
     return (
         <div>
-            <GlobalFilter
-                preGlobalFilteredRows={preGlobalFilteredRows}
-                globalFilter={state.globalFilter}
-                setGlobalFilter={setGlobalFilter}
-            />
             <table className="table" {...getTableProps()}>
                 <thead>
                     {headerGroups.map(headerGroup => (
@@ -150,12 +114,41 @@ function FilterTableComponent() {
     const columns = useMemo(
         () => [
             {
-                Header: 'Work Order Name',
-                accessor: 'orderName'
-              }, {
-                Header: 'Work Order Type',
-                accessor: 'orderType'
-              }
+                Header: "Order Name",
+                accessor: "orderName",
+              },
+              {
+                Header: "Order Type",
+                accessor: "orderType",
+              },
+              {
+                Header: "Order Price",
+                accessor: "price",
+              },
+              {
+                Header: "Status",
+                accessor: "isActive",
+              },
+              {
+                Header: "Start Time",
+                accessor: "startTimeStamp",
+              },
+              {
+                Header: "End Time",
+                accessor: "endTimeStamp",
+              },
+              {
+                Header: "Last Mod",
+                accessor: "lastModificationTimeStamp",
+              },
+              {
+                Header: "Comments",
+                accessor: "comments",
+              },
+              {
+                Header: "Assigned to",
+                accessor: "assigneeEmail",
+              },
         ],
         []
     )
