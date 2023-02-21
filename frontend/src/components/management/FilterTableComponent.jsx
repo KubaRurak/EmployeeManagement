@@ -1,4 +1,4 @@
-import { useTable, useFilters} from 'react-table'
+import { useTable, useFilters, useSortBy} from 'react-table'
 import { useEffect, useState, useMemo} from "react"
 import { getFilteredWorkOrdersApi } from "./api/WorkOrderService"
 import { useAuth } from "./security/AuthContext"
@@ -51,6 +51,7 @@ function Table({ columns, data }) {
             defaultColumn
         },
         useFilters,
+        useSortBy,
     )
 
     return (
@@ -61,10 +62,18 @@ function Table({ columns, data }) {
                         {headerGroups.map(headerGroup => (
                             <tr {...headerGroup.getHeaderGroupProps()}>
                                 {headerGroup.headers.map(column => (
-                                    <th {...column.getHeaderProps({
+                                    <th {...column.getHeaderProps(column.getSortByToggleProps(),{
                                         style: { minWidth: column.minWidth, width: column.width },
                                       })}>
                                         {column.render('Header')}
+                                        <span className='sortable-column'>
+                                        <i class="fas fa-sort-up"></i>
+                                        {column.isSorted
+                                            ? column.isSortedDesc
+                                                ? ' 🔽'
+                                                : ' 🔼'
+                                            : ' ⚡️'}
+                                        </span>
                                         {/* Render the columns filter UI */}
                                         <div>{column.canFilter ? column.render('Filter') : null}</div>
                                     </th>
@@ -161,6 +170,10 @@ function FilterTableComponent() {
                 Header: "Assigned to",
                 accessor: "assigneeEmail",
               },
+              {
+                Header: "Info",
+              },
+              
         ],
         []
     )
