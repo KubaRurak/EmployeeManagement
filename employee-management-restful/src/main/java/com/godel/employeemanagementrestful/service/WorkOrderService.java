@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.godel.employeemanagementrestful.entity.User;
 import com.godel.employeemanagementrestful.entity.WorkOrder;
+import com.godel.employeemanagementrestful.enums.OrderStatus;
 import com.godel.employeemanagementrestful.repository.UserRepository;
 import com.godel.employeemanagementrestful.repository.WorkOrderRepository;
 
@@ -55,7 +56,8 @@ public class WorkOrderService{
 	    WorkOrder workOrder = workOrderRepository.findById(workOrderId).orElse(null);
 	    
 	    workOrder.setUser(user);
-	    workOrder.setIsActive(true);
+	    workOrder.setStatus(OrderStatus.ACTIVE);
+//	    workOrder.setIsActive(true);
 		workOrder.setStartTimeStamp(LocalDateTime.now());
 		workOrder.setLastModificationTimeStamp(LocalDateTime.now());
 	    
@@ -71,8 +73,9 @@ public class WorkOrderService{
 	public WorkOrder completeWorkOrder(WorkOrder workOrder) {
 		workOrder.setEndTimeStamp(LocalDateTime.now());
 		workOrder.setLastModificationTimeStamp(LocalDateTime.now());
-		workOrder.setCompleted(true);
-		workOrder.setIsActive(false);
+		workOrder.setStatus(OrderStatus.COMPLETED);
+//		workOrder.setCompleted(true);
+//		workOrder.setIsActive(false);
 		workOrderRepository.save(workOrder);
 //		payrollService.updatePayroll(workOrder);
 		return workOrder;

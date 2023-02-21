@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.godel.employeemanagementrestful.dto.WorkOrderDTO;
 import com.godel.employeemanagementrestful.entity.WorkOrder;
+import com.godel.employeemanagementrestful.enums.OrderStatus;
 import com.godel.employeemanagementrestful.repository.WorkOrderRepository;
 import com.godel.employeemanagementrestful.service.PayrollService;
 import com.godel.employeemanagementrestful.service.WorkOrderService;
@@ -91,6 +92,7 @@ public class WorkOrderController {
 	    workOrder.setOrderName(workOrderDTO.getOrderName());
 	    workOrder.setOrderType(workOrderDTO.getOrderType());
 	    workOrder.setPrice(workOrderDTO.getPrice());
+	    workOrder.setStatus(OrderStatus.UNASSIGNED);
 	    workOrder.setCompleted(false);
 	    workOrder.setCanceled(false);
 	    workOrder.setIsActive(false);
@@ -114,6 +116,7 @@ public class WorkOrderController {
 	    workOrder.setOrderName(workOrderDTO.getOrderName());
 	    workOrder.setOrderType(workOrderDTO.getOrderType());
 	    workOrder.setPrice(workOrderDTO.getPrice());
+	    workOrder.setStatus(workOrderDTO.getStatus());
 	    workOrder.setCompleted(workOrderDTO.getCompleted());
 	    workOrder.setCanceled(workOrderDTO.getCanceled());
 	    workOrder.setIsActive(workOrderDTO.getIsActive());

@@ -1,6 +1,6 @@
 package com.godel.employeemanagementrestful.enums;
 
-public enum Status {
+public enum OrderStatus {
 	UNASSIGNED,
 	ACTIVE,
 	COMPLETED,

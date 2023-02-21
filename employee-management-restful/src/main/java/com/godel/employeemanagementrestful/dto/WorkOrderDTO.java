@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.godel.employeemanagementrestful.entity.User;
 import com.godel.employeemanagementrestful.entity.WorkOrder;
+import com.godel.employeemanagementrestful.enums.OrderStatus;
 
 import lombok.Data;
 
@@ -16,6 +17,7 @@ public class WorkOrderDTO {
 	private String orderName;
 	private String orderType;
 	private BigDecimal price;
+	private OrderStatus status;
 	private Boolean completed;
 	private Boolean canceled;
 	private	Boolean isActive;
@@ -35,6 +37,7 @@ public class WorkOrderDTO {
 		this.orderName = workOrder.getOrderName();
 		this.orderType = workOrder.getOrderType();
 		this.price = workOrder.getPrice();
+		this.status = workOrder.getStatus();
 		this.completed = workOrder.getCompleted();
 		this.canceled = workOrder.getCanceled();
 		this.isActive = workOrder.getIsActive();

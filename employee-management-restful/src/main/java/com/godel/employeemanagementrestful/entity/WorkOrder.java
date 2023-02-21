@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.godel.employeemanagementrestful.enums.OrderStatus;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -55,6 +56,7 @@ public class WorkOrder {
 	@Column(name = "isActive", nullable = false)
 	@Value("false")
 	private	Boolean isActive;
+	private OrderStatus status;
 	private LocalDateTime startTimeStamp;
 	private LocalDateTime endTimeStamp;
 	private LocalDateTime lastModificationTimeStamp;
