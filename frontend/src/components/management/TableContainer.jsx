@@ -1,7 +1,7 @@
 import { useTable, useFilters, useSortBy} from 'react-table'
 import { useMemo} from "react"
 import DefaultColumnFilter from './DefaultColumnFilter'
-// import './FilterTableComponent.css';
+import './FilterTableComponent.css';
 
 
 function TableContainer({ columns, data }) {
@@ -10,7 +10,7 @@ function TableContainer({ columns, data }) {
         () => ({
             // Default Filter UI
             Filter: DefaultColumnFilter,
-            initialState: { pageIndex: 0, pageSize: 10 },
+            initialState: { pageIndex: 0, pageSize: 2 },
             style: {minwidth:'100px', maxwidth:'200px'}
         }),
         []
@@ -45,13 +45,14 @@ function TableContainer({ columns, data }) {
                                         style: { minWidth: column.minWidth, width: column.width },
                                       })}>
                                         {column.render('Header')}
-                                        {/* <span className='sortable-column'>
-                                        {column.isSorted
-                                            ? column.isSortedDesc
+                                        {headerGroup.headers.indexOf(column) !== headerGroup.headers.length - 1 && (
+                                            <span className='sortable-column'>
+                                            {column.isSorted
+                                                ? column.isSortedDesc
                                                 ? ' 🔽'
                                                 : ' 🔼'
-                                            : ' ⚡️'}
-                                        </span> */}
+                                                : ' ⚡️'}
+                                            </span>)}
                                         {/* Render the columns filter UI */}
                                         <div>{column.canFilter ? column.render('Filter') : null}</div>
                                     </th>

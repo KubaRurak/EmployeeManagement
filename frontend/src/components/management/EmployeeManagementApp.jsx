@@ -1,11 +1,9 @@
 import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom'
 import LogoutComponent from './LogoutComponent'
 import HeaderComponent from './HeaderComponent'
-import ListTodosComponent from './ListTodosComponent'
 import ErrorComponent from './ErrorComponent'
 import WelcomeComponent from './WelcomeComponent'
 import LoginComponent from './LoginComponent'
-import TodoComponent from './TodoComponent'
 import ListActiveWorkOrdersComponent from './ListActiveWorkOrdersComponent'
 import ListWorkOrdersComponent from './ListWorkOrdersComponent'
 import AuthProvider, { useAuth } from './security/AuthContext'
@@ -36,34 +34,16 @@ export default function EmployeeManagementApp() {
                                 <WelcomeComponent />
                             </AuthenticatedRoute> 
                         } />
-                        
-                        <Route path='/todos' element={
-                            <AuthenticatedRoute>
-                                <ListTodosComponent /> 
-                            </AuthenticatedRoute>
-                        } />
-                        <Route path='/WorkOrders' element={
-                            <AuthenticatedRoute>
-                                <ListWorkOrdersComponent /> 
-                            </AuthenticatedRoute>
-                        } />
                         <Route path='/activeWorkOrders' element={
                             <AuthenticatedRoute>
                                 <ListActiveWorkOrdersComponent /> 
                             </AuthenticatedRoute>
                         } />
-                        <Route path='/activeWorkOrders2' element={
+                        <Route path='/workOrders' element={
                             <AuthenticatedRoute>
                                 <FilterTableComponent /> 
                             </AuthenticatedRoute>
                         } />
-                        <Route path='/todo/:id' element={
-                            <AuthenticatedRoute>
-                                <TodoComponent /> 
-                            </AuthenticatedRoute>
-                        } />
-  
-
                         <Route path='/logout' element={
                             <AuthenticatedRoute>
                                 <LogoutComponent /> 

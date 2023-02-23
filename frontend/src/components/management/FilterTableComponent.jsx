@@ -67,10 +67,14 @@ function FilterTableComponent() {
                 Header: "Assigned to",
                 accessor: "assigneeEmail",
               },
-              
               {
-                Header: () => null,
-                id: "orderId",
+                width: 300,
+                Header: " ",
+                Cell: ({ cell }) => (
+                  <button>
+                  </button>
+                ),
+                disableSortBy: true,
               },
               
         ],
