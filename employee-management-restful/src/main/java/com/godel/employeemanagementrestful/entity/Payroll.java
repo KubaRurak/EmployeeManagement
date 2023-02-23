@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 
+import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -40,7 +41,7 @@ public class Payroll {
 			referencedColumnName = "userId"
 			)
 	private User user;
-	
+	@NonNull
 	private LocalDate payrollMonth;
 	  
 	private BigDecimal timeWorked;

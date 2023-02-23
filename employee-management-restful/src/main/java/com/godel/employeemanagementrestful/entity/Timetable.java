@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,7 +38,7 @@ public class Timetable {
 			referencedColumnName = "userId"
 			)
   private User user;
-  
+  @NonNull
   private LocalDate date;
   
   @Column(nullable = true)

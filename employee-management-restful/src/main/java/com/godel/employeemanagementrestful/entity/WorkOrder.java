@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.lang.NonNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.godel.employeemanagementrestful.enums.OrderStatus;
@@ -11,6 +12,8 @@ import com.godel.employeemanagementrestful.enums.OrderStatus;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -44,8 +47,11 @@ public class WorkOrder {
 			generator = "workorder_sequence"
 			)
 	private Long orderId;
+	@NonNull
 	private String orderName;
+	@NonNull
 	private String orderType;
+	@NonNull
 	private BigDecimal price;
 	@Column(name = "completed", nullable = false)
 	@Value("false")
@@ -56,6 +62,7 @@ public class WorkOrder {
 	@Column(name = "isActive", nullable = false)
 	@Value("false")
 	private	Boolean isActive;
+	@Enumerated(EnumType.STRING)
 	private OrderStatus status;
 	private LocalDateTime startTimeStamp;
 	private LocalDateTime endTimeStamp;

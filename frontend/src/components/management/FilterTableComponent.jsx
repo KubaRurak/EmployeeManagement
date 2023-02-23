@@ -32,7 +32,7 @@ function Table({ columns, data }) {
             // Default Filter UI
             Filter: DefaultColumnFilter,
             initialState: { pageIndex: 0, pageSize: 10 },
-            // style: {minwidth:'100px', maxwidth:'200px'}
+            style: {minwidth:'100px', maxwidth:'200px'}
         }),
         []
     )
@@ -66,14 +66,13 @@ function Table({ columns, data }) {
                                         style: { minWidth: column.minWidth, width: column.width },
                                       })}>
                                         {column.render('Header')}
-                                        <span className='sortable-column'>
-                                        <i class="fas fa-sort-up"></i>
+                                        {/* <span className='sortable-column'>
                                         {column.isSorted
                                             ? column.isSortedDesc
                                                 ? ' 🔽'
                                                 : ' 🔼'
                                             : ' ⚡️'}
-                                        </span>
+                                        </span> */}
                                         {/* Render the columns filter UI */}
                                         <div>{column.canFilter ? column.render('Filter') : null}</div>
                                     </th>
@@ -170,8 +169,10 @@ function FilterTableComponent() {
                 Header: "Assigned to",
                 accessor: "assigneeEmail",
               },
+              
               {
-                Header: "Info",
+                Header: () => null,
+                id: "orderId",
               },
               
         ],
