@@ -1,110 +1,8 @@
-import { useTable, useFilters, useSortBy} from 'react-table'
 import { useEffect, useState, useMemo} from "react"
 import { getFilteredWorkOrdersApi } from "./api/WorkOrderService"
+import TableContainer from './TableContainer'
 import { useAuth } from "./security/AuthContext"
 import './FilterTableComponent.css';
-
-
-function DefaultColumnFilter({
-    column: { filterValue, preFilteredRows, setFilter },
-}) {
-    // const count = preFilteredRows.length
-
-    return (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <input
-                className="form-control"
-                value={filterValue || ''}
-                onChange={e => {
-                    setFilter(e.target.value || undefined)
-                }}
-                placeholder={`Filter`}
-                // style={{ width: '100px', height: '35px'}}
-            />
-        </div>
-    )
-}
-
-function Table({ columns, data }) {
-
-    const defaultColumn = useMemo(
-        () => ({
-            // Default Filter UI
-            Filter: DefaultColumnFilter,
-            initialState: { pageIndex: 0, pageSize: 10 },
-            style: {minwidth:'100px', maxwidth:'200px'}
-        }),
-        []
-    )
-
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        rows,
-        prepareRow,
-        state,
-    } = useTable(
-        {
-            columns,
-            data,
-            defaultColumn
-        },
-        useFilters,
-        useSortBy,
-    )
-
-    return (
-        <div className="card">
-            <div className='card-body'>
-                <table className="table" {...getTableProps()}>
-                    <thead>
-                        {headerGroups.map(headerGroup => (
-                            <tr {...headerGroup.getHeaderGroupProps()}>
-                                {headerGroup.headers.map(column => (
-                                    <th {...column.getHeaderProps(column.getSortByToggleProps(),{
-                                        style: { minWidth: column.minWidth, width: column.width },
-                                      })}>
-                                        {column.render('Header')}
-                                        {/* <span className='sortable-column'>
-                                        {column.isSorted
-                                            ? column.isSortedDesc
-                                                ? ' 🔽'
-                                                : ' 🔼'
-                                            : ' ⚡️'}
-                                        </span> */}
-                                        {/* Render the columns filter UI */}
-                                        <div>{column.canFilter ? column.render('Filter') : null}</div>
-                                    </th>
-                                ))}
-                            </tr>
-                        ))}
-                    </thead>
-                    <tbody {...getTableBodyProps()}>
-                        {rows.map((row, i) => {
-                            prepareRow(row)
-                            return (
-                                <tr {...row.getRowProps()}>
-                                    {row.cells.map(cell => {
-                                        return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                                    })}
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </table>
-                <br />
-                <div>Showing the first 10 results of {rows.length} rows</div>
-                <div>
-                    <pre>
-                        <code>{JSON.stringify(state.filters, null, 2)}</code>
-                    </pre>
-                </div>
-            </div>
-        </div>
-    )
-}
-
 
 
 function FilterTableComponent() {
@@ -180,8 +78,8 @@ function FilterTableComponent() {
     )
 
     return (
-        <Table columns={columns} data={data} />
+        <TableContainer columns={columns} data={data} />
     )
 }
 
-export default FilterTableComponent;
+export default FilterTableComponent
