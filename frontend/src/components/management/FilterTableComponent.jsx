@@ -1,11 +1,15 @@
 import { useEffect, useState, useMemo} from "react"
+import {useNavigate} from 'react-router-dom'
 import { getFilteredWorkOrdersApi } from "./api/WorkOrderService"
-import TableContainer from './TableContainer'
+import TableContainer from './table/TableContainer'
 import { useAuth } from "./security/AuthContext"
-import './FilterTableComponent.css';
+import { Navigate } from "react-router-dom"
+// import './FilterTableComponent.css';
 
 
 function FilterTableComponent() {
+
+    const navigate = useNavigate()
 
     const authContext = useAuth()
 
@@ -14,6 +18,15 @@ function FilterTableComponent() {
     const [data,setData] = useState([])
     
     useEffect ( () => refreshWorkOrders(), [])
+
+    function showWorkOrderDetails() {
+      console.log("show")
+      navigate(`/todo/-1`)
+  }
+
+  function editWorkOrderDetails() {
+    console.log("edit")
+  }
 
     function refreshWorkOrders() {
         const today = new Date();
@@ -77,11 +90,18 @@ function FilterTableComponent() {
               {
                 Header: " ",
                 Cell: ({ cell }) => (
-                  <button>
-                  </button>
+                  <button type="button" class="btn btn-primary" onClick={showWorkOrderDetails}><i class="bi bi-search"></i></button>
                 ),
                 disableSortBy: true,
-                width: "col col-lg-1",
+                width: 50,
+              },
+              {
+                Header: "  ",
+                Cell: ({ cell }) => (
+                  <button type="button" class="btn btn-primary" onClick={editWorkOrderDetails}><i class="bi bi-pencil"></i></button>
+                ),
+                disableSortBy: true,
+                width: 50,
               },
               
         ],

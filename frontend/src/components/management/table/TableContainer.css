@@ -15,3 +15,7 @@ tr:nth-child(odd) {
 }
 
 tr:hover td{background:#EDEDED;}
+
+.bi::before, [class^="bi-"]::before, [class*=" bi-"]::before {
+  margin-right:0px;
+}
