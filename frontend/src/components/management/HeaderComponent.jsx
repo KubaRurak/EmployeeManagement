@@ -19,11 +19,11 @@ function HeaderComponent() {
 
     return (
         <header className="border-bottom border-light border-5 mb-5 p-2">
-        <Container expand="lg" bg="light">
-            Check In
-            Check out
-        </Container>
-        <Container>
+        {/* <Container> */}
+        <Navbar collapseOnSelect>
+            <Nav className="me-auto">Check In</Nav>
+            <Nav>Check out</Nav>
+        </Navbar>
             <Navbar collapseOnSelect expand="lg" bg="light">
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
@@ -48,7 +48,7 @@ function HeaderComponent() {
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
-        </Container>
+            {/* </Container> */}
     </header>
     )
 }

@@ -28,53 +28,60 @@ function FilterTableComponent() {
       }
 
     const columns = useMemo(
-        () => [
+        (props) => [
             {
                 Header: "Order Name",
                 accessor: "orderName",
+                minWidth: 60,
               },
               {
                 Header: "Order Type",
                 accessor: "orderType",
-                width: 100,
+                minWidth: 50,
               },
               {
                 Header: "Order Price",
                 accessor: "price",
-                width: 50,
+                minWidth: 50,
               },
               {
                 Header: "Status",
                 accessor: "isActive",
+                width: "col col-lg-1",
               },
               {
                 Header: "Start Time",
                 accessor: "startTimeStamp",
+                width: "col col-lg-2",
               },
               {
                 Header: "End Time",
                 accessor: "endTimeStamp",
+                width: "col col-lg-2",
               },
               {
                 Header: "Last Mod",
                 accessor: "lastModificationTimeStamp",
+                width: "col col-lg-2",
               },
               {
                 Header: "Comments",
                 accessor: "comments",
+                width: "col col-lg-2",
               },
               {
                 Header: "Assigned to",
                 accessor: "assigneeEmail",
+                width: "col col-lg-2",
               },
               {
-                width: 300,
                 Header: " ",
                 Cell: ({ cell }) => (
                   <button>
                   </button>
                 ),
                 disableSortBy: true,
+                width: "col col-lg-1",
               },
               
         ],

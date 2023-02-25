@@ -13,6 +13,9 @@ function DefaultColumnFilter({
                 }}
                 placeholder={`Filter`}
                 // style={{ width: '100px', height: '35px'}}
+                onClick={(e) => {
+                    e.stopPropagation()}
+                }
             />
         </div>
     )

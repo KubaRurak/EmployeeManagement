@@ -2,6 +2,7 @@ import { useTable, useFilters, useSortBy} from 'react-table'
 import { useMemo} from "react"
 import DefaultColumnFilter from './DefaultColumnFilter'
 import './FilterTableComponent.css';
+import Container from 'react-bootstrap/Container';
 
 
 function TableContainer({ columns, data }) {
@@ -11,7 +12,7 @@ function TableContainer({ columns, data }) {
             // Default Filter UI
             Filter: DefaultColumnFilter,
             initialState: { pageIndex: 0, pageSize: 2 },
-            style: {minwidth:'100px', maxwidth:'200px'}
+            style: {minWidth:'50px', maxWidth:'200px'}
         }),
         []
     )
@@ -34,45 +35,52 @@ function TableContainer({ columns, data }) {
     )
 
     return (
+        <Container>
         <div className="card">
-            <div className='card-body'>
-                <table className="table" {...getTableProps()}>
-                    <thead>
-                        {headerGroups.map(headerGroup => (
-                            <tr {...headerGroup.getHeaderGroupProps()}>
-                                {headerGroup.headers.map(column => (
-                                    <th {...column.getHeaderProps(column.getSortByToggleProps(),{
-                                        style: { minWidth: column.minWidth, width: column.width },
-                                      })}>
-                                        {column.render('Header')}
-                                        {headerGroup.headers.indexOf(column) !== headerGroup.headers.length - 1 && (
-                                            <span className='sortable-column'>
-                                            {column.isSorted
-                                                ? column.isSortedDesc
-                                                ? ' 🔽'
-                                                : ' 🔼'
-                                                : ' ⚡️'}
-                                            </span>)}
-                                        {/* Render the columns filter UI */}
-                                        <div>{column.canFilter ? column.render('Filter') : null}</div>
-                                    </th>
-                                ))}
-                            </tr>
-                        ))}
-                    </thead>
-                    <tbody {...getTableBodyProps()}>
-                        {rows.map((row, i) => {
-                            prepareRow(row)
-                            return (
-                                <tr {...row.getRowProps()}>
-                                    {row.cells.map(cell => {
-                                        return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                                    })}
-                                </tr>
-                            )
+          <div className="card-body">
+            <table className="table" {...getTableProps()}>
+              <thead>
+                {headerGroups.map((headerGroup) => (
+                  <tr {...headerGroup.getHeaderGroupProps()}>
+                    {headerGroup.headers.map((column) => (
+                      <th
+                        {...column.getHeaderProps(column.getSortByToggleProps(), {
+                            style: { minWidth: column.minWidth, width: `${column.width}px`},
                         })}
-                    </tbody>
-                </table>
+                      >
+                        {column.render("Header")}
+                        <span className="sortable-column">
+                            {column.isSorted ? (column.isSortedDesc ?
+                             <i class="bi bi-arrow-down"></i> :
+                             <i class="bi bi-arrow-up"></i>
+                             ) 
+                              : <i class="bi bi-arrow-down-up"></i>}
+                        </span>
+                        {/* Render the columns filter UI */}
+                        <div>
+                          {column.canFilter ? column.render("Filter") : null}
+                        </div>
+                      </th>
+                    ))}
+                  </tr>
+                ))}
+              </thead>
+              <tbody {...getTableBodyProps()}>
+                {rows.map((row, i) => {
+                  prepareRow(row);
+                  return (
+                    <tr {...row.getRowProps()}>
+                      {row.cells.map((cell) => {
+                        return <td {...cell.getCellProps()}
+                        style={{
+                            minWidth: cell.column.minWidth,
+                            width: `${cell.column.width}px`}}>{cell.render("Cell")}</td>;
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
                 <br />
                 <div>Showing the first 10 results of {rows.length} rows</div>
                 <div>
@@ -82,6 +90,7 @@ function TableContainer({ columns, data }) {
                 </div>
             </div>
         </div>
+        </Container>
     )
 }
 

@@ -1,3 +1,17 @@
 .table {
   border: 1px;
 }
+
+th {
+  background-color: #fcfcfccd !important;
+}
+
+tr:nth-child(even) {
+  background-color: #fcfcfce9;
+}
+
+tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+tr:hover td{background:#EDEDED;}

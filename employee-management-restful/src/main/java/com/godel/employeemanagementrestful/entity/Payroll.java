@@ -43,7 +43,7 @@ public class Payroll {
 	private User user;
 	@NonNull
 	private LocalDate payrollMonth;
-	  
+	
 	private BigDecimal timeWorked;
 	  
 	private BigDecimal moneyGenerated;

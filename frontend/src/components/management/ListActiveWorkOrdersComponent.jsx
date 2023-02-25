@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 import { getActiveWorkOrdersApi } from "./api/WorkOrderService"
 import { useAuth } from "./security/AuthContext"
 import moment from 'moment';
+import Container from 'react-bootstrap/Container';
+
 
 function ListActiveWorkOrdersComponent() {
 
@@ -27,7 +29,7 @@ function ListActiveWorkOrdersComponent() {
     }
 
     return (
-        <div className="container">
+        <Container>
             <h1>Things You Want To Do!</h1>
             {message && <div className="alert alert-warning">{message}</div>}
             <div>
@@ -58,7 +60,7 @@ function ListActiveWorkOrdersComponent() {
                     </tbody>
                 </table>
             </div>
-        </div>
+        </Container>
     )
 }
 
