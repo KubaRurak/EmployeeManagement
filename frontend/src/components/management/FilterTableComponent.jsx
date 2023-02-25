@@ -1,32 +1,37 @@
 import { useEffect, useState, useMemo} from "react"
-import {useNavigate} from 'react-router-dom'
 import { getFilteredWorkOrdersApi } from "./api/WorkOrderService"
 import TableContainer from './table/TableContainer'
 import { useAuth } from "./security/AuthContext"
-import { Navigate } from "react-router-dom"
+import WorkOrderDetailsModal from './WorkOrderDetailsModal';
+
 // import './FilterTableComponent.css';
 
 
 function FilterTableComponent() {
 
-    const navigate = useNavigate()
 
     const authContext = useAuth()
 
-    const userId = authContext.userId
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    // const userId = authContext.userId
   
     const [data,setData] = useState([])
-    
+    const [selectedWorkOrder, setSelectedWorkOrder] = useState(null);
+
     useEffect ( () => refreshWorkOrders(), [])
-
-    function showWorkOrderDetails() {
-      console.log("show")
-      navigate(`/todo/-1`)
+  
+    function showWorkOrderDetails(workOrder) {
+      return () => {
+        setSelectedWorkOrder(workOrder);
+        handleShow();
+      }
   }
 
-  function editWorkOrderDetails() {
-    console.log("edit")
-  }
+    function editWorkOrderDetails() {
+    }
 
     function refreshWorkOrders() {
         const today = new Date();
@@ -39,6 +44,7 @@ function FilterTableComponent() {
           })
           .catch(error => console.log(error));
       }
+
 
     const columns = useMemo(
         (props) => [
@@ -59,7 +65,7 @@ function FilterTableComponent() {
               },
               {
                 Header: "Status",
-                accessor: "isActive",
+                accessor: "status",
                 width: "col col-lg-1",
               },
               {
@@ -90,7 +96,7 @@ function FilterTableComponent() {
               {
                 Header: " ",
                 Cell: ({ cell }) => (
-                  <button type="button" class="btn btn-primary" onClick={showWorkOrderDetails}><i class="bi bi-search"></i></button>
+                    <button type="button" className="btn btn-primary" onClick={showWorkOrderDetails(cell.row.original)}><i className="bi bi-search"></i></button>
                 ),
                 disableSortBy: true,
                 width: 50,
@@ -109,8 +115,16 @@ function FilterTableComponent() {
     )
 
     return (
+      <>
         <TableContainer columns={columns} data={data} />
-    )
+        <WorkOrderDetailsModal
+          show={show}
+          handleClose={handleClose}
+          selectedWorkOrder={selectedWorkOrder}
+          editWorkOrderDetails={editWorkOrderDetails}
+        />
+      </>
+    );
 }
 
 export default FilterTableComponent
