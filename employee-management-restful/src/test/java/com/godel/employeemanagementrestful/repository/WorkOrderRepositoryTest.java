@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.godel.employeemanagementrestful.entity.OrderType;
 import com.godel.employeemanagementrestful.entity.User;
 import com.godel.employeemanagementrestful.entity.WorkOrder;
 import com.godel.employeemanagementrestful.enums.OfficeCode;
@@ -25,7 +26,7 @@ class WorkOrderRepositoryTest {
 				
 		WorkOrder workOrder = WorkOrder.builder()
 				.orderName("WAR0005")
-				.price(new BigDecimal("3000"))
+				.orderType(new OrderType())
 				.completed(false)
 				.canceled(false)
 				.isActive(false)
@@ -49,7 +50,7 @@ class WorkOrderRepositoryTest {
 		
 		WorkOrder workOrder = WorkOrder.builder()
 				.orderName("WAR0006")
-				.price(new BigDecimal("3000"))
+				.orderType(new OrderType())
 				.completed(false)
 				.canceled(false)
 				.isActive(false)

@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.godel.employeemanagementrestful.entity.Payroll;
 import com.godel.employeemanagementrestful.entity.Timetable;
 import com.godel.employeemanagementrestful.entity.User;
 
@@ -21,9 +20,6 @@ public interface TimetableRepository extends JpaRepository<Timetable, Long> {
 	List<Timetable> findByUserAndDate(User user, YearMonth yearMonth);
 
 	List<Timetable> findByUser(User user);
-	
-	@Query("SELECT t, u FROM Timetable t JOIN t.user u WHERE YEAR(t.date) = :year AND MONTH(t.date) = :month")
-	List<Object[]> findTimetablesAndUsersForMonth(@Param("year") int year, @Param("month") int month);
 
 	List<Timetable> findByUserAndDateBetween(User user, LocalDate atDay, LocalDate atEndOfMonth);
 

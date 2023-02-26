@@ -91,7 +91,6 @@ public class WorkOrderController {
 	    WorkOrder workOrder = new WorkOrder();
 	    workOrder.setOrderName(workOrderDTO.getOrderName());
 	    workOrder.setOrderType(workOrderDTO.getOrderType());
-	    workOrder.setPrice(workOrderDTO.getPrice());
 	    workOrder.setStatus(OrderStatus.UNASSIGNED);
 	    workOrder.setCompleted(false);
 	    workOrder.setCanceled(false);
@@ -115,7 +114,6 @@ public class WorkOrderController {
 	    WorkOrder workOrder = workOrderRepository.findById(orderId).orElseThrow();
 	    workOrder.setOrderName(workOrderDTO.getOrderName());
 	    workOrder.setOrderType(workOrderDTO.getOrderType());
-	    workOrder.setPrice(workOrderDTO.getPrice());
 	    workOrder.setStatus(workOrderDTO.getStatus());
 	    workOrder.setCompleted(workOrderDTO.getCompleted());
 	    workOrder.setCanceled(workOrderDTO.getCanceled());

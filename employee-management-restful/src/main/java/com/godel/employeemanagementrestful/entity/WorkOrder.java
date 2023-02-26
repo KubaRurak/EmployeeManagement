@@ -1,16 +1,15 @@
 package com.godel.employeemanagementrestful.entity;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.godel.employeemanagementrestful.enums.OrderStatus;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -50,9 +49,9 @@ public class WorkOrder {
 	@NonNull
 	private String orderName;
 	@NonNull
-	private String orderType;
-	@NonNull
-	private BigDecimal price;
+	@Embedded
+	@ManyToOne
+	private OrderType orderType;
 	@Column(name = "completed", nullable = false)
 	@Value("false")
 	private Boolean completed;
@@ -75,5 +74,12 @@ public class WorkOrder {
 			referencedColumnName = "userId"
 			)
 	private User user;
+	@ManyToOne(
+			cascade = CascadeType.ALL)
+	@JoinColumn(
+			name="customer_id",
+			referencedColumnName = "customerId"
+			)	
+	private Customer customer;
 
 }
