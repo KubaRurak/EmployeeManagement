@@ -19,11 +19,15 @@ import com.godel.employeemanagementrestful.entity.User;
 import com.godel.employeemanagementrestful.exceptions.ResourceNotFoundException;
 import com.godel.employeemanagementrestful.repository.UserRepository;
 import com.godel.employeemanagementrestful.service.TimetableService;
+import com.godel.employeemanagementrestful.service.UserService;
 
 
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
+
+	@Autowired
+	private UserService userService;
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -55,16 +59,8 @@ public class UserController {
 	}
 
 	@PostMapping("")
-	public UserDTO saveUser(@RequestBody UserDTO userDTO) {
-	    User user = new User();
-	    user.setFirstName(userDTO.getFirstName());
-	    user.setLastName(userDTO.getLastName());
-	    user.setEmailId(userDTO.getEmailId());
-	    User savedUser = userRepository.save(user);
-		timetableService.populateTimetable(
-        		savedUser, LocalDate.now().minusYears(1), 
-        		LocalDate.now().plusYears(1));
-	    return new UserDTO(savedUser);
+	public User saveUser(@RequestBody User user) {
+		return userService.saveUser(user);
 	}
 	
 	@PostMapping("/{userId}/generateTimetable")
@@ -75,7 +71,6 @@ public class UserController {
 	        		user, LocalDate.now().minusYears(1), 
 	        		LocalDate.now().plusYears(1));
 	}
-
 	
 	@PutMapping("/{userId}")
 	public User editUser(@RequestBody User user) {

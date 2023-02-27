@@ -16,7 +16,7 @@ class PayrollServiceTest {
 	@Test
 	void generatePayrollTest(){
 		YearMonth thisYearMonth = YearMonth.of(2023, 2);
-		payrollService.generatePayroll(thisYearMonth);
+		payrollService.generatePayrollForAll(thisYearMonth);
 	}
 
 }

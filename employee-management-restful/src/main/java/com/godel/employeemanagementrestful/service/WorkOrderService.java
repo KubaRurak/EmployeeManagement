@@ -21,6 +21,8 @@ public class WorkOrderService{
 	private WorkOrderRepository workOrderRepository;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private PayrollService payrollService;
 
 
 
@@ -57,7 +59,6 @@ public class WorkOrderService{
 	    
 	    workOrder.setUser(user);
 	    workOrder.setStatus(OrderStatus.ACTIVE);
-//	    workOrder.setIsActive(true);
 		workOrder.setStartTimeStamp(LocalDateTime.now());
 		workOrder.setLastModificationTimeStamp(LocalDateTime.now());
 	    
@@ -74,10 +75,8 @@ public class WorkOrderService{
 		workOrder.setEndTimeStamp(LocalDateTime.now());
 		workOrder.setLastModificationTimeStamp(LocalDateTime.now());
 		workOrder.setStatus(OrderStatus.COMPLETED);
-//		workOrder.setCompleted(true);
-//		workOrder.setIsActive(false);
 		workOrderRepository.save(workOrder);
-//		payrollService.updatePayroll(workOrder);
+		payrollService.updatePayrollMoney(workOrder);
 		return workOrder;
 	}
 }

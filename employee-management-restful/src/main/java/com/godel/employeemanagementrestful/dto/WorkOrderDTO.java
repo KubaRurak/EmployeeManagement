@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.godel.employeemanagementrestful.entity.OrderType;
 import com.godel.employeemanagementrestful.entity.User;
 import com.godel.employeemanagementrestful.entity.WorkOrder;
 import com.godel.employeemanagementrestful.enums.OrderStatus;
@@ -15,8 +16,7 @@ public class WorkOrderDTO {
 
 	private Long orderId;
 	private String orderName;
-	private String orderType;
-	private BigDecimal price;
+	private OrderType orderType;
 	private OrderStatus status;
 	private Boolean completed;
 	private Boolean canceled;
@@ -30,13 +30,14 @@ public class WorkOrderDTO {
 	private String comments;
 	private Long userId;
 	private String assigneeEmail;
+	private String firstName;
+	private String lastName;
 
 	public WorkOrderDTO(WorkOrder workOrder) {
 		
 		this.orderId = workOrder.getOrderId();
 		this.orderName = workOrder.getOrderName();
 		this.orderType = workOrder.getOrderType();
-		this.price = workOrder.getPrice();
 		this.status = workOrder.getStatus();
 		this.completed = workOrder.getCompleted();
 		this.canceled = workOrder.getCanceled();
@@ -50,6 +51,8 @@ public class WorkOrderDTO {
         if (user != null) {
             this.userId = user.getUserId();
             this.assigneeEmail = user.getEmailId();
+            this.firstName = user.getFirstName();
+            this.lastName = user.getLastName();
         }
 	}
 

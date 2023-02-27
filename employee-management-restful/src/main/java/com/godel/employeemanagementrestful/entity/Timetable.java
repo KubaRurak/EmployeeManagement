@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -15,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,6 +29,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(
+		name = "tbl_timetable"
+)
 public class Timetable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +44,7 @@ public class Timetable {
 			referencedColumnName = "userId"
 			)
   private User user;
-  @NonNull
+  @NotNull
   private LocalDate date;
   
   @Column(nullable = true)
