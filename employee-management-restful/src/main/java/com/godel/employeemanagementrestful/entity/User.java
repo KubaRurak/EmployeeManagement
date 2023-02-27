@@ -4,6 +4,7 @@ package com.godel.employeemanagementrestful.entity;
 
 import java.util.List;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -54,6 +55,7 @@ public class User {
 	private Long userId;
 	@Column(name="email_adress")
 	@NotNull
+	@Email
 	private String emailId;
 	@Value("1234")
 	@NotNull

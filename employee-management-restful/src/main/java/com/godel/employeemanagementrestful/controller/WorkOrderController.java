@@ -35,9 +35,6 @@ public class WorkOrderController {
 	
 	@Autowired
 	private WorkOrderRepository workOrderRepository;
-	
-	@Autowired
-	private PayrollService payrollService;
 		
 	
 	@GetMapping("")
@@ -87,14 +84,11 @@ public class WorkOrderController {
 
 	
 	@PostMapping("")
-	public WorkOrderDTO saveWorkOrder(@RequestBody WorkOrderDTO workOrderDTO) {
+	public WorkOrderDTO createWorkOrder(@RequestBody WorkOrderDTO workOrderDTO) {
 	    WorkOrder workOrder = new WorkOrder();
 	    workOrder.setOrderName(workOrderDTO.getOrderName());
 	    workOrder.setOrderType(workOrderDTO.getOrderType());
 	    workOrder.setStatus(OrderStatus.UNASSIGNED);
-	    workOrder.setCompleted(false);
-	    workOrder.setCanceled(false);
-	    workOrder.setIsActive(false);
 	    workOrder.setComments(workOrderDTO.getComments() != null ? 
                 workOrderDTO.getComments() : null);
 	    workOrder.setStartTimeStamp(null);
@@ -103,6 +97,9 @@ public class WorkOrderController {
 	    workOrderRepository.save(workOrder);
 	    if (workOrderDTO.getUserId() != null) {
 	        assignUserToWorkOrder(workOrderDTO.getUserId(), workOrder.getOrderId());
+	    }
+	    if (workOrderDTO.getCustomerId() != null) {
+	        workOrderService.assignCustomerToWorkOrder(workOrderDTO.getCustomerId(), workOrder.getOrderId());
 	    }
 	    return new WorkOrderDTO(workOrder);
 	}
@@ -115,16 +112,16 @@ public class WorkOrderController {
 	    workOrder.setOrderName(workOrderDTO.getOrderName());
 	    workOrder.setOrderType(workOrderDTO.getOrderType());
 	    workOrder.setStatus(workOrderDTO.getStatus());
-	    workOrder.setCompleted(workOrderDTO.getCompleted());
-	    workOrder.setCanceled(workOrderDTO.getCanceled());
-	    workOrder.setIsActive(workOrderDTO.getIsActive());
 	    workOrder.setStartTimeStamp(workOrderDTO.getStartTimeStamp());
 	    workOrder.setEndTimeStamp(workOrderDTO.getEndTimeStamp());
 	    workOrder.setLastModificationTimeStamp(LocalDateTime.now());
 	    workOrder.setComments(workOrderDTO.getComments());
 	    workOrderRepository.save(workOrder);
 	    if (workOrderDTO.getUserId() != null) {
-	        assignUserToWorkOrder(workOrderDTO.getUserId(), orderId);
+	        workOrderService.assignUserToWorkOrder(workOrderDTO.getUserId(), orderId);
+	    }
+	    if (workOrderDTO.getCustomerId() != null) {
+	        workOrderService.assignCustomerToWorkOrder(workOrderDTO.getCustomerId(), orderId);
 	    }
 	    return new WorkOrderDTO(workOrder);	
 	}

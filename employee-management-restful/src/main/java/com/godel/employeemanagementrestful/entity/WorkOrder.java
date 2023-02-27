@@ -52,20 +52,12 @@ public class WorkOrder {
 	@Embedded
 	@ManyToOne
 	private OrderType orderType;
-	@Column(name = "completed", nullable = false)
-	@Value("false")
-	private Boolean completed;
-	@Column(name = "canceled", nullable = false)
-	@Value("false")
-	private Boolean canceled;
-	@Column(name = "isActive", nullable = false)
-	@Value("false")
-	private	Boolean isActive;
 	@Enumerated(EnumType.STRING)
 	private OrderStatus status;
 	private LocalDateTime startTimeStamp;
 	private LocalDateTime endTimeStamp;
-	private LocalDateTime lastModificationTimeStamp;
+	@Builder.Default
+	private LocalDateTime lastModificationTimeStamp=LocalDateTime.now();
 	private String comments;
 	@ManyToOne(
 			cascade = CascadeType.ALL)
@@ -81,5 +73,6 @@ public class WorkOrder {
 			referencedColumnName = "customerId"
 			)	
 	private Customer customer;
+	
 
 }

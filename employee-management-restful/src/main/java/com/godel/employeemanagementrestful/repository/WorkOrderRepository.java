@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.godel.employeemanagementrestful.entity.User;
 import com.godel.employeemanagementrestful.entity.WorkOrder;
+import com.godel.employeemanagementrestful.enums.OrderStatus;
 
 public interface WorkOrderRepository extends JpaRepository<WorkOrder, Long> {
 
@@ -20,15 +21,13 @@ public interface WorkOrderRepository extends JpaRepository<WorkOrder, Long> {
 	List<WorkOrder> findByUserUserIdAndLastModificationTimeStampBetween(Long userId, LocalDateTime of,
 			LocalDateTime of2);
 
-	List<WorkOrder> findByUserUserIdAndIsActiveTrue(Long userId);
-
-	List<WorkOrder> findByIsActiveTrue();
-
-	List<WorkOrder> findByCompletedTrueAndEndTimeStampBetween(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay2);
-
 	List<WorkOrder> findByUserAndEndTimeStampBefore(User user, LocalDateTime endOfMonth);
 
 	List<WorkOrder> findByUserAndEndTimeStampBefore(User user, LocalDate atEndOfMonth);
+
+	List<WorkOrder> findByStatus(OrderStatus status);
+
+	List<WorkOrder> findByUserUserIdAndStatus(Long userId, OrderStatus status);
 
 
 }
