@@ -4,6 +4,7 @@ package com.godel.employeemanagementrestful.repository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +21,21 @@ class WorkOrderRepositoryTest {
 	@Autowired
 	private WorkOrderRepository workOrderRepository;
 	
+	@Autowired
+	private OrderTypeRepository orderTypeRepository;
+	
 	@Test
 	public void saveWorkOrder() {
 		
-				
+		Optional<OrderType> orderTypeOptional = orderTypeRepository.findById(new Long(1));
+		OrderType orderType = null;
+	    if (orderTypeOptional.isPresent()) {
+	        orderType = orderTypeOptional.get();
+	    }
 		WorkOrder workOrder = WorkOrder.builder()
-				.orderName("WAR0005")
-				.orderType(new OrderType())
-				.comments("third workorder")
+				.orderName("WAR0001")
+				.orderType(orderType)
+				.comments("Jakiś tam workOrder")
 				.user(null)
 				.build();
 		

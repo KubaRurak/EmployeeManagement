@@ -91,10 +91,10 @@ public class PayrollService {
 
 	}
 
-
+	@Transactional
 	public void updatePayrollMoney(WorkOrder workOrder) {
-
-		Payroll payroll = payrollRepository.findByUser(workOrder.getUser());
+		Payroll payroll = payrollRepository.findByUserAndPayrollMonth(
+				workOrder.getUser(), workOrder.getEndTimeStamp().toLocalDate().withDayOfMonth(1));
 		payroll.addAmount(workOrder.getOrderType().getPrice());
 		payrollRepository.save(payroll);
 	}
