@@ -30,6 +30,8 @@ public class WorkOrderDTO {
 	private String comments;
 	private Long userId;
 	private String assigneeEmail;
+	private String firstName;
+	private String lastName;
 
 	public WorkOrderDTO(WorkOrder workOrder) {
 		
@@ -49,6 +51,8 @@ public class WorkOrderDTO {
         if (user != null) {
             this.userId = user.getUserId();
             this.assigneeEmail = user.getEmailId();
+            this.firstName = user.getFirstName();
+            this.lastName = user.getLastName();
         }
 	}
 
