@@ -1,6 +1,6 @@
-package com.godel.employeemanagementrestful.repository;
+package com.godel.employeemanagementrestful.service;
 
-import java.util.List;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,34 +10,24 @@ import com.godel.employeemanagementrestful.entity.User;
 import com.godel.employeemanagementrestful.enums.OfficeCode;
 import com.godel.employeemanagementrestful.enums.UserRole;
 
-import jakarta.transaction.Transactional;
-
 @SpringBootTest
-class UserRepositoryTest {
-
-	@Autowired
-	private UserRepository userRepository;
+class UserServiceTest {
 	
+	@Autowired
+	UserService userService;
+
 	@Test
-	public void saveuser1() {
+	void createUser() {
 		User user = User.builder()
 				.firstName("Godel")
 				.lastName("Rurak")
-				.role(UserRole.Operator)
+				.role(UserRole.Engineer)
 				.officeCode(OfficeCode.KRK)
 				.isEmployed(true)
-				.emailId("caa@bbb.com")
+				.emailId("abc@googlecom")
 				.build();
-		
-		userRepository.save(user);
-	}
-	@Transactional
-	@Test
-	public void printAllusers() {
-		List<User> userList = 
-				userRepository.findAll();
-		
-		System.out.println("userList = " + userList);
-	}
-}
+		userService.saveUser(user);
 
+	}
+
+}

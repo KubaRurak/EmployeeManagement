@@ -2,6 +2,7 @@ package com.godel.employeemanagementrestful.entity;
 
 import java.util.List;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -39,6 +40,7 @@ public class Customer {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long customerId;
 	@Column(name="email_adress")
+	@Email
 	@NotNull
 	private String emailId;
 	@NotNull
@@ -46,8 +48,7 @@ public class Customer {
 	@NotNull
 	private String lastName;
 	@NotNull
-	private String Company;
-	@NotNull
+	private String companyName;
 	@JsonIgnore
 	@OneToMany(
 			mappedBy = "customer",

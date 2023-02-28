@@ -4,12 +4,14 @@ package com.godel.employeemanagementrestful.entity;
 
 import java.util.List;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Value;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.godel.employeemanagementrestful.enums.OfficeCode;
+import com.godel.employeemanagementrestful.enums.UserRole;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -54,6 +56,7 @@ public class User {
 	private Long userId;
 	@Column(name="email_adress")
 	@NotNull
+	@Email
 	private String emailId;
 	@Value("1234")
 	@NotNull
@@ -64,7 +67,7 @@ public class User {
 	private String lastName;
 	private OfficeCode officeCode;
 	@NotNull
-	private String role;
+	private UserRole role;
 	@NotNull
 	private Boolean isEmployed;
 	@JsonIgnore

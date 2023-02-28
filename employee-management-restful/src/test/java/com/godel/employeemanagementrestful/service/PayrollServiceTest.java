@@ -2,6 +2,7 @@ package com.godel.employeemanagementrestful.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,7 @@ class PayrollServiceTest {
 	@Test
 	void generatePayrollTest(){
 		YearMonth thisYearMonth = YearMonth.of(2023, 2);
-		payrollService.generatePayrollForAll(thisYearMonth);
+		payrollService.generatePayrollForAll(YearMonth.of(2022, 2),24);
 	}
 
 }
