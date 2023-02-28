@@ -48,7 +48,7 @@ public class Customer {
 	@NotNull
 	private String lastName;
 	@NotNull
-	private String Company;
+	private String companyName;
 	@JsonIgnore
 	@OneToMany(
 			mappedBy = "customer",
