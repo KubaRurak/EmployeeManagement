@@ -14,16 +14,16 @@ class TimetableServiceTest {
 	@Autowired
 	TimetableService timetableService;
 
-//	@SuppressWarnings("removal")
-//	@Test
-//	void CheckIn() {
-//		try {
-//			timetableService.checkIn(new Long(1));
-//		} catch (TimetableException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
+	@SuppressWarnings("removal")
+	@Test
+	void CheckIn() {
+		try {
+			timetableService.checkIn(new Long(1));
+		} catch (TimetableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	@SuppressWarnings("removal")
 	@Test
