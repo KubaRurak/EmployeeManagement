@@ -40,60 +40,61 @@ public class PayrollService {
 	@Autowired
 	private PayrollRepository payrollRepository;
 
-	public void generatePayrollForUser(YearMonth yearMonth, Long userId) {
-
-		User user = userRepository.findById(userId)
-				.orElseThrow(() -> new ResourceNotFoundException("User not found with id " + userId));
-
-		BigDecimal timeWorked = BigDecimal.ZERO;
-
-		List<Timetable> timetables = timetableRepository.findByUserAndDateBetween(user, yearMonth.atDay(1), yearMonth.atEndOfMonth());
-		for (Timetable timetable : timetables) {
-			if (timetable.getCheckIn() != null && timetable.getCheckOut() != null) {
-				Duration duration = Duration.between(timetable.getCheckIn(), timetable.getCheckOut());
-				BigDecimal hours = BigDecimal.valueOf(duration.toMinutes()).divide(BigDecimal.valueOf(60));
-				timeWorked = timeWorked.add(hours);
+	public void generatePayrollForUser(YearMonth startMonth, int numMonths, Long userId) {
+		
+	    for (int i = 0; i < numMonths; i++) {
+	        YearMonth yearMonth = startMonth.plusMonths(i);
+			User user = userRepository.findById(userId)
+					.orElseThrow(() -> new ResourceNotFoundException("User not found with id " + userId));
+	
+			BigDecimal timeWorked = BigDecimal.ZERO;
+	
+			List<Timetable> timetables = timetableRepository.findByUserAndDateBetween(user, yearMonth.atDay(1), yearMonth.atEndOfMonth());
+			for (Timetable timetable : timetables) {
+				if (timetable.getCheckIn() != null && timetable.getCheckOut() != null) {
+					Duration duration = Duration.between(timetable.getCheckIn(), timetable.getCheckOut());
+					BigDecimal hours = BigDecimal.valueOf(duration.toMinutes()).divide(BigDecimal.valueOf(60));
+					timeWorked = timeWorked.add(hours);
+				}
 			}
-		}
+	
+			BigDecimal moneyGenerated = BigDecimal.ZERO;
+			LocalDateTime endOfMonth = LocalDateTime.of(yearMonth.atEndOfMonth(), LocalTime.MAX);
+			List<WorkOrder> workOrders = workOrderRepository.findByUserAndEndTimeStampBefore(user, endOfMonth);
+			for (WorkOrder workOrder : workOrders) {
+				moneyGenerated = moneyGenerated.add(workOrder.getOrderType().getPrice());
+			}
+	
+			LocalDate localDate = yearMonth.atDay(1);
+			Payroll existingPayroll = payrollRepository.findByUserAndPayrollMonth(user, localDate);
+			if (existingPayroll != null) {
+				existingPayroll.setTimeWorked(timeWorked);
+				existingPayroll.setMoneyGenerated(moneyGenerated);
+				payrollRepository.save(existingPayroll);
+			} else {
+				Payroll payroll = new Payroll(user, localDate, timeWorked, moneyGenerated);
+				payrollRepository.save(payroll);
+			}
+	    }
 
-		BigDecimal moneyGenerated = BigDecimal.ZERO;
-		LocalDateTime endOfMonth = LocalDateTime.of(yearMonth.atEndOfMonth(), LocalTime.MAX);
-		List<WorkOrder> workOrders = workOrderRepository.findByUserAndEndTimeStampBefore(user, endOfMonth);
-		for (WorkOrder workOrder : workOrders) {
-			moneyGenerated = moneyGenerated.add(workOrder.getOrderType().getPrice());
-		}
+	}
 
-		LocalDate localDate = yearMonth.atDay(1);
-		Payroll existingPayroll = payrollRepository.findByUserAndPayrollMonth(user, localDate);
-		if (existingPayroll != null) {
-			existingPayroll.setTimeWorked(timeWorked);
-			existingPayroll.setMoneyGenerated(moneyGenerated);
-			payrollRepository.save(existingPayroll);
-		} else {
-			Payroll payroll = new Payroll(user, localDate, timeWorked, moneyGenerated);
-			payrollRepository.save(payroll);
+	@Transactional
+	public void generatePayrollForAll(YearMonth startMonth, int numMonths) {
+
+		List<User> users = userRepository.findAll();
+
+		// Loop through the results, calculating the hours worked and money generated for each user
+		for (User user : users) {
+			generatePayrollForUser(startMonth, numMonths, user.getUserId());
 		}
 
 	}
 
 	@Transactional
-	public void generatePayrollForAll(YearMonth yearMonth) {
-		List<Payroll> payrolls = new ArrayList<>();
-
-		// Retrieve the users and their timetables for the specified month
-		List<User> users = userRepository.findAll();
-
-		// Loop through the results, calculating the hours worked and money generated for each user
-		for (User user : users) {
-			generatePayrollForUser(yearMonth, user.getUserId());
-		}
-
-	}
-
-
 	public void updatePayrollMoney(WorkOrder workOrder) {
-
-		Payroll payroll = payrollRepository.findByUser(workOrder.getUser());
+		Payroll payroll = payrollRepository.findByUserAndPayrollMonth(
+				workOrder.getUser(), workOrder.getEndTimeStamp().toLocalDate().withDayOfMonth(1));
 		payroll.addAmount(workOrder.getOrderType().getPrice());
 		payrollRepository.save(payroll);
 	}

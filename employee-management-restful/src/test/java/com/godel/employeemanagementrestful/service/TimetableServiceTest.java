@@ -29,7 +29,7 @@ class TimetableServiceTest {
 	@Test
 	void CheckOut() {
 		try {
-			timetableService.checkOut(new Long(2));
+			timetableService.checkOut(new Long(1));
 		} catch (TimetableException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

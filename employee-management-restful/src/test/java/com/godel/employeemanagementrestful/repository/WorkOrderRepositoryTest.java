@@ -4,6 +4,7 @@ package com.godel.employeemanagementrestful.repository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import com.godel.employeemanagementrestful.entity.OrderType;
 import com.godel.employeemanagementrestful.entity.User;
 import com.godel.employeemanagementrestful.entity.WorkOrder;
 import com.godel.employeemanagementrestful.enums.OfficeCode;
+import com.godel.employeemanagementrestful.enums.UserRole;
 
 @SpringBootTest
 class WorkOrderRepositoryTest {
@@ -20,17 +22,21 @@ class WorkOrderRepositoryTest {
 	@Autowired
 	private WorkOrderRepository workOrderRepository;
 	
+	@Autowired
+	private OrderTypeRepository orderTypeRepository;
+	
 	@Test
 	public void saveWorkOrder() {
 		
-				
+		Optional<OrderType> orderTypeOptional = orderTypeRepository.findById(new Long(1));
+		OrderType orderType = null;
+	    if (orderTypeOptional.isPresent()) {
+	        orderType = orderTypeOptional.get();
+	    }
 		WorkOrder workOrder = WorkOrder.builder()
-				.orderName("WAR0005")
-				.orderType(new OrderType())
-				.completed(false)
-				.canceled(false)
-				.isActive(false)
-				.comments("third workorder")
+				.orderName("WAR0001")
+				.orderType(orderType)
+				.comments("Jakiś tam workOrder")
 				.user(null)
 				.build();
 		
@@ -42,7 +48,7 @@ class WorkOrderRepositoryTest {
 		User user = User.builder()
 		.firstName("Kuba2")
 		.lastName("Rurak2")
-		.role("Projektant")
+		.role(UserRole.Engineer)
 		.officeCode(OfficeCode.WAW)
 		.isEmployed(true)
 		.emailId("Godello3@bbb.com")
@@ -51,9 +57,6 @@ class WorkOrderRepositoryTest {
 		WorkOrder workOrder = WorkOrder.builder()
 				.orderName("WAR0006")
 				.orderType(new OrderType())
-				.completed(false)
-				.canceled(false)
-				.isActive(false)
 				.startTimeStamp(LocalDateTime.now())
 				.comments("fourth workorder")
 				.user(user)
