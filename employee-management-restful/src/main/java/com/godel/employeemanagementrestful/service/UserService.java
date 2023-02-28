@@ -45,6 +45,14 @@ public class UserService {
 	    }
 
 	}
+	
+	@Transactional
+	public void saveUsers(List<User> users) {
+	    for (User user : users) {
+	    	this.saveUser(user);
+	    }
+
+	}
 
 
 

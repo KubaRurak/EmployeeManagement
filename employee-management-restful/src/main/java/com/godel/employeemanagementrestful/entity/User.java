@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.godel.employeemanagementrestful.enums.OfficeCode;
+import com.godel.employeemanagementrestful.enums.UserRole;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -66,7 +67,7 @@ public class User {
 	private String lastName;
 	private OfficeCode officeCode;
 	@NotNull
-	private String role;
+	private UserRole role;
 	@NotNull
 	private Boolean isEmployed;
 	@JsonIgnore

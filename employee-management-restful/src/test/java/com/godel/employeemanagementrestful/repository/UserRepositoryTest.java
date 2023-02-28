@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.godel.employeemanagementrestful.entity.User;
 import com.godel.employeemanagementrestful.enums.OfficeCode;
+import com.godel.employeemanagementrestful.enums.UserRole;
 
 import jakarta.transaction.Transactional;
 
@@ -22,7 +23,7 @@ class UserRepositoryTest {
 		User user = User.builder()
 				.firstName("Godel")
 				.lastName("Rurak")
-				.role("Engingeer")
+				.role(UserRole.Operator)
 				.officeCode(OfficeCode.KRK)
 				.isEmployed(true)
 				.emailId("caa@bbb.com")
@@ -38,63 +39,5 @@ class UserRepositoryTest {
 		
 		System.out.println("userList = " + userList);
 	}
-	@Test
-	public void saveuser2() {
-		
-	User user2 = User.builder()
-			.firstName("Tadzio")
-			.lastName("Rurak")
-			.role("Szef")
-			.officeCode(OfficeCode.WAW)
-			.isEmployed(true)
-			.emailId("Tadzio@bbb.com")
-			.build();
-	
-	userRepository.save(user2);
-	}
-	
-//	@Test
-//	public void printuserById() {
-//		
-//		List<user> users = 
-//				userRepository.findByuserId((long) 1);
-//		
-//		System.out.println("users = " + users);
-//	}
 }
-//	@Test
-//	public void saveuser() {
-//		
-//		WorkOrder workOrder1 = WorkOrder.builder()
-//				.orderName("WAR0002")
-//				.price(new BigDecimal("2300"))
-//				.completed(false)
-//				.canceled(false)
-//				.startTimeStamp(LocalDate.now())
-//				.comments("2nd workorder")
-//				.build();
-//		
-//		WorkOrder workOrder2 = WorkOrder.builder()
-//				.orderName("WAR0003")
-//				.price(new BigDecimal("2300"))
-//				.completed(false)
-//				.canceled(false)
-//				.startTimeStamp(LocalDate.now())
-//				.comments("3rd workorder")
-//				.build();	
-//		
-//		user user = user.builder()
-//				.firstName("Kuba")
-//				.lastName("Rurak")
-//				.role("Projektant")
-//				.officeCode(OfficeCode.WAW)
-//				.isEmployed(true)
-//				.emailId("Godello@bbb.com")
-//				.workOrder(List.of(workOrder1,workOrder2))
-//				.build();
-//	
-//		userRepository.save(user);
-//	}
-//	
-
 
