@@ -11,7 +11,7 @@ public class DataInitializer implements CommandLineRunner {
 	
 	private static final int numberOfUsers=30;
 	private static final int numberOfCustomers=5;
-	private static final int numberOfWorkOrders=100;
+	private static final int numberOfWorkOrders=1000;
 	
 	@Autowired
 	InitializeUsers initializeUsers;
@@ -24,11 +24,11 @@ public class DataInitializer implements CommandLineRunner {
 	
 	@Override
 	public void run(String... args) throws Exception {
-//		initializeUsers.saveUsers(numberOfUsers);
-//		initializeCustomers.saveCustomers(numberOfCustomers);
-//		initializeOrderTypes.saveOrderTypes();
+		initializeUsers.saveUsers(numberOfUsers);
+		initializeCustomers.saveCustomers(numberOfCustomers);
+		initializeOrderTypes.saveOrderTypes();
 		initializeWorkOrders.saveWorkOrders(numberOfWorkOrders);
-//		initializeWorkOrders.randomizeTimeStampsForAllWorkOrders();
+		initializeWorkOrders.randomizeTimeStampsForAllWorkOrders();
 		
 		
 	}

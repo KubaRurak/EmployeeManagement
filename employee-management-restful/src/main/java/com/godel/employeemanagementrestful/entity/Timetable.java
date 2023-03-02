@@ -37,6 +37,7 @@ public class Timetable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long timetableId;
   
+  @NotNull
   @ManyToOne(
 			cascade = CascadeType.ALL)
   @JoinColumn(
@@ -47,10 +48,12 @@ public class Timetable {
   @NotNull
   private LocalDate date;
   
-  @Column(nullable = true)
+  @Column(name = "check_in_time",
+		  nullable = true)
   private LocalTime checkIn;
   
-  @Column(nullable = true)
+  @Column(name = "check_out_time",
+		  nullable = true)
   private LocalTime checkOut;
   
   @Transient

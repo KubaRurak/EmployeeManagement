@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -39,16 +40,27 @@ public class Customer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long customerId;
+	
 	@Column(name="email_adress")
-	@Email
-	@NotNull
+	@NotNull(message = "Email address cannot be null")
+	@Email(message = "Email address is not valid")
 	private String emailId;
-	@NotNull
+	
+	@Column(name="first_name")
+	@NotNull(message = "First name cannot be null")
+	@Size(min = 2, max = 50, message = "First name must be between 2 and 50 characters long")
 	private String firstName;
-	@NotNull
+	
+	@Column(name="last_name")
+	@NotNull(message = "First name cannot be null")
+	@Size(min = 2, max = 50, message = "First name must be between 2 and 50 characters long")
 	private String lastName;
-	@NotNull
+	
+	@Column(name="company_name")
+	@NotNull(message = "First name cannot be null")
+	@Size(min = 2, max = 50, message = "First name must be between 2 and 50 characters long")
 	private String companyName;
+	
 	@JsonIgnore
 	@OneToMany(
 			mappedBy = "customer",

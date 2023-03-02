@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.springframework.beans.factory.annotation.Value;
 
@@ -16,6 +17,8 @@ import com.godel.employeemanagementrestful.enums.UserRole;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -55,20 +58,37 @@ public class User {
 			)
 	private Long userId;
 	@Column(name="email_adress")
-	@NotNull
-	@Email
+	@NotNull(message = "Email address cannot be null")
+	@Email(message = "Email address is not valid")
 	private String emailId;
-	@Value("1234")
-	@NotNull
+	
+	@Column(name="password")
+	@NotNull(message = "Password cannot be null")
+	@Size(min = 6, message = "Password must be at least 6 characters long")
 	private String password;
-	@NotNull
+	
+	@Column(name="first_name")
+	@NotNull(message = "First name cannot be null")
+	@Size(min = 2, max = 50, message = "First name must be between 2 and 50 characters long")
 	private String firstName;
-	@NotNull
+	
+	@Column(name="last_name")
+	@NotNull(message = "First name cannot be null")
+	@Size(min = 2, max = 50, message = "First name must be between 2 and 50 characters long")
 	private String lastName;
+	
+	@Column(name="office_code")
+	@NotNull(message = "Office code cannot be null")
+	@Enumerated(EnumType.STRING)
 	private OfficeCode officeCode;
-	@NotNull
+	
+	@Column(name="user_role")
+	@NotNull(message = "User role cannot be null")
+	@Enumerated(EnumType.STRING)
 	private UserRole role;
-	@NotNull
+
+	@Column(name="is_employed")
+	@NotNull(message = "Employment status cannot be null")
 	private Boolean isEmployed;
 	@JsonIgnore
 	@OneToMany(

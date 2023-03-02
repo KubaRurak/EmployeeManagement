@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -40,12 +41,15 @@ public class Payroll {
 			name="user_id",
 			referencedColumnName = "userId"
 			)
+	@NotNull
 	private User user;
 	@NotNull
 	private LocalDate payrollMonth;
 	
+	@PositiveOrZero
 	private BigDecimal timeWorked;
-	  
+	
+	@PositiveOrZero
 	private BigDecimal moneyGenerated;
 	
 	@OneToMany(cascade = CascadeType.ALL)
