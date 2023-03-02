@@ -33,6 +33,7 @@ public class OrderType {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String orderTypeName;
+	private Float expectedDays;
 	private BigDecimal price;
 	@JsonIgnore
 	@OneToMany(

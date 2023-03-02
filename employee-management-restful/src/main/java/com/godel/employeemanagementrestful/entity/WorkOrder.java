@@ -60,14 +60,14 @@ public class WorkOrder {
 	private LocalDateTime lastModificationTimeStamp=LocalDateTime.now();
 	private String comments;
 	@ManyToOne(
-			cascade = CascadeType.ALL)
+			cascade = CascadeType.MERGE)
 	@JoinColumn(
 			name="user_id",
 			referencedColumnName = "userId"
 			)
 	private User user;
 	@ManyToOne(
-			cascade = CascadeType.ALL)
+			cascade = CascadeType.MERGE)
 	@JoinColumn(
 			name="customer_id",
 			referencedColumnName = "customerId"

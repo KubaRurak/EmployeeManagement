@@ -10,4 +10,6 @@ public interface OrderTypeRepository extends JpaRepository<OrderType, Long> {
 
 	List<OrderType> save(List<OrderType> orderTypes);
 
+	OrderType findByOrderTypeName(String string);
+
 }

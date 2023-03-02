@@ -1,4 +1,4 @@
-package com.godel.employeemanagementrestful.initialize.generate;
+package com.godel.employeemanagementrestful.initialize.generator;
 
 import java.util.Random;
 
@@ -13,12 +13,13 @@ public class PersonGenerator {
 	private static final String[] GENDER = {"Male", "Female"};
     private static final String[] FIRST_NAMES_MALE = {"Norbert", "Alojzy", "Michał", "Daniel",
     		"Paweł", "Fabian","Amadeusz","Joachim","Mariusz","Korneliusz",
-    		"Juliusz","Dorian","Martin","Kornel","Jakub", "Juliusz", "Dorian"};
+    		"Juliusz","Dorian","Martin","Kornel","Jakub", "Juliusz", "Dorian",
+    		"Alan", "Robert", "Mateusz", "Piotr", "Norbert", "Roman", "Ryszard"};
     private static final String[] LAST_NAMES_MALE = {"Zawadzki", "Sadowski", "Kozłowski",
     		"Gajewski", "Kucharski", "Mróz", "Szczepanski", "Kazmierczak", "Cieślak", "Czerwiński", "Kowalczyk",
-    		"Kubiak","Wójcik","Głowacki","Kalinowski","Sikorka","Kaczmarczyk","Kozłowiski"};
+    		"Kubiak","Wójcik","Głowacki","Kalinowski","Sikorka","Kaczmarczyk","Kozłowski","Markowski","Zieliński","Kłos"};
     private static final String[] FIRST_NAMES_FEMALE = {"Halina","Katarzyna","Martyna","Agata","Anna","Amelia","Agnieszka",
-    		"Magda","Zuzanna","Dorota","Joanna","Lilia","Wiesława","Grażyna","Danuta","Iwona"};
+    		"Magda","Zuzanna","Dorota","Joanna","Lilia","Wiesława","Grażyna","Danuta","Iwona","Malina","Aleksandra","Paulina","Paula"};
     private static final String[] LAST_NAMES_FEMALE = {"Zawadzka", "Sadowska", "Kozłowska",
     		"Gajewska", "Kucharska", "Mróz", "Szczepanska", "Kazmierczak", "Cieślak", "Czerwińska", "Kowalczyk",
     		"Kubiak","Wójcik","Głowacka","Kalinowska","Sikorka","Kaczmarczyk","Kozłowiski"};  
