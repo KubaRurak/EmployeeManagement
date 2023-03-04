@@ -28,7 +28,7 @@ public class WorkOrderDTO {
 	private String comments;
 	
 	private Long userId;
-	private String assigneeEmail;
+	private String userEmail;
 	private String userFirstName;
 	private String userLastName;
 	
@@ -36,6 +36,7 @@ public class WorkOrderDTO {
 	private String customerEmail;
 	private String customerFirstName;
 	private String customerLastName;
+	private String customerCompanyName;
 
 	public WorkOrderDTO(WorkOrder workOrder) {
 		
@@ -51,7 +52,7 @@ public class WorkOrderDTO {
         User user = workOrder.getUser();
         if (user != null) {
             this.userId = user.getUserId();
-            this.assigneeEmail = user.getEmailId();
+            this.userEmail = user.getEmailId();
             this.userFirstName = user.getFirstName();
             this.userLastName = user.getLastName();
         }
@@ -62,6 +63,7 @@ public class WorkOrderDTO {
             this.customerEmail = customer.getEmailId();
             this.customerFirstName = customer.getFirstName();
             this.customerLastName = customer.getLastName();
+            this.customerCompanyName = customer.getCompanyName();
         }
 	}
 

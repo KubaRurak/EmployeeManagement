@@ -1,7 +1,6 @@
 function DefaultColumnFilter({
-    column: { filterValue, preFilteredRows, setFilter },
+    column: { filterValue, setFilter },
 }) {
-    // const count = preFilteredRows.length
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center' }}>

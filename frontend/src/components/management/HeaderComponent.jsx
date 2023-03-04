@@ -18,7 +18,7 @@ function HeaderComponent() {
     }
 
     return (
-        <header className="border-bottom border-light border-5 mb-5 p-2">
+        <header className="border-bottom border-light border-5 mb-3 p-2">
         {/* <Container> */}
         <Navbar collapseOnSelect>
             <Nav className="me-auto">Check In</Nav>

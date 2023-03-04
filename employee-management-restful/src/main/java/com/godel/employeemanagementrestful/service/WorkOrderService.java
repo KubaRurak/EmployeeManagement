@@ -37,14 +37,14 @@ public class WorkOrderService{
 			return workOrderRepository.findAll();
 		}
 		if (userId == null) {
-			return workOrderRepository.findByLastModificationTimeStampBetween(
+			return workOrderRepository.findByEndTimeStampBetween(
 					LocalDateTime.of(after, LocalTime.MIN),
 					LocalDateTime.of(before, LocalTime.MAX));
 		}
 		if (after == null && before == null) {
 			return workOrderRepository.findByUserUserId(userId);
 		}
-		return workOrderRepository.findByUserUserIdAndLastModificationTimeStampBetween(
+		return workOrderRepository.findByUserUserIdAndEndTimeStampBetween(
 				userId,
 				LocalDateTime.of(after, LocalTime.MIN),
 				LocalDateTime.of(before, LocalTime.MAX));
