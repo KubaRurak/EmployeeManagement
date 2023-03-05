@@ -32,16 +32,23 @@ function HeaderComponent() {
                         <Nav.Link as={Link} to={`/welcome/${username}`}>Home</Nav.Link>
                         }
                         {isAuthenticated &&
-                            <Nav.Link as={Link} to="/todos">Todos</Nav.Link>
-                        }
-                        {isAuthenticated &&
-                        <NavDropdown title="Work Orders" id="collasible-nav-dropdown">
-                            <Nav.Link as={Link} to="/activeWorkOrders" className='nav-link' style={{width:'10vw'}}><i class="bi-alarm"></i>Your Work Orders</Nav.Link>
+                        <NavDropdown title={<><i className="bi-calendar3"></i> Work Orders</>} id="collasible-nav-dropdown">
+                            <Nav.Link as={Link} to="/activeWorkOrders" className='nav-link' style={{width:'10vw'}}><i className="bi-alarm"></i>Your Work Orders</Nav.Link>
                             <Nav.Link as={Link} to="/WorkOrders" className='nav-link'>All Work Orders</Nav.Link>
                             <Nav.Link as={Link} to="/activeWorkOrders2" className='nav-link'>RecycleBin</Nav.Link>
                         </NavDropdown>}
+                        {isAuthenticated &&
+                            <Nav.Link as={Link} to="/todos"><i className="bi-calendar3"/> Timetable</Nav.Link>
+                        }
+                        {isAuthenticated &&
+                            <Nav.Link as={Link} to="/todos"><i className="bi-wallet2"/> Payroll</Nav.Link>
+                        }
+                        {isAuthenticated &&
+                            <Nav.Link as={Link} to="/logout" onClick={logout}><i className="bi-graph-up"/> Dashboard</Nav.Link>
+                        }
                     </Nav>
                     <Nav>
+
                         {isAuthenticated &&
                             <Nav.Link as={Link} to="/logout" onClick={logout}>Logout</Nav.Link>
                         }

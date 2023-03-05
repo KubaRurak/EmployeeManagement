@@ -5,10 +5,10 @@ import ErrorComponent from './ErrorComponent'
 import WelcomeComponent from './WelcomeComponent'
 import LoginComponent from './LoginComponent'
 import ListActiveWorkOrdersComponent from './ListActiveWorkOrdersComponent'
-import ListWorkOrdersComponent from './ListWorkOrdersComponent'
+import ListAllWorkOrdersComponent from './ListAllWorkOrdersComponent'
 import AuthProvider, { useAuth } from './security/AuthContext'
 import './EmployeeManagementApp.css'
-import FilterTableComponent from './FilterTableComponent'
+import FilterTableComponent from './ListAllWorkOrdersComponent'
 
 function AuthenticatedRoute({children}) {
     const authContext = useAuth()
@@ -41,7 +41,7 @@ export default function EmployeeManagementApp() {
                         } />
                         <Route path='/workOrders' element={
                             <AuthenticatedRoute>
-                                <FilterTableComponent /> 
+                                <ListAllWorkOrdersComponent /> 
                             </AuthenticatedRoute>
                         } />
                         <Route path='/logout' element={

@@ -62,37 +62,7 @@ public class InitializeWorkOrders {
     	return sb.toString();
     	
     }
-//	public WorkOrder generateWorkOrder(Customer customer, User user) {
-//		List<OrderType> orderTypes = orderTypeRepository.findAll();
-//		OrderType orderType = orderTypes.get(new Random().nextInt(orderTypes.size()));
-//        WorkOrder workOrder = WorkOrder.builder()
-//				.orderName(generateWorkOrderName())
-//				.orderType(orderType)
-//				.status(OrderStatus.UNASSIGNED)
-//				.user(user)
-//				.customer(customer)
-//				.comments("")
-//				.build();
-//        
-//        Customer mergedCustomer = entityManager.merge(customer);
-//        workOrder.setCustomer(mergedCustomer);
-//        User mergedUser = entityManager.merge(user);
-//        workOrder.setUser(mergedUser);        
-//        return workOrder;
-//        
-//	}
-//
-//	public void saveWorkOrders(int numberOfWorkOrders) {
-//	    List<Customer> customers = customerRepository.findAll();
-//	    List<User> users = userRepository.findAll();
-//		for (int i=0;i<numberOfWorkOrders;i++) {
-//			Customer customer = customers.get(new Random().nextInt(customers.size()));
-//			User user = users.get(new Random().nextInt(users.size()));
-//			WorkOrder workOrder = generateWorkOrder(customer, user);
-//			workOrderRepository.save(workOrder);
-//
-//		}
-//	}
+
 	public WorkOrder generateWorkOrder() {
 		List<OrderType> orderTypes = orderTypeRepository.findAll();
 		OrderType orderType = orderTypes.get(new Random().nextInt(orderTypes.size()));
@@ -116,6 +86,18 @@ public class InitializeWorkOrders {
 	        		.getCustomerId(), workOrderId);
 	        workOrderService.assignUserToWorkOrder(users.get(new Random().nextInt(users.size()))
 	        		.getUserId(), workOrderId);
+		}
+	}
+	public void saveWorkOrdersForUser(int numberOfWorkOrders, Long userId) {
+	    List<Customer> customers = customerRepository.findAll();
+		for (int i=0;i<numberOfWorkOrders;i++) {
+			WorkOrder workOrder = generateWorkOrder();
+			workOrderRepository.save(workOrder);
+			Long workOrderId = workOrder.getOrderId();
+	        workOrderService.assignCustomerToWorkOrder(
+	        		customers.get(new Random().nextInt(customers.size()))
+	        		.getCustomerId(), workOrderId);
+	        workOrderService.assignUserToWorkOrder(userId, workOrderId);
 		}
 	}
 	
