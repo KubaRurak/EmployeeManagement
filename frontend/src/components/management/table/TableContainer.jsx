@@ -9,7 +9,6 @@ function TableContainer({ columns, data }) {
         () => ({
             // Default Filter UI
             Filter: DefaultColumnFilter,
-            style: {minWidth:'50px', maxWidth:'200px'}
         }),
         []
     )
@@ -106,14 +105,14 @@ function TableContainer({ columns, data }) {
                 <div style={{ maxWidth: 1000, margin: '0 auto', textAlign: 'center', display: 'flex', justifyContent: 'center' }}>
                 <div style={{ flex: 1 }}>
                   <button
-                    style={{ backgroundColor: 'blue', color: 'white', padding: '10px', borderRadius: '5px', marginRight: '5px' }}
+                    className="btn btn-primary"
                     onClick={() => gotoPage(0)}
                     disabled={!canPreviousPage}
                   >
                     {'<<'}
                   </button>
                   <button
-                    style={{ backgroundColor: 'blue', color: 'white', padding: '10px', borderRadius: '5px', marginRight: '5px' }}
+                    className="btn btn-primary"
                     onClick={previousPage}
                     disabled={!canPreviousPage}
                   >
@@ -151,14 +150,14 @@ function TableContainer({ columns, data }) {
                 </div>
                 <div style={{ flex: 1 }}>
                   <button
-                    style={{ backgroundColor: 'blue', color: 'white', padding: '10px', borderRadius: '5px', marginRight: '5px' }}
+                    className="btn btn-primary"
                     onClick={nextPage}
                     disabled={!canNextPage}
                   >
                     {'>'}
                   </button>
                   <button
-                    style={{ backgroundColor: 'blue', color: 'white', padding: '10px', borderRadius: '5px', marginRight: '5px' }}
+                    className="btn btn-primary"
                     onClick={() => gotoPage(pageCount - 1)}
                     disabled={!canNextPage}
                   >

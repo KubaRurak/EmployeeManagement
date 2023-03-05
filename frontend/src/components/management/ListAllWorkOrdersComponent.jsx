@@ -3,10 +3,9 @@ import { getFilteredWorkOrdersApi } from "./api/WorkOrderService"
 import TableContainer from './table/TableContainer'
 import { useAuth } from "./security/AuthContext"
 import WorkOrderDetailsModal from './WorkOrderDetailsModal';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import DatePickerComponent from "./DatePickerComponent";
 
-function FilterTableComponent() {
+function ListAllWorkOrdersComponent() {
 
 
     const authContext = useAuth()
@@ -59,71 +58,61 @@ function FilterTableComponent() {
             {
                 Header: "Order Name",
                 accessor: "orderName",
-                minWidth: 100,
-                maxWidth: 120,
+                width: 130
               },
               {
-                Header: "Order Type",
+                Header: "Type",
                 accessor: "orderType.orderTypeName",
-                minWidth: 100,
-                maxWidth: 120,
+                width: 100
               },
               {
-                Header: "Order Price",
+                Header: "Price",
                 accessor: "orderType.price",
-                minWidth: 100,
-                maxWidth: 120,
+                width: 100
               },
               {
                 Header: "Status",
                 accessor: "status",
-                minWidth: 100,
-                maxWidth: 120,
+                width: 100
               },
               {
                 Header: "Start Time",
                 accessor: "startTimeStamp",
-                minWidth: 60,
-                maxWidth: 100,
-                Cell: ({ cell }) => <div title={cell.value}>{cell.value.substring(0, 10)}...</div>,
+                width: 100,
+                Cell: ({ cell }) => cell.value ? <div title={cell.value}>{cell.value.substring(0, 10)}...</div> : <div></div>,
               },
               {
                 Header: "End Time",
                 accessor: "endTimeStamp",
-                minWidth: 60,
-                maxWidth: 100,
-                Cell: ({ cell }) => <div title={cell.value}>{cell.value.substring(0, 10)}...</div>,
+                width: 100,
+                Cell: ({ cell }) => cell.value ? <div title={cell.value}>{cell.value.substring(0, 10)}...</div> : <div></div>,
               },
               {
                 Header: "Last Mod",
                 accessor: "lastModificationTimeStamp",
-                minWidth: 60,
-                maxWidth: 100,
-                Cell: ({ cell }) => <div title={cell.value}>{cell.value.substring(0, 10)}...</div>,
+                width: 100,
+                Cell: ({ cell }) => cell.value ? <div title={cell.value}>{cell.value.substring(0, 10)}...</div> : <div></div>,
               },
               {
                 Header: "Comments",
                 accessor: "comments",
                 Cell: ({ cell }) => <div title={cell.value}>{cell.value.substring(0, 10)}...</div>,
-                maxWidth: 120,
+                width: 100,
               },
               {
                 Header: "Assigned to",
-                accessor: row => `${row.userFirstName} ${row.userLastName}`,
-                minWidth: 100,
-                maxWidth: 150,
+                accessor: cell => `${cell.userFirstName} ${cell.userLastName}`,
+                width: 180,
               },
               {
                 Header: "Customer",
-                accessor: row => `${row.customerFirstName} ${row.customerLastName}`,
-                minWidth: 100,
-                maxWidth: 150,
+                accessor: cell => `${cell.customerFirstName} ${cell.customerLastName}`,
+                width: 180,
               },
               {
                 Header: "Company",
                 accessor: "customerCompanyName",
-                minWidth: 100,
-                maxWidth: 150,
+                width: 100,
               },
               {
                 Header: " ",
@@ -136,7 +125,7 @@ function FilterTableComponent() {
               {
                 Header: "  ",
                 Cell: ({ cell }) => (
-                  <button type="button" class="btn btn-primary" onClick={editWorkOrderDetails}><i class="bi bi-pencil"></i></button>
+                  <button type="button" className="btn btn-primary" onClick={editWorkOrderDetails}><i className="bi bi-pencil"></i></button>
                 ),
                 disableSortBy: true,
                 width: 30,
@@ -146,29 +135,15 @@ function FilterTableComponent() {
         []
     )
 
+
+
     return (
       <>
-        <div style={{ width: 350 }}>
-          <div className="row mb-3">
-            <div className="col">
-              Wybierz zakres dat
-            </div>
-            <div className="col">
-              <DatePicker
-                className="form-control"
-                selected={startDate}
-                onChange={(date) => setStartDate(date)}
-              />
-            </div>
-            <div className="col">
-              <DatePicker
-                className="form-control"
-                selected={endDate}
-                onChange={(date) => setEndDate(date)}
-              />
-              </div>
-          </div>
-        </div>
+        <DatePickerComponent 
+        startDate={startDate} 
+        setStartDate={setStartDate}
+        endDate={endDate}
+        setEndDate={setEndDate}/>
         <TableContainer 
         columns={columns} 
         data={data}
@@ -185,4 +160,4 @@ function FilterTableComponent() {
     );
 }
 
-export default FilterTableComponent
+export default ListAllWorkOrdersComponent

@@ -1,24 +1,90 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Row, Col } from 'react-bootstrap';
 
 function WorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, editWorkOrderDetails }) {
   return (
-    <Modal show={show} onHide={handleClose} animation={false}>
+    <Modal show={show} onHide={handleClose} animation={false} size="lg">
       <Modal.Header closeButton>
         <Modal.Title>Work Order Details</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p><strong>Order Id:</strong> {selectedWorkOrder?.orderId}</p>
-        <p><strong>Order Name:</strong> {selectedWorkOrder?.orderName}</p>
-        <p><strong>Order Type:</strong> {selectedWorkOrder?.orderType.orderTypeName}</p>
-        <p><strong>Order Price:</strong> {selectedWorkOrder?.orderType.price}</p>
-        <p><strong>Status:</strong> {selectedWorkOrder?.status}</p>
-        <p><strong>Start Time:</strong> {selectedWorkOrder?.startTimeStamp}</p>
-        <p><strong>End Time:</strong> {selectedWorkOrder?.endTimeStamp}</p>
-        <p><strong>Last Modification:</strong> {selectedWorkOrder?.lastModificationTimeStamp}</p>
-        <p><strong>Comments:</strong> {selectedWorkOrder?.comments}</p>
-        <p><strong>Assigned To:</strong> {selectedWorkOrder?.assigneeEmail}</p>
-        <p><strong>Customer:</strong> {selectedWorkOrder?.customerEmail}</p>
+        <Row>
+          <Col>
+            <h5>Order Details</h5>
+            <table className="table">
+              <tbody>
+                <tr>
+                  <td><strong>Order Id:</strong></td>
+                  <td>{selectedWorkOrder?.orderId}</td>
+                </tr>
+                <tr>
+                  <td><strong>Order Name:</strong></td>
+                  <td>{selectedWorkOrder?.orderName}</td>
+                </tr>
+                <tr>
+                  <td><strong>Type:</strong></td>
+                  <td>{selectedWorkOrder?.orderType.orderTypeName}</td>
+                </tr>
+                <tr>
+                  <td><strong>Price:</strong></td>
+                  <td>{selectedWorkOrder?.orderType.price}</td>
+                </tr>
+                <tr>
+                  <td><strong>Status:</strong></td>
+                  <td>{selectedWorkOrder?.status}</td>
+                </tr>
+                <tr>
+                  <td><strong>Start Time:</strong></td>
+                  <td>{selectedWorkOrder?.startTimeStamp}</td>
+                </tr>
+                <tr>
+                  <td><strong>End Time:</strong></td>
+                  <td>{selectedWorkOrder?.endTimeStamp}</td>
+                </tr>
+                <tr>
+                  <td><strong>Last Modification:</strong></td>
+                  <td>{selectedWorkOrder?.lastModificationTimeStamp}</td>
+                </tr>
+                <tr>
+                  <td><strong>Comments:</strong></td>
+                  <td>{selectedWorkOrder?.comments}</td>
+                </tr>
+              </tbody>
+            </table>
+          </Col>
+          <Col>
+            <h5>Assignee Details</h5>
+            <table className="table">
+              <tbody>
+                <tr>
+                  <td><strong>Assigned To:</strong></td>
+                  <td>{selectedWorkOrder?.userFirstName} {selectedWorkOrder?.userLastName}</td>
+                </tr>
+                <tr>
+                  <td><strong>Assignee Email:</strong></td>
+                  <td>{selectedWorkOrder?.userEmail}</td>
+                </tr>
+              </tbody>
+            </table>
+            <h5>Customer Details</h5>
+            <table className="table">
+              <tbody>
+                <tr>
+                  <td><strong>Customer:</strong></td>
+                  <td>{selectedWorkOrder?.customerFirstName} {selectedWorkOrder?.customerLastName}</td>
+                </tr>
+                <tr>
+                  <td><strong>Customer Email:</strong></td>
+                  <td>{selectedWorkOrder?.customerEmail}</td>
+                </tr>
+                <tr>
+                  <td><strong>Company:</strong></td>
+                  <td>{selectedWorkOrder?.customerCompanyName}</td>
+                </tr>
+              </tbody>
+            </table>
+          </Col>
+        </Row>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>

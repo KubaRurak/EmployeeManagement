@@ -11,7 +11,7 @@ function DefaultColumnFilter({
                     setFilter(e.target.value || undefined)
                 }}
                 placeholder={`Filter`}
-                // style={{ width: '100px', height: '35px'}}
+                style={{ minWidth: '100px'}}
                 onClick={(e) => {
                     e.stopPropagation()}
                 }

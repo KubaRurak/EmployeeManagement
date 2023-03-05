@@ -77,7 +77,7 @@ public class WorkOrderController {
 	}
 	
 	@DeleteMapping("/{orderId}")
-	public ResponseEntity<Void> deleteWokrOderById(@PathVariable Long orderId) {
+	public ResponseEntity<Void> deleteWorkOderById(@PathVariable Long orderId) {
 		workOrderRepository.deleteById(orderId);
 		return ResponseEntity.noContent().build();
 	}
