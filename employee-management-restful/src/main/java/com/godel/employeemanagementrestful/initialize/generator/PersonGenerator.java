@@ -2,12 +2,12 @@ package com.godel.employeemanagementrestful.initialize.generator;
 
 import java.util.Random;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.godel.employeemanagementrestful.entity.Customer;
 import com.godel.employeemanagementrestful.entity.User;
 import com.godel.employeemanagementrestful.enums.OfficeCode;
-import com.godel.employeemanagementrestful.enums.UserRole;
-
-import org.apache.commons.lang3.StringUtils;
+import com.godel.employeemanagementrestful.enums.Role;
 
 public class PersonGenerator {
 	private static final String[] GENDER = {"Male", "Female"};
@@ -48,7 +48,7 @@ public class PersonGenerator {
                LAST_NAMES_FEMALE[RANDOM.nextInt(LAST_NAMES_FEMALE.length)];
         String email = generateEmail(firstName, lastName);
         OfficeCode officeCode = OfficeCode.values()[RANDOM.nextInt(OfficeCode.values().length)];
-        UserRole role = UserRole.Engineer;
+        Role role = Role.Engineer;
 
         return User.builder()
             .firstName(firstName)

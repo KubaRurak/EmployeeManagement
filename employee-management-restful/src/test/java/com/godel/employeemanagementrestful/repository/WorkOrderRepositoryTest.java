@@ -1,8 +1,6 @@
 package com.godel.employeemanagementrestful.repository;
 
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -14,7 +12,7 @@ import com.godel.employeemanagementrestful.entity.OrderType;
 import com.godel.employeemanagementrestful.entity.User;
 import com.godel.employeemanagementrestful.entity.WorkOrder;
 import com.godel.employeemanagementrestful.enums.OfficeCode;
-import com.godel.employeemanagementrestful.enums.UserRole;
+import com.godel.employeemanagementrestful.enums.Role;
 
 @SpringBootTest
 class WorkOrderRepositoryTest {
@@ -48,7 +46,7 @@ class WorkOrderRepositoryTest {
 		User user = User.builder()
 		.firstName("Kuba2")
 		.lastName("Rurak2")
-		.role(UserRole.Engineer)
+		.role(Role.Engineer)
 		.officeCode(OfficeCode.WAW)
 		.isEmployed(true)
 		.emailId("Godello3@bbb.com")
