@@ -4,6 +4,7 @@ import TableContainer from './table/TableContainer'
 import { useAuth } from "./security/AuthContext"
 import WorkOrderDetailsModal from './WorkOrderDetailsModal';
 import DatePickerComponent from "./DatePickerComponent";
+import { auto } from "@popperjs/core";
 
 function ListAllWorkOrdersComponent() {
 
@@ -139,11 +140,14 @@ function ListAllWorkOrdersComponent() {
 
     return (
       <>
+        <div style={{ display: "flex", alignItems: "center", marginLeft: "25px", marginRight: "25px" }}>
         <DatePickerComponent 
-        startDate={startDate} 
-        setStartDate={setStartDate}
-        endDate={endDate}
-        setEndDate={setEndDate}/>
+            startDate={startDate} 
+            setStartDate={setStartDate}
+            endDate={endDate}
+            setEndDate={setEndDate}/>
+        <button type="button" className="btn btn-primary" style={{ marginLeft: auto }} onClick={()=>console.log("aaa") }>Add new</button>
+        </div>
         <TableContainer 
         columns={columns} 
         data={data}

@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import com.godel.employeemanagementrestful.entity.User;
 import com.godel.employeemanagementrestful.entity.WorkOrder;
-import com.godel.employeemanagementrestful.enums.UserRole;
+import com.godel.employeemanagementrestful.enums.Role;
 
 import lombok.Data;
 
@@ -16,7 +16,7 @@ public class UserDTO {
 	private String emailId;
 	private String firstName;
 	private String lastName;
-	private UserRole role;
+	private Role role;
 	private List<Long> workOrderIds;
 	
 	public UserDTO(User user) {

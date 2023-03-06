@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.godel.employeemanagementrestful.entity.User;
 import com.godel.employeemanagementrestful.enums.OfficeCode;
-import com.godel.employeemanagementrestful.enums.UserRole;
+import com.godel.employeemanagementrestful.enums.Role;
 
 import jakarta.transaction.Transactional;
 
@@ -23,7 +23,7 @@ class UserRepositoryTest {
 		User user = User.builder()
 				.firstName("Godel")
 				.lastName("Rurak")
-				.role(UserRole.Operator)
+				.role(Role.Operator)
 				.officeCode(OfficeCode.KRK)
 				.isEmployed(true)
 				.emailId("caa@bbb.com")

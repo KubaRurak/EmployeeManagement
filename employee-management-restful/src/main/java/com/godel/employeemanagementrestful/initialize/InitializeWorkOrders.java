@@ -120,6 +120,7 @@ public class InitializeWorkOrders {
 		        endDate = startDate.plusMinutes(totalMinutesToAdd);
 		        workOrder.setEndTimeStamp(endDate);
 		        workOrder.setStatus(OrderStatus.COMPLETED);
+		        workOrder.setLastModificationTimeStamp(endDate);
 		        workOrderRepository.save(workOrder);
 		        payrollService.updatePayrollMoney(workOrder);
 		    }

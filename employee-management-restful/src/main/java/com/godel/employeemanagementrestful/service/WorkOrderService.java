@@ -37,14 +37,14 @@ public class WorkOrderService{
 			return workOrderRepository.findAll();
 		}
 		if (userId == null) {
-			return workOrderRepository.findByEndTimeStampBetween(
+			return workOrderRepository.findByLastModificationTimeStampBetween(
 					LocalDateTime.of(after, LocalTime.MIN),
 					LocalDateTime.of(before, LocalTime.MAX));
 		}
 		if (after == null && before == null) {
 			return workOrderRepository.findByUserUserId(userId);
 		}
-		return workOrderRepository.findByUserUserIdAndEndTimeStampBetween(
+		return workOrderRepository.findByUserUserIdAndLastModificationTimeStampBetween(
 				userId,
 				LocalDateTime.of(after, LocalTime.MIN),
 				LocalDateTime.of(before, LocalTime.MAX));
@@ -86,8 +86,8 @@ public class WorkOrderService{
 		workOrder.setEndTimeStamp(LocalDateTime.now());
 		workOrder.setLastModificationTimeStamp(LocalDateTime.now());
 		workOrder.setStatus(OrderStatus.COMPLETED);
-		workOrderRepository.save(workOrder);
 		payrollService.updatePayrollMoney(workOrder);
+		workOrderRepository.save(workOrder);
 		return workOrder;
 	}
 	

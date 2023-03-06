@@ -96,11 +96,17 @@ public class PayrollService {
 		Payroll payroll = payrollRepository.findByUserAndPayrollMonth(
 				workOrder.getUser(), workOrder.getEndTimeStamp().toLocalDate().withDayOfMonth(1));
 		payroll.addAmount(workOrder.getOrderType().getPrice());
+		WorkOrder updateWorkOrder = workOrderRepository.findById(workOrder.getOrderId()).orElse(null);
+		updateWorkOrder.setPayroll(payroll);
 		payrollRepository.save(payroll);
+		workOrderRepository.save(updateWorkOrder);
+	    // Fetch the user entity along with its work orders
+
 	}
 
 	public void updatePayrollTime(Long userId, Timetable timetable) {
-		LocalDate date = LocalDate.now().withDayOfMonth(1);
+		LocalDate date = timetable.getDate().withDayOfMonth(1);	
+//		LocalDate date = LocalDate.now().withDayOfMonth(1);
 		List<Payroll> payrolls = payrollRepository.findByUserUserIdAndPayrollMonth(userId, date);
 		BigDecimal workedTime = BigDecimal.valueOf(timetable.getTimeWorked().getSeconds())
 				.divide(BigDecimal.valueOf(3600), 2, RoundingMode.HALF_UP);

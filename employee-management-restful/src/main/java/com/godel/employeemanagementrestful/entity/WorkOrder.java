@@ -73,6 +73,13 @@ public class WorkOrder {
 			referencedColumnName = "customerId"
 			)	
 	private Customer customer;
+	@ManyToOne(
+			cascade = CascadeType.ALL)
+	@JoinColumn(
+			name="payroll_id",
+			referencedColumnName = "payrollId"
+			)
+	private Payroll payroll;
 	
 
 }

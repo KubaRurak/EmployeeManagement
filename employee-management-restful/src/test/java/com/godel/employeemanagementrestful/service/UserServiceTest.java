@@ -1,14 +1,12 @@
 package com.godel.employeemanagementrestful.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.godel.employeemanagementrestful.entity.User;
 import com.godel.employeemanagementrestful.enums.OfficeCode;
-import com.godel.employeemanagementrestful.enums.UserRole;
+import com.godel.employeemanagementrestful.enums.Role;
 
 @SpringBootTest
 class UserServiceTest {
@@ -21,7 +19,7 @@ class UserServiceTest {
 		User user = User.builder()
 				.firstName("Godel")
 				.lastName("Rurak")
-				.role(UserRole.Engineer)
+				.role(Role.Engineer)
 				.officeCode(OfficeCode.KRK)
 				.isEmployed(true)
 				.emailId("abc@googlecom")

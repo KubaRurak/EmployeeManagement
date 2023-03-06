@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Profile("data-init")
 public class DataInitializer implements CommandLineRunner {
 	
-	private static final int numberOfUsers=30;
+	private static final int numberOfUsers=15;
 	private static final int numberOfCustomers=5;
 	private static final int numberOfWorkOrders=1000;
 	private static final LocalDate startDate = LocalDate.of(2022,2,1);
@@ -30,12 +30,12 @@ public class DataInitializer implements CommandLineRunner {
 	
 	@Override
 	public void run(String... args) throws Exception {
-//		initializeUsers.saveUsers(numberOfUsers);
-//		initializeCustomers.saveCustomers(numberOfCustomers);
-//		initializeOrderTypes.saveOrderTypes();
-//		initializeWorkOrders.saveWorkOrders(numberOfWorkOrders);
-//		initializeWorkOrders.randomizeTimeStampsForAllWorkOrders();
-//		initializeTimeTable.populateTimetable(startDate, endDate);
+		initializeUsers.saveUsers(numberOfUsers);
+		initializeCustomers.saveCustomers(numberOfCustomers);
+		initializeOrderTypes.saveOrderTypes();
+		initializeWorkOrders.saveWorkOrders(numberOfWorkOrders);
+		initializeWorkOrders.randomizeTimeStampsForAllWorkOrders();
+		initializeTimeTable.populateTimetable(startDate, endDate);
 		initializeWorkOrders.saveWorkOrdersForUser(5, new Long(1));
 
 		

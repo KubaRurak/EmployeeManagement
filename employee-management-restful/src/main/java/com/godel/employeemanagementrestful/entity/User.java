@@ -8,11 +8,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.godel.employeemanagementrestful.enums.OfficeCode;
-import com.godel.employeemanagementrestful.enums.UserRole;
+import com.godel.employeemanagementrestful.enums.Role;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -82,10 +80,10 @@ public class User {
 	@Enumerated(EnumType.STRING)
 	private OfficeCode officeCode;
 	
-	@Column(name="user_role")
+	@Column(name="role")
 	@NotNull(message = "User role cannot be null")
 	@Enumerated(EnumType.STRING)
-	private UserRole role;
+	private Role role;
 
 	@Column(name="is_employed")
 	@NotNull(message = "Employment status cannot be null")
