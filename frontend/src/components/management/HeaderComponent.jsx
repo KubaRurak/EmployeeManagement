@@ -4,7 +4,8 @@ import Navbar from 'react-bootstrap/Navbar';
 // import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-
+import {useState, useEffect} from "react"
+import { checkInApi, checkOutApi, getCheckInApi, getCheckOutApi } from './api/TimeTableApiService';
 import './HeaderComponent.css';
 
 function HeaderComponent() {
@@ -12,17 +13,81 @@ function HeaderComponent() {
     const authContext = useAuth()
     const isAuthenticated = authContext.isAuthenticated
     const username = authContext.username
+    const userId = authContext.userId
+
+    const [checkedInAt, setCheckedInAt] = useState(null);
+    const [checkedOutAt, setCheckedOutAt] = useState(null);
+
+
+  
+    function getCheckIn() {
+    
+      getCheckInApi(userId)
+        .then(response => {
+          setCheckedInAt(response.data);
+        })
+        .catch(error => console.log(error));
+    }
+
+    function getCheckOut() {
+    
+        getCheckOutApi(userId)
+          .then(response => {
+            setCheckedOutAt(response.data);
+          })
+          .catch(error => console.log(error));
+      }
+
+
+    useEffect ( () => getCheckIn(), [])
+    useEffect ( () => getCheckOut(), [])
+
+
+    const handleCheckInClick = async () => {
+        try {
+            await checkInApi(userId);
+            const currentTime = new Date().toLocaleTimeString();
+            setCheckedInAt(currentTime);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const handleCheckOutClick = async () => {
+        try {
+            await checkOutApi(userId);
+            const currentTime = new Date().toLocaleTimeString();
+            setCheckedOutAt(currentTime);
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     function logout() {
         authContext.logout()
     }
+    
 
     return (
         <header className="border-bottom border-light border-5 mb-3 p-2">
         {/* <Container> */}
         <Navbar collapseOnSelect>
-            <Nav className="me-auto">Check In</Nav>
-            <Nav>Check out</Nav>
+            <Navbar.Collapse id="responsive-navbar-nav">
+                {isAuthenticated &&
+                <Nav className="me-auto">
+                    {checkedInAt ?
+                            `Checked in at ${checkedInAt}` :
+                            <Nav.Link onClick={handleCheckInClick}>Check In</Nav.Link>
+                        }
+                    </Nav>}
+                    {isAuthenticated && checkedInAt &&(
+                    <Nav className="ml-auto">
+                        {checkedOutAt ?
+                            `Checked out at ${checkedOutAt}` :
+                            <Nav.Link onClick={handleCheckOutClick}>Check Out</Nav.Link>
+                        }
+                </Nav>)}
+            </Navbar.Collapse>
         </Navbar>
             <Navbar collapseOnSelect expand="lg" bg="light">
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />

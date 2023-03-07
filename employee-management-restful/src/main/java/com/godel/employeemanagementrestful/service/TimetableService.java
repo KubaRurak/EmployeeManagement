@@ -75,7 +75,19 @@ public class TimetableService {
         }
         payrollService.updatePayrollTime(userId,timetable);
         timetableRepository.save(timetable);
-    }    
+    }
+    
+    public LocalTime getTodayCheckInTime(Long userId) {
+        LocalDate currentDate = LocalDate.now();
+        Timetable timetable = timetableRepository.findByUserUserIdAndDate(userId, currentDate);
+        return timetable.getCheckIn();
+    }
+    
+    public LocalTime getTodayCheckOutTime(Long userId) {
+        LocalDate currentDate = LocalDate.now();
+        Timetable timetable = timetableRepository.findByUserUserIdAndDate(userId, currentDate);
+        return timetable.getCheckOut();
+    }
     
 
 }
