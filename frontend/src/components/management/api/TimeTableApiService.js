@@ -2,15 +2,9 @@ import axios from 'axios'
 
 const apiClient = axios.create(
     {
-        baseURL: 'http://localhost:8080/api/v1/workorders'
+        baseURL: 'http://localhost:8080/api/v1/timetables'
     }
 );
-
-export const retrieveAllWorkOrdersApi
-    = () => apiClient.get(``)
-
-// export const retrieveFilteredWorkOrders
-//     = (userId,after,before) => apiClient.get(`?userId=${userId}&before=${before}&after=${after}`)
 
 export const getFilteredWorkOrdersApi = (userId, after, before) => {
     const params = {};
@@ -24,10 +18,14 @@ export const getFilteredWorkOrdersApi = (userId, after, before) => {
     return apiClient.get('',{ params });
   };
 
-  export const getActiveWorkOrdersApi = (userId) => {
-    const params = {};
-    if (userId) {
-      params.userId = userId;
-    }
-    return apiClient.get('/active', { params });
-};
+  export const checkInApi
+  = (userId) => apiClient.put(`/${userId}/checkin`)
+
+  export const checkOutApi
+  = (userId) => apiClient.put(`/${userId}/checkout`)
+
+  export const getCheckInApi
+  = (userId) => apiClient.get(`/${userId}/checkin`)
+
+  export const getCheckOutApi
+  = (userId) => apiClient.get(`/${userId}/checkout`)

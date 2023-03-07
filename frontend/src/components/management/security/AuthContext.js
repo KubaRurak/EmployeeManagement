@@ -19,7 +19,7 @@ export default function AuthProvider({ children }) {
         if(username==='Godel' && password==='1234'){
             setAuthenticated(true)
             setUsername(username)
-            setUserId(1)
+            setUserId(3)
             return true            
         } else {
             setAuthenticated(false)

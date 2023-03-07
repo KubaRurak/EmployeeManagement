@@ -83,8 +83,6 @@ public class PayrollService {
 	public void generatePayrollForAll(YearMonth startMonth, int numMonths) {
 
 		List<User> users = userRepository.findAll();
-
-		// Loop through the results, calculating the hours worked and money generated for each user
 		for (User user : users) {
 			generatePayrollForUser(startMonth, numMonths, user.getUserId());
 		}
@@ -100,13 +98,11 @@ public class PayrollService {
 		updateWorkOrder.setPayroll(payroll);
 		payrollRepository.save(payroll);
 		workOrderRepository.save(updateWorkOrder);
-	    // Fetch the user entity along with its work orders
 
 	}
 
 	public void updatePayrollTime(Long userId, Timetable timetable) {
 		LocalDate date = timetable.getDate().withDayOfMonth(1);	
-//		LocalDate date = LocalDate.now().withDayOfMonth(1);
 		List<Payroll> payrolls = payrollRepository.findByUserUserIdAndPayrollMonth(userId, date);
 		BigDecimal workedTime = BigDecimal.valueOf(timetable.getTimeWorked().getSeconds())
 				.divide(BigDecimal.valueOf(3600), 2, RoundingMode.HALF_UP);

@@ -1,6 +1,7 @@
 package com.godel.employeemanagementrestful.controller;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,8 +61,16 @@ public class TimetableController {
 		catch (TimetableException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
-	}		
+	}
 	
+	@GetMapping("{userId}/checkin")
+	public LocalTime getCheckIn(@PathVariable Long userId) {
+		return timetableService.getTodayCheckInTime(userId);
+	}	
+	@GetMapping("{userId}/checkout")
+	public LocalTime getCheckOut(@PathVariable Long userId) {
+		return timetableService.getTodayCheckOutTime(userId);
+	}		
 	
 
 }

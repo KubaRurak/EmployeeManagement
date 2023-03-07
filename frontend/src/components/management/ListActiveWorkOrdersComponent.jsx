@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo} from "react"
-import { getActiveWorkOrdersApi, completeWorkOrderApi} from "./api/WorkOrderService"
+import { getActiveWorkOrdersApi, completeWorkOrderApi} from "./api/WorkOrdersApiService"
 import TableContainer from './table/TableContainer'
 import { useAuth } from "./security/AuthContext"
 import WorkOrderDetailsModal from './WorkOrderDetailsModal';
