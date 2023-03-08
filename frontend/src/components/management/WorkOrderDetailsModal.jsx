@@ -1,9 +1,15 @@
 import React from 'react';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
 
-function WorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, editWorkOrderDetails }) {
+function WorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, closeWorkOrder }) {
+
+  const handleCompleteWorkOrder = () => {
+    handleClose();
+    closeWorkOrder();
+  }
+
   return (
-    <Modal show={show} onHide={handleClose} animation={false} size="lg">
+    <Modal show={show} onHide={handleClose} animation={false} size="xl">
       <Modal.Header closeButton>
         <Modal.Title>Work Order Details</Modal.Title>
       </Modal.Header>
@@ -61,7 +67,7 @@ function WorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, editWorkO
                   <td>{selectedWorkOrder?.userFirstName} {selectedWorkOrder?.userLastName}</td>
                 </tr>
                 <tr>
-                  <td><strong>Assignee Email:</strong></td>
+                  <td><strong>Email:</strong></td>
                   <td>{selectedWorkOrder?.userEmail}</td>
                 </tr>
               </tbody>
@@ -74,7 +80,7 @@ function WorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, editWorkO
                   <td>{selectedWorkOrder?.customerFirstName} {selectedWorkOrder?.customerLastName}</td>
                 </tr>
                 <tr>
-                  <td><strong>Customer Email:</strong></td>
+                  <td><strong>Email:</strong></td>
                   <td>{selectedWorkOrder?.customerEmail}</td>
                 </tr>
                 <tr>
@@ -88,10 +94,10 @@ function WorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, editWorkO
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
-          Close
+          Close <i className="bi-x"></i>
         </Button>
-        <Button variant="primary" onClick={editWorkOrderDetails}>
-          Edit
+        <Button variant="primary" onClick={handleCompleteWorkOrder}>
+          Complete <i className="bi-check-lg"></i>
         </Button>
       </Modal.Footer>
     </Modal>

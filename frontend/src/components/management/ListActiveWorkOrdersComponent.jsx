@@ -17,12 +17,17 @@ function ListActiveWorkOrdersComponent() {
 
     const [showConfirmation, setShowConfirmation] = useState(false);
     const handleShowConfirmation = () => setShowConfirmation(true);
+
     function handleCloseConfirmation (){
         setShowConfirmation(false);
         setSelectedWorkOrder(null);
         setMessage("Work Order completed successfully")
     }
-
+    function handleEscapeConfirmation (){
+        setShowConfirmation(false);
+        setSelectedWorkOrder(null);
+        setMessage(null)
+    }
     const userId = authContext.userId
   
     const [data,setData] = useState([])
@@ -46,11 +51,10 @@ function ListActiveWorkOrdersComponent() {
       }
   }
 
-    function closeWorkOrder() {
+  function closeWorkOrder() {
         if (!selectedWorkOrder) {
             return;
           }
-        console.log(selectedWorkOrder.orderId)
         return () => {
             completeWorkOrderApi(selectedWorkOrder.orderId)
             .then(() => {
@@ -153,7 +157,7 @@ function ListActiveWorkOrdersComponent() {
     return (
       <>
       <div>
-      <h3>Your active work ordes </h3>
+      <h2>Your active work orders </h2>
       {message && <div className="alert alert-success">{message}</div>}
       </div>
         <TableContainer 
@@ -163,21 +167,22 @@ function ListActiveWorkOrdersComponent() {
           show={show}
           handleClose={handleClose}
           selectedWorkOrder={selectedWorkOrder}
+          closeWorkOrder={closeWorkOrder()}
         />
 
-            <Modal show={showConfirmation} onHide={handleCloseConfirmation}>
+            <Modal show={showConfirmation} onHide={handleEscapeConfirmation}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Confirm Close Work Order</Modal.Title>
+                    <Modal.Title>Confirm Completion </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    Are you sure you want to close this work order?
+                    Are you sure you want to complete this work order?
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseConfirmation}>
-                        Cancel
+                    <Button variant="secondary" onClick={handleEscapeConfirmation}>
+                        Cancel <i className="bi-x"></i>
                     </Button>
                     <Button variant="primary" onClick={closeWorkOrder()}>
-                        Close Work Order
+                        Complete Work Order <i className="bi-check-lg"></i>
                     </Button>
                 </Modal.Footer>
             </Modal>

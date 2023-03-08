@@ -88,9 +88,9 @@ function HeaderComponent() {
                         }
                         {isAuthenticated &&
                         <NavDropdown title={<><i className="bi-calendar3"></i> Work Orders</>} id="collasible-nav-dropdown">
-                            <Nav.Link as={Link} to="/activeWorkOrders" className='nav-link' style={{width:'10vw'}}><i className="bi-alarm"></i>Your Work Orders</Nav.Link>
-                            <Nav.Link as={Link} to="/WorkOrders" className='nav-link'>All Work Orders</Nav.Link>
-                            <Nav.Link as={Link} to="/activeWorkOrders2" className='nav-link'>RecycleBin</Nav.Link>
+                            <Nav.Link as={Link} to="/activeWorkOrders" className='nav-link' style={{width:'10vw'}}><i className="bi-alarm"></i> Your Work Orders</Nav.Link>
+                            <Nav.Link as={Link} to="/WorkOrders" className='nav-link'><i className="bi-database"></i> All Work Orders</Nav.Link>
+                            {/* <Nav.Link as={Link} to="/activeWorkOrders2" className='nav-link'>RecycleBin</Nav.Link> */}
                         </NavDropdown>}
                         {isAuthenticated &&
                             <Nav.Link as={Link} to="/todos"><i className="bi-calendar3"/> Timetable</Nav.Link>
@@ -99,7 +99,7 @@ function HeaderComponent() {
                             <Nav.Link as={Link} to="/todos"><i className="bi-wallet2"/> Payroll</Nav.Link>
                         }
                         {isAuthenticated &&
-                            <Nav.Link as={Link} to="/logout" onClick={logout}><i className="bi-graph-up"/> Dashboard</Nav.Link>
+                            <Nav.Link as={Link} to={`/welcome/${username}`}><i className="bi-graph-up"/> Dashboard</Nav.Link>
                         }
                     </Nav>
                     <Nav>

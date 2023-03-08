@@ -25,7 +25,7 @@ function LoginComponent() {
 
     function handleSubmit() {
         if(authContext.login(username, password)){
-            navigate(`/welcome/${username}`)
+            navigate(`/activeWorkOrders`)
         } else {
             setShowErrorMessage(true)
         }
