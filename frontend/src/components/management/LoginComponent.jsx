@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import {useNavigate} from 'react-router-dom'
 import { useAuth } from './security/AuthContext'
+import './LoginComponent.css';
 
 function LoginComponent() {
 
@@ -31,25 +32,47 @@ function LoginComponent() {
     }
 
     return (
-        <div className="Login">
-            <h1>Time to Login!</h1>
+        <div className="Auth-form-container">
+        <form className="Auth-form">
+          <div className="Auth-form-content">
             {showErrorMessage && <div className="errorMessage">Authentication Failed. 
-                                                            Please check your credentials.</div>}
-            <div className="LoginForm">
-                <div>
-                    <label>User Name:</label>
-                    <input type="text" name="username" value={username} onChange={handleUsernameChange}/>
-                </div>
-                <div>
-                    <label>Password:</label>
-                    <input type="password" name="password" value={password} onChange={handlePasswordChange}/>
-                </div>
-                <div>
-                    <button type="button" name="login" onClick={handleSubmit}>login</button>
-                </div>
+                                                  Please check your credentials.</div>}
+            <h3 className="Auth-form-title">Sign In</h3>
+            <div className="form-group mt-2">
+              <label>Email address</label>
+              <input
+                type="username"
+                className="form-control mt-1"
+                placeholder="Enter email"
+                value={username}
+                onChange={handleUsernameChange}
+              />
             </div>
-        </div>
+            <div className="form-group mt-2">
+              <label>Password</label>
+              <input
+                type="password"
+                className="form-control mt-1"
+                placeholder="Enter password"
+                value={password}
+                onChange={handlePasswordChange}
+              />
+            </div>
+            <div className="d-grid gap-2 mt-3">
+              <button type="button" name="login" className="btn btn-primary" onClick={handleSubmit}>
+                Submit
+              </button>
+            </div>
+            <p className="forgot-password text-right mt-2">
+              Forgot <a href="#">password?</a>
+            </p>
+          </div>
+        </form>
+      </div>
     )
 }
 
 export default LoginComponent
+
+
+

@@ -20,27 +20,17 @@ function HeaderComponent() {
 
 
   
-    function getCheckIn() {
-    
-      getCheckInApi(userId)
-        .then(response => {
-          setCheckedInAt(response.data);
+    useEffect(() => {
+        Promise.all([
+          getCheckInApi(userId),
+          getCheckOutApi(userId)
+        ])
+        .then(([checkInResponse, checkOutResponse]) => {
+          setCheckedInAt(checkInResponse.data);
+          setCheckedOutAt(checkOutResponse.data);
         })
         .catch(error => console.log(error));
-    }
-
-    function getCheckOut() {
-    
-        getCheckOutApi(userId)
-          .then(response => {
-            setCheckedOutAt(response.data);
-          })
-          .catch(error => console.log(error));
-      }
-
-
-    useEffect ( () => getCheckIn(), [])
-    useEffect ( () => getCheckOut(), [])
+      }, [userId]);
 
 
     const handleCheckInClick = async () => {
