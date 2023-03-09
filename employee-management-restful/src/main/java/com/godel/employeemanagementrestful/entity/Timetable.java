@@ -55,6 +55,9 @@ public class Timetable {
   @Column(name = "check_out_time",
 		  nullable = true)
   private LocalTime checkOut;
+  private Duration trainingTime;
+  private Duration breakTime;
+  private Boolean onLeave;
   
   @Transient
   private Duration timeWorked;

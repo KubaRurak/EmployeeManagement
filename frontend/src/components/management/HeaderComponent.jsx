@@ -20,27 +20,17 @@ function HeaderComponent() {
 
 
   
-    function getCheckIn() {
-    
-      getCheckInApi(userId)
-        .then(response => {
-          setCheckedInAt(response.data);
+    useEffect(() => {
+        Promise.all([
+          getCheckInApi(userId),
+          getCheckOutApi(userId)
+        ])
+        .then(([checkInResponse, checkOutResponse]) => {
+          setCheckedInAt(checkInResponse.data);
+          setCheckedOutAt(checkOutResponse.data);
         })
         .catch(error => console.log(error));
-    }
-
-    function getCheckOut() {
-    
-        getCheckOutApi(userId)
-          .then(response => {
-            setCheckedOutAt(response.data);
-          })
-          .catch(error => console.log(error));
-      }
-
-
-    useEffect ( () => getCheckIn(), [])
-    useEffect ( () => getCheckOut(), [])
+      }, [userId]);
 
 
     const handleCheckInClick = async () => {
@@ -69,19 +59,19 @@ function HeaderComponent() {
     
 
     return (
-        <header className="border-bottom border-light border-5 mb-3 p-2">
-        {/* <Container> */}
-        <Navbar collapseOnSelect>
+        isAuthenticated &&
+        <header className="b-3 p-2">
+            
+        <Navbar collapseOnSelect expand="lg" classname="navbar">
             <Navbar.Collapse id="responsive-navbar-nav">
-                {isAuthenticated &&
-                <Nav className="me-auto">
+                <Nav className="me-auto p-1">
                     {checkedInAt ?
                             `Checked in at ${checkedInAt}` :
                             <Nav.Link onClick={handleCheckInClick}>Check In</Nav.Link>
                         }
-                    </Nav>}
-                    {isAuthenticated && checkedInAt &&(
-                    <Nav className="ml-auto">
+                    </Nav>
+                    {checkedInAt &&(
+                    <Nav className="check-out">
                         {checkedOutAt ?
                             `Checked out at ${checkedOutAt}` :
                             <Nav.Link onClick={handleCheckOutClick}>Check Out</Nav.Link>
@@ -89,38 +79,23 @@ function HeaderComponent() {
                 </Nav>)}
             </Navbar.Collapse>
         </Navbar>
-            <Navbar collapseOnSelect expand="lg" bg="light">
-                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                <Navbar.Collapse id="responsive-navbar-nav">
-                    <Nav className="me-auto">
-                        {isAuthenticated &&
-                        <Nav.Link as={Link} to={`/welcome/${username}`}>Home</Nav.Link>
-                        }
-                        {isAuthenticated &&
-                        <NavDropdown title={<><i className="bi-calendar3"></i> Work Orders</>} id="collasible-nav-dropdown">
-                            <Nav.Link as={Link} to="/activeWorkOrders" className='nav-link' style={{width:'10vw'}}><i className="bi-alarm"></i>Your Work Orders</Nav.Link>
-                            <Nav.Link as={Link} to="/WorkOrders" className='nav-link'>All Work Orders</Nav.Link>
-                            <Nav.Link as={Link} to="/activeWorkOrders2" className='nav-link'>RecycleBin</Nav.Link>
-                        </NavDropdown>}
-                        {isAuthenticated &&
-                            <Nav.Link as={Link} to="/todos"><i className="bi-calendar3"/> Timetable</Nav.Link>
-                        }
-                        {isAuthenticated &&
-                            <Nav.Link as={Link} to="/todos"><i className="bi-wallet2"/> Payroll</Nav.Link>
-                        }
-                        {isAuthenticated &&
-                            <Nav.Link as={Link} to="/logout" onClick={logout}><i className="bi-graph-up"/> Dashboard</Nav.Link>
-                        }
-                    </Nav>
-                    <Nav>
-
-                        {isAuthenticated &&
-                            <Nav.Link as={Link} to="/logout" onClick={logout}>Logout</Nav.Link>
-                        }
-                    </Nav>
-                </Navbar.Collapse>
-            </Navbar>
-            {/* </Container> */}
+        <Navbar collapseOnSelect expand="lg" bg="light">
+            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+            <Navbar.Collapse id="responsive-navbar-nav">
+                <Nav className="me-auto">
+                    <NavDropdown title={<><i className="bi-calendar3"></i> Work Orders</>} id="collasible-nav-dropdown">
+                        <Nav.Link as={Link} to="/activeworkorders" className='nav-link' style={{width:'10vw'}}><i className="bi-alarm"></i> Your Work Orders</Nav.Link>
+                        <Nav.Link as={Link} to="/workorders" className='nav-link'><i className="bi-database"></i> All Work Orders</Nav.Link>
+                    </NavDropdown>
+                        <Nav.Link as={Link} to="/timetables"><i className="bi-calendar3"/> Timetable</Nav.Link>
+                        <Nav.Link as={Link} to="/todos"><i className="bi-wallet2"/> Payroll</Nav.Link>
+                        <Nav.Link as={Link} to={"/todos"}><i className="bi-graph-up"/> Dashboard</Nav.Link>
+                </Nav>
+                <Nav>
+                        <Nav.Link as={Link} to="/logout" onClick={logout}>Logout</Nav.Link>
+                </Nav>
+            </Navbar.Collapse>
+        </Navbar>
     </header>
     )
 }

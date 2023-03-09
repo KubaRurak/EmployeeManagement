@@ -3,8 +3,9 @@ import { getFilteredWorkOrdersApi } from "./api/WorkOrdersApiService"
 import TableContainer from './table/TableContainer'
 import { useAuth } from "./security/AuthContext"
 import WorkOrderDetailsModal from './WorkOrderDetailsModal';
+import EditWorkOrderDetailsModal from './EditWorkOrderDetailsModal';
 import DatePickerComponent from "./DatePickerComponent";
-import { auto } from "@popperjs/core";
+
 
 function ListAllWorkOrdersComponent() {
 
@@ -14,6 +15,15 @@ function ListAllWorkOrdersComponent() {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const [showEdit, setShowEdit] = useState(false);
+    const handleCloseEdit = () => 
+    {
+      setShowEdit(false);
+      // refreshWorkOrders();
+    }
+    const handleShowEdit = () => setShowEdit(true);
+
 
     // const userId = authContext.userId
   
@@ -48,11 +58,14 @@ function ListAllWorkOrdersComponent() {
       }
   }
 
-    function editWorkOrderDetails() {
+  function editWorkOrderDetails(workOrder) {
+    return () => {
+      setSelectedWorkOrder(workOrder);
+      handleShowEdit();
+      console.log("workorder", workOrder)
+      console.log("show edit", showEdit)
     }
-
-
-
+}
 
     const columns = useMemo(
         (props) => [
@@ -126,28 +139,31 @@ function ListAllWorkOrdersComponent() {
               {
                 Header: "  ",
                 Cell: ({ cell }) => (
-                  <button type="button" className="btn btn-primary" onClick={editWorkOrderDetails}><i className="bi bi-pencil"></i></button>
+                  <button type="button" className="btn btn-primary" onClick={editWorkOrderDetails(cell.row.original)}><i className="bi bi-pencil"></i></button>
                 ),
                 disableSortBy: true,
                 width: 30,
               },
               
         ],
-        []
+        [editWorkOrderDetails]
     )
 
 
 
     return (
       <>
-        <div style={{ display: "flex", alignItems: "center", marginLeft: "25px", marginRight: "25px" }}>
-        <DatePickerComponent 
-            startDate={startDate} 
-            setStartDate={setStartDate}
-            endDate={endDate}
-            setEndDate={setEndDate}/>
-        <button type="button" className="btn btn-primary" style={{ marginLeft: auto }} onClick={()=>console.log("aaa") }>Add new</button>
-        </div>
+          <div style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center" , margin: "20px"}}>
+            <div style={{ position: "absolute", left: "0" }}>
+              <DatePickerComponent 
+                startDate={startDate} 
+                setStartDate={setStartDate}
+                endDate={endDate}
+                setEndDate={setEndDate}/>
+            </div>
+            <h2 style={{ marginLeft: "10px", flex: "1", textAlign: "center" }}>Work Orders</h2>
+            <button type="button" className="btn btn-primary" style={{ marginRight: "43px" }} onClick={()=>console.log("aaa") }>Add new</button>
+          </div>
         <TableContainer 
         columns={columns} 
         data={data}
@@ -158,7 +174,12 @@ function ListAllWorkOrdersComponent() {
           show={show}
           handleClose={handleClose}
           selectedWorkOrder={selectedWorkOrder}
-          editWorkOrderDetails={editWorkOrderDetails}
+        />
+        <EditWorkOrderDetailsModal
+          show={showEdit}
+          handleClose={handleCloseEdit}
+          selectedWorkOrder={selectedWorkOrder}
+          refreshWorkOrders={refreshWorkOrders}
         />
       </>
     );
