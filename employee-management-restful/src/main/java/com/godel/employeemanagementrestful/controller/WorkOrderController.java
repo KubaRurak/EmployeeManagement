@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.godel.employeemanagementrestful.dto.WorkOrderDTO;
+import com.godel.employeemanagementrestful.entity.OrderType;
 import com.godel.employeemanagementrestful.entity.WorkOrder;
 import com.godel.employeemanagementrestful.enums.OrderStatus;
+import com.godel.employeemanagementrestful.repository.OrderTypeRepository;
 import com.godel.employeemanagementrestful.repository.WorkOrderRepository;
 import com.godel.employeemanagementrestful.service.PayrollService;
 import com.godel.employeemanagementrestful.service.WorkOrderService;
@@ -35,6 +37,9 @@ public class WorkOrderController {
 	
 	@Autowired
 	private WorkOrderRepository workOrderRepository;
+	
+	@Autowired
+	private OrderTypeRepository orderTypeRepository;
 		
 	
 	@GetMapping("")
@@ -109,14 +114,16 @@ public class WorkOrderController {
 	        @PathVariable Long orderId,
 	        @RequestBody WorkOrderDTO workOrderDTO) {
 	    WorkOrder workOrder = workOrderRepository.findById(orderId).orElseThrow();
+	    OrderType orderType = orderTypeRepository.findById(workOrderDTO.getOrderType().getId()).get();
 	    workOrder.setOrderName(workOrderDTO.getOrderName());
-	    workOrder.setOrderType(workOrderDTO.getOrderType());
+	    workOrder.setOrderType(orderType);
 	    workOrder.setStatus(workOrderDTO.getStatus());
 	    workOrder.setStartTimeStamp(workOrderDTO.getStartTimeStamp());
 	    workOrder.setEndTimeStamp(workOrderDTO.getEndTimeStamp());
 	    workOrder.setLastModificationTimeStamp(LocalDateTime.now());
 	    workOrder.setComments(workOrderDTO.getComments());
 	    workOrderRepository.save(workOrder);
+	    orderTypeRepository.save(orderType);
 	    if (workOrderDTO.getUserId() != null) {
 	        workOrderService.assignUserToWorkOrder(workOrderDTO.getUserId(), orderId);
 	    }

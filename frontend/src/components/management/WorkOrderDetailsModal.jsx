@@ -1,11 +1,14 @@
 import React from 'react';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
 
-function WorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, closeWorkOrder }) {
+function WorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, completeWorkOrder, fromActive}) {
 
   const handleCompleteWorkOrder = () => {
     handleClose();
-    closeWorkOrder();
+    completeWorkOrder();
+  }
+
+  const handleEditWorkOrder = () => {
   }
 
   return (
@@ -93,11 +96,14 @@ function WorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, closeWork
         </Row>
       </Modal.Body>
       <Modal.Footer>
+        <Button variant="primary" onClick={handleEditWorkOrder} style = {{marginRight: "auto" }}>
+          Edit
+        </Button>
+        <Button variant="primary" onClick={handleCompleteWorkOrder} disabled={!fromActive}>
+          Complete <i className="bi-check-lg"></i>
+        </Button>
         <Button variant="secondary" onClick={handleClose}>
           Close <i className="bi-x"></i>
-        </Button>
-        <Button variant="primary" onClick={handleCompleteWorkOrder}>
-          Complete <i className="bi-check-lg"></i>
         </Button>
       </Modal.Footer>
     </Modal>

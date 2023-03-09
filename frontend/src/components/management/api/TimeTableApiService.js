@@ -6,7 +6,7 @@ const apiClient = axios.create(
     }
 );
 
-export const getFilteredWorkOrdersApi = (userId, after, before) => {
+export const getFilteredTimeTableApi = (userId, after, before) => {
     const params = {};
     if (userId) {
       params.userId = userId;

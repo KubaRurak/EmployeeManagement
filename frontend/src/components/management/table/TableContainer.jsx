@@ -50,7 +50,7 @@ function TableContainer({ columns, data }) {
     };
 
     return (
-        <div className="card">
+        <div className="card" style={{margin:"20px"}}>
           <div className="card-body">
             <table className="table"
                      {...getTableProps()}

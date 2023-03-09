@@ -7,12 +7,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.godel.employeemanagementrestful.dto.UserDTO;
 import com.godel.employeemanagementrestful.entity.OrderType;
 import com.godel.employeemanagementrestful.entity.User;
 import com.godel.employeemanagementrestful.repository.OrderTypeRepository;
 
+@RestController
+@RequestMapping("/api/v1/ordertypes")
 public class WorkOrderTypeController {
 	
 	@Autowired
@@ -26,10 +30,6 @@ public class WorkOrderTypeController {
 	public OrderType saveWorkOrderType(@RequestBody OrderType orderType) {
 		return orderTypeRepository.save(orderType);
 	}
-	@PostMapping("")
-	public List<OrderType> saveWorkOrderType(@RequestBody List<OrderType> orderTypes) {
-		return orderTypeRepository.save(orderTypes);
-	}	
 	
 	@PutMapping("/{id}")
 	public OrderType editOrderType(@RequestBody OrderType orderType) {

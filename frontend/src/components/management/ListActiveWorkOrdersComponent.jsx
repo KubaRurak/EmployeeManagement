@@ -51,7 +51,7 @@ function ListActiveWorkOrdersComponent() {
       }
   }
 
-  function closeWorkOrder() {
+  function completeWorkOrder() {
         if (!selectedWorkOrder) {
             return;
           }
@@ -167,9 +167,10 @@ function ListActiveWorkOrdersComponent() {
           show={show}
           handleClose={handleClose}
           selectedWorkOrder={selectedWorkOrder}
-          closeWorkOrder={closeWorkOrder()}
+          completeWorkOrder={completeWorkOrder()}
+          fromActive={true}
         />
-
+        {/* do przeniesienia w oddzielny plik */}
             <Modal show={showConfirmation} onHide={handleEscapeConfirmation}>
                 <Modal.Header closeButton>
                     <Modal.Title>Confirm Completion </Modal.Title>
@@ -181,7 +182,7 @@ function ListActiveWorkOrdersComponent() {
                     <Button variant="secondary" onClick={handleEscapeConfirmation}>
                         Cancel <i className="bi-x"></i>
                     </Button>
-                    <Button variant="primary" onClick={closeWorkOrder()}>
+                    <Button variant="primary" onClick={completeWorkOrder()}>
                         Complete Work Order <i className="bi-check-lg"></i>
                     </Button>
                 </Modal.Footer>
