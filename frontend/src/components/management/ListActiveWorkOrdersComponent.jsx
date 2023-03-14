@@ -182,7 +182,7 @@ function ListActiveWorkOrdersComponent() {
                     <Button variant="secondary" onClick={handleEscapeConfirmation}>
                         Cancel <i className="bi-x"></i>
                     </Button>
-                    <Button variant="primary" onClick={completeWorkOrder()}>
+                    <Button variant="success" onClick={completeWorkOrder()}>
                         Complete Work Order <i className="bi-check-lg"></i>
                     </Button>
                 </Modal.Footer>

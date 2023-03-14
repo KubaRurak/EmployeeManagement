@@ -12,24 +12,59 @@ function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, close
 
   const [customers, setCustomers] = useState();
   const [orderTypes, setOrderTypes] = useState();
+  const [emailOptions, setEmailOptions] = useState([]);
 
+  async function fetchCustomers() {
+    try {
+      const [customerResponse, orderTypeResponse] = await Promise.all([
+        retrieveCustomersApi(),
+        retrieveOrderTypesApi()
+      ]);
+      setCustomers(customerResponse.data);
+      setOrderTypes(orderTypeResponse.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
-    Promise.all([
-      retrieveCustomersApi(),
-      retrieveOrderTypesApi()
-    ])
-      .then(([customerResponse, ordertypeResponse]) => {
-        setCustomers(customerResponse.data);
-        setOrderTypes(ordertypeResponse.data);
-      })
-      .catch(error => console.log(error));
+    fetchCustomers();
   }, []);
 
-  console.log("customers ", customers)
-  console.log("OrderTypes ", orderTypes)
+  useEffect(() => {
+    async function getEmails() {
+      const options = await getEmailOptions();
+      setEmailOptions(options);
+    }
+    getEmails();
+  }, [customers]);
 
+  async function getEmailOptions() {
+    if (!customers) {
+      return [];
+    }
+    const options = customers.map(customer => (
+      <option key={customer.customerId} value={customer.customerEmail}>
+        {customer.customerEmail}
+      </option>
+    ));
+    return options;
+  }
 
+  function onCustomerEmailChange(event, setValues) {
+    const email = event.target.value;
+    const customer = customers.find(customer => customer.customerEmail === email);
+    if (customer) {
+      setValues({
+        ...initialValues,
+        customerId: customer.customerId,
+        customerFirstName: customer.customerFirstName,
+        customerLastName: customer.customerLastName,
+        customerEmail: customer.customerEmail,
+        customerCompanyName: customer.customerCompanyName
+      });
+    }
+  }
   const [initialValues, setInitialValues] = useState({});
 
   useEffect(() => {
@@ -95,25 +130,9 @@ function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, close
       .catch(error => console.log(error))
   }
 
-  // function onCustomerEmailChange(email, setValues) {
-  //   const customer = customers.find(customer => customer.customerEmail === email);
-  //   if (customer) {
-  //     setValues({
-  //       ...initialValues,
-  //       customerId: customer.customerId,
-  //       customerFirstName: customer.customerFirstName,
-  //       customerLastName: customer.customerLastName,
-  //       customerEmail: customer.customerEmail,
-  //       customerCompanyName: customer.customerCompanyName
-  //     });
-  //   }
-  // }
 
-  // const customerEmailOptions = customers.map(customer => (
-  //   <option key={customer.customerId} value={customer.customerEmail}>
-  //     {customer.customerEmail}
-  //   </option>
-  // ));
+
+
 
 
   return (
@@ -187,44 +206,40 @@ function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, close
                         </tbody>
                       </table>
                     </Col>
-                    {/* <Col>
+                    <Col>
                       <h5>Customer</h5>
                       <table className="table">
                         <tbody>
                           <tr>
                             <fieldset className="form-group">
                               <td><label>Customer Email</label></td>
-                              <td><select value={props.values.customerEmail} onChange={onCustomerEmailChange}>
+                              <td>      <select value={props.values.customerEmail} onChange={event => onCustomerEmailChange(event, props.setValues)}>
                                 <option value="">Select an email</option>
-                                {customers.map(customer => (
-                                  <option key={customer.customerId} value={customer.customerEmail}>
-                                    {customer.email}
-                                  </option>
-                                ))}
+                                {emailOptions}
                               </select></td>
                             </fieldset>
                           </tr>
                           <tr>
                             <fieldset className="form-group">
                               <td><label>First Name</label></td>
-                              <td><Field type="text" className="form-control" name="customerFirstName" value={props.values.customerFirstName} readOnly/></td>
+                              <td><Field type="text" className="form-control" name="customerFirstName" value={props.values.customerFirstName} readOnly /></td>
                             </fieldset>
                           </tr>
                           <tr>
-                          <fieldset className="form-group">
+                            <fieldset className="form-group">
                               <td><label>Last Name</label></td>
-                              <td><Field type="text" className="form-control" name="customerLastName" value={props.values.customerLastName} readOnly/></td>
+                              <td><Field type="text" className="form-control" name="customerLastName" value={props.values.customerLastName} readOnly /></td>
                             </fieldset>
                           </tr>
                           <tr>
                             <fieldset className="form-group">
                               <td><label>Company name</label></td>
-                              <td><Field type="text" className="form-control" name="customerCompanyName" value={props.values.customerCompanyName} readOnly/></td>
+                              <td><Field type="text" className="form-control" name="customerCompanyName" value={props.values.customerCompanyName} readOnly /></td>
                             </fieldset>
                           </tr>
                         </tbody>
                       </table>
-                    </Col> */}
+                    </Col>
                   </Row>
                   <div>
                     <button className="btn btn-success m-5" type="submit">Save</button>
