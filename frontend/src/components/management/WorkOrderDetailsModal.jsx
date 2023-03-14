@@ -99,7 +99,7 @@ function WorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, completeW
         <Button variant="primary" onClick={handleEditWorkOrder} style = {{marginRight: "auto" }}>
           Edit
         </Button>
-        <Button variant="primary" onClick={handleCompleteWorkOrder} disabled={!fromActive}>
+        <Button variant="success" onClick={handleCompleteWorkOrder} disabled={!fromActive}>
           Complete <i className="bi-check-lg"></i>
         </Button>
         <Button variant="secondary" onClick={handleClose}>

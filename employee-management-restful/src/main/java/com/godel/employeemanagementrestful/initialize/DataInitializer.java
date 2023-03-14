@@ -30,14 +30,14 @@ public class DataInitializer implements CommandLineRunner {
 	
 	@Override
 	public void run(String... args) throws Exception {
-//		initializeUsers.saveUsers(numberOfUsers);
-//		initializeCustomers.saveCustomers(numberOfCustomers);
-//		initializeOrderTypes.saveOrderTypes();
-//		initializeWorkOrders.saveWorkOrders(numberOfWorkOrders);
-//		initializeWorkOrders.randomizeTimeStampsForAllWorkOrders();
-//		initializeTimeTable.populateTimetable(startDate, endDate);
-//		initializeWorkOrders.saveWorkOrdersForUser(5, new Long(1));
-//		initializeWorkOrders.saveWorkOrdersForUser(5, new Long(2));
+		initializeUsers.saveUsers(numberOfUsers);
+		initializeCustomers.saveCustomers(numberOfCustomers);
+		initializeOrderTypes.saveOrderTypes();
+		initializeWorkOrders.saveWorkOrders(numberOfWorkOrders);
+		initializeWorkOrders.randomizeTimeStampsForAllWorkOrders();
+		initializeTimeTable.populateTimetable(startDate, endDate);
+		initializeWorkOrders.saveWorkOrdersForUser(5, new Long(1));
+		initializeWorkOrders.saveWorkOrdersForUser(5, new Long(2));
 		
 	}
 
