@@ -36,7 +36,7 @@ export const editWorkOrderApi
     = (orderId, workOrder) => apiClient.put(`${orderId}`, workOrder)
 
 export const createWorkOrderApi
-    = (workOrder) => apiClient.put(workOrder)
+    = (workOrder) => apiClient.post('', workOrder)
 
 export const assignWorkOrderApi = (userId, orderId) => {
       const params = {};

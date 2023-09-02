@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
 
-function WorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, completeWorkOrder, fromActive}) {
+function WorkOrderDetailsModal({ show, handleClose, handleShowEditModal, selectedWorkOrder, completeWorkOrder, fromActive}) {
 
   const handleCompleteWorkOrder = () => {
     handleClose();
@@ -9,6 +9,8 @@ function WorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, completeW
   }
 
   const handleEditWorkOrder = () => {
+    handleClose();
+    handleShowEditModal();
   }
 
   return (
@@ -23,39 +25,39 @@ function WorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, completeW
             <table className="table">
               <tbody>
                 <tr>
-                  <td><strong>Order Id:</strong></td>
+                  <td><strong>Order Id</strong></td>
                   <td>{selectedWorkOrder?.orderId}</td>
                 </tr>
                 <tr>
-                  <td><strong>Order Name:</strong></td>
+                  <td><strong>Order Name</strong></td>
                   <td>{selectedWorkOrder?.orderName}</td>
                 </tr>
                 <tr>
-                  <td><strong>Type:</strong></td>
+                  <td><strong>Type</strong></td>
                   <td>{selectedWorkOrder?.orderType.orderTypeName}</td>
                 </tr>
                 <tr>
-                  <td><strong>Price:</strong></td>
+                  <td><strong>Price</strong></td>
                   <td>{selectedWorkOrder?.orderType.price}</td>
                 </tr>
                 <tr>
-                  <td><strong>Status:</strong></td>
+                  <td><strong>Status</strong></td>
                   <td>{selectedWorkOrder?.status}</td>
                 </tr>
                 <tr>
-                  <td><strong>Start Time:</strong></td>
+                  <td><strong>Start Time</strong></td>
                   <td>{selectedWorkOrder?.startTimeStamp}</td>
                 </tr>
                 <tr>
-                  <td><strong>End Time:</strong></td>
+                  <td><strong>End Time</strong></td>
                   <td>{selectedWorkOrder?.endTimeStamp}</td>
                 </tr>
                 <tr>
-                  <td><strong>Last Modification:</strong></td>
+                  <td><strong>Last Modification</strong></td>
                   <td>{selectedWorkOrder?.lastModificationTimeStamp}</td>
                 </tr>
                 <tr>
-                  <td><strong>Comments:</strong></td>
+                  <td><strong>Comments</strong></td>
                   <td>{selectedWorkOrder?.comments}</td>
                 </tr>
               </tbody>
@@ -66,11 +68,11 @@ function WorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, completeW
             <table className="table">
               <tbody>
                 <tr>
-                  <td><strong>Assigned To:</strong></td>
+                  <td><strong>Name</strong></td>
                   <td>{selectedWorkOrder?.userFirstName} {selectedWorkOrder?.userLastName}</td>
                 </tr>
                 <tr>
-                  <td><strong>Email:</strong></td>
+                  <td><strong>Email</strong></td>
                   <td>{selectedWorkOrder?.userEmail}</td>
                 </tr>
               </tbody>
@@ -79,15 +81,15 @@ function WorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, completeW
             <table className="table">
               <tbody>
                 <tr>
-                  <td><strong>Customer:</strong></td>
+                  <td><strong>Name</strong></td>
                   <td>{selectedWorkOrder?.customerFirstName} {selectedWorkOrder?.customerLastName}</td>
                 </tr>
                 <tr>
-                  <td><strong>Email:</strong></td>
+                  <td><strong>Email</strong></td>
                   <td>{selectedWorkOrder?.customerEmail}</td>
                 </tr>
                 <tr>
-                  <td><strong>Company:</strong></td>
+                  <td><strong>Company</strong></td>
                   <td>{selectedWorkOrder?.customerCompanyName}</td>
                 </tr>
               </tbody>
