@@ -92,7 +92,9 @@ public class WorkOrderController {
 	public WorkOrderDTO createWorkOrder(@RequestBody WorkOrderDTO workOrderDTO) {
 	    WorkOrder workOrder = new WorkOrder();
 	    workOrder.setOrderName(workOrderDTO.getOrderName());
-	    workOrder.setOrderType(workOrderDTO.getOrderType());
+	    OrderType orderType = orderTypeRepository.findById(workOrderDTO.getOrderType().getId())
+	            .orElseThrow(() -> new RuntimeException("OrderType not found"));
+	    workOrder.setOrderType(orderType);
 	    workOrder.setStatus(OrderStatus.UNASSIGNED);
 	    workOrder.setComments(workOrderDTO.getComments() != null ? 
                 workOrderDTO.getComments() : null);

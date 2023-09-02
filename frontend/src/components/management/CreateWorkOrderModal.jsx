@@ -2,14 +2,14 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
-import { editWorkOrderApi } from "./api/WorkOrdersApiService";
+import { createWorkOrderApi } from "./api/WorkOrdersApiService";
 import { retrieveCustomersApi } from "./api/CustomerApiService";
 import { retrieveOrderTypesApi } from "./api/OrderTypeApiService";
 import { retrieveUserApi } from "./api/UserApiService";
 import { retrieveStatusTypesApi } from "./api/WorkOrderStatusApiService";
 import './WorkOrderDetailsModal.css'
 
-function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, refreshWorkOrders }) {
+function CreateWorkOrderModal({ show, handleClose, refreshWorkOrders }) {
   const [customers, setCustomers] = useState();
   const [orderTypes, setOrderTypes] = useState();
   const [users, setUsers] = useState();
@@ -27,7 +27,6 @@ function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, refre
       setOrderTypes(orderTypeResponse.data);
       setUsers(userResponse.data);
       setStatusTypes(statusTypeResponse.data);
-      console.log(statusTypeResponse);
     } catch (error) {
       console.error(error);
     }
@@ -37,58 +36,63 @@ function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, refre
     fetchData();
   }, [fetchData]);
 
-  const initialValues = useMemo(() => ({
-    orderId: selectedWorkOrder?.orderId,
-    orderName: selectedWorkOrder?.orderName,
-    orderTypeId: selectedWorkOrder?.orderType.id,
-    orderTypeName: selectedWorkOrder?.orderType.orderTypeName,
-    expectedDays: selectedWorkOrder?.orderType.expectedDays,
-    price: selectedWorkOrder?.orderType.price,
-    status: selectedWorkOrder?.status,
-    startTimeStamp: selectedWorkOrder?.startTimeStamp,
-    endTimeStamp: selectedWorkOrder?.endTimeStamp,
-    lastModificationTimeStamp: selectedWorkOrder?.lastModificationTimeStamp,
-    comments: selectedWorkOrder?.comments,
-    userId: selectedWorkOrder?.userId,
-    userName: `${selectedWorkOrder?.userFirstName} ${selectedWorkOrder?.userLastName}`,
-    userEmail: selectedWorkOrder?.userEmail,
-    customerId: selectedWorkOrder?.customerId,
-    customerName: `${selectedWorkOrder?.customerFirstName} ${selectedWorkOrder?.customerLastName}`,
-    customerEmail: selectedWorkOrder?.customerEmail,
-    customerCompanyName: selectedWorkOrder?.customerCompanyName
-  }), [selectedWorkOrder]);
+  const initialValues = {
+    orderId: '',
+    orderName: '',
+    orderTypeId: '',
+    orderTypeName: '',
+    expectedDays: '',
+    price: '',
+    status: 'UNASSIGNED',
+    startTimeStamp: '',
+    endTimeStamp: '',
+    lastModificationTimeStamp: '',
+    comments: '',
+    userId: '',
+    userName: '',
+    userFirstName: '',
+    userLastName: '',
+    userEmail: '',
+    customerId: '',
+    customerFirstName: '',
+    customerLastName: '',
+    customerEmail: '',
+    customerCompanyName: '',
+  };
 
-  const onUserEmailChange = useCallback((event, setValues) => {
+  const onUserEmailChange = useCallback((event, setValues, values) => {
     const emailId = event.target.value;
     const user = users.find(user => user.emailId === emailId);
     const userName = `${user.firstName} ${user.lastName}`;
 
     if (user) {
       setValues({
-        ...initialValues,
+        ...values,
         userId: user.userId,
         userName,
-        userEmail: user.EmailId,
+        userFirstName: user.firstName,
+        userLastName: user.lastName,
+        userEmail: user.emailId,
       });
     }
-  }, [users, initialValues]);
+  }, [users]);
 
-  const onOrderTypeChange = useCallback((event, setValues) => {
+  const onOrderTypeChange = useCallback((event, setValues, values) => {
     const orderTypeName = event.target.value;
     const orderType = orderTypes.find(orderType => orderType.orderTypeName === orderTypeName);
 
     if (orderType) {
       setValues({
-        ...initialValues,
+        ...values,
         orderTypeName: orderType.orderTypeName,
         expectedDays: orderType.expectedDays,
         price: orderType.price,
         orderTypeId: orderType.id
       });
     }
-  }, [orderTypes, initialValues]);
+  }, [orderTypes]);
 
-  const onCustomerEmailChange = useCallback((event, setValues) => {
+  const onCustomerEmailChange = useCallback((event, setValues, values) => {
     const email = event.target.value;
     const customer = customers.find(customer => customer.customerEmail === email);
     if (customer) {
@@ -96,14 +100,16 @@ function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, refre
       const customerName = `${customer.customerFirstName} ${customer.customerLastName}`;
 
       setValues({
-        ...initialValues,
+        ...values,
         customerId: customer.customerId,
         customerName,
+        customerFirstName: customer.customerFirstName,
+        customerLastName: customer.customerLastName,
         customerEmail: customer.customerEmail,
         customerCompanyName: customer.customerCompanyName
       });
     }
-  }, [customers, initialValues]);
+  }, [customers]);
 
   const onSubmit = useCallback((values) => {
     const workOrder = {
@@ -121,16 +127,17 @@ function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, refre
       lastModificationTimeStamp: values.endTimeStamp,
       comments: values.comments,
       userId: values.userId,
-      userFirstName: values.firstName,
-      userLastName: values.lastName,
-      userEmail: values.emailId,
+      userFirstName: values.userFirstName,
+      userLastName: values.userLastName,
+      userEmail: values.userEmail,
       customerId: values.customerId,
       customerFirstName: values.customerFirstName,
       customerLastName: values.customerLastName,
       customerEmail: values.customerEmail,
       customerCompanyName: values.customerCompanyName,
     };
-    editWorkOrderApi(values.orderId, workOrder)
+    console.log(workOrder);
+    createWorkOrderApi(workOrder)
       .then(response => {
         handleClose();
         refreshWorkOrders();
@@ -140,14 +147,14 @@ function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, refre
         console.error(error);
         // show error message to user
       });
-  }, [handleClose, refreshWorkOrders, selectedWorkOrder]);
+  }, [handleClose, refreshWorkOrders]);
 
 
   return (
     <div>
       <Modal show={show} onHide={handleClose} animation={false} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Edit Order Details</Modal.Title>
+          <Modal.Title>Create Work Order</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Formik initialValues={initialValues}
@@ -173,7 +180,7 @@ function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, refre
                             <td>
                               <select
                                 value={props.values.orderTypeName}
-                                onChange={event => onOrderTypeChange(event, props.setValues)}
+                                onChange={event => onOrderTypeChange(event, props.setValues, props.values)}
                                 className="form-control"
                                 name="orderTypeName"
                               >
@@ -191,21 +198,6 @@ function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, refre
                             <td>{props.values.price}</td>
                           </tr>
                           <tr>
-                            <td><label>Status</label></td>
-                            <td>
-                            <Field as="select" className="form-control" name="status">
-                              <option value="">Select status</option>
-                              {statusTypes && statusTypes.map((statusType, index) => (
-                                <option key={index} value={statusType}>
-                                  {statusType}
-                                </option>
-                              ))}
-                            </Field>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td><label>End Time</label></td>
-                            <td><Field type="text" className="form-control" name="endTimeStamp" /></td>
                           </tr>
                           <tr>
                             <td><label>Comments</label></td>
@@ -223,7 +215,7 @@ function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, refre
                             <td>
                               <select
                                 value={props.values.userEmail}
-                                onChange={event => onUserEmailChange(event, props.setValues)}
+                                onChange={event => onUserEmailChange(event, props.setValues, props.values)}
                                 className="form-control"
                                 name="userEmail"
                               >
@@ -248,7 +240,7 @@ function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, refre
                             <td>
                               <select
                                 value={props.values.customerEmail}
-                                onChange={event => onCustomerEmailChange(event, props.setValues)}
+                                onChange={event => onCustomerEmailChange(event, props.setValues, props.values)}
                                 className="form-control"
                                 name="customerEmail"
                               >
@@ -287,11 +279,10 @@ function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, refre
   );
 }
 
-EditWorkOrderDetailsModal.propTypes = {
+CreateWorkOrderModal.propTypes = {
   show: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  selectedWorkOrder: PropTypes.object.isRequired,
   refreshWorkOrders: PropTypes.func.isRequired,
 };
 
-export default EditWorkOrderDetailsModal;
+export default CreateWorkOrderModal;
