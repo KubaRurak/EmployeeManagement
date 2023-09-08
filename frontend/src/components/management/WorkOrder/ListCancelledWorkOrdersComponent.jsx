@@ -1,74 +1,78 @@
-import { useEffect, useState, useMemo } from "react"
-import { getFilteredWorkOrdersApi } from "./api/WorkOrdersApiService"
-import TableContainer from './table/TableContainer'
-import { useAuth } from "./security/AuthContext"
+import { useEffect, useState, useMemo, useCallback } from "react"
+import { getFilteredWorkOrdersApi } from "../api/WorkOrdersApiService"
+import TableContainer from '../table/TableContainer'
+// import { useAuth } from "./security/AuthContext"
 import WorkOrderDetailsModal from './WorkOrderDetailsModal';
 import EditWorkOrderDetailsModal from './EditWorkOrderDetailsModal';
 import CreateWorkOrderModal from './CreateWorkOrderModal';
-import DatePickerComponent from "./DatePickerComponent";
+import DatePickerComponent from "../DatePickerComponent";
 
 
-function ListAllWorkOrdersComponent() {
+function ListCancelledWorkOrdersComponent() {
 
 
-  const authContext = useAuth()
+  // const authContext = useAuth()
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const handleCloseDetailsModal = () => setShowDetailsModal(false);
-  const handleShowDetailsModal = () => setShowDetailsModal(true);
+  const handleShowDetailsModal = useCallback(() => setShowDetailsModal(true), []);
 
   const [showEditModal, setShowEditModal] = useState(false);
   const handleCloseEditModal = () => setShowEditModal(false);
-  const handleShowEditModal = () => setShowEditModal(true);
+  const handleShowEditModal = useCallback(() => setShowEditModal(true), []);
 
   const [showCreateModal, setShowCreateModal] = useState(false);
   const handleCloseCreateModal = () => setShowCreateModal(false);
-  const handleShowCreateModal = () => setShowCreateModal(true);
+  const handleShowCreateModal = useCallback(() => setShowCreateModal(true), []);
+
+  const [message, setMessage] = useState("");
 
   // const userId = authContext.userId
 
   const [data, setData] = useState([])
   const [selectedWorkOrder, setSelectedWorkOrder] = useState(null);
 
-  const today = new Date();
-  const last30Days = new Date(today);
-  last30Days.setDate(last30Days.getDate() - 30);
+  const today = useMemo(() => new Date(), []);
+  const last30Days = useMemo(() => {
+    const date = new Date(today);
+    date.setDate(date.getDate() - 30);
+    return date;
+  }, [today]);
 
   const [startDate, setStartDate] = useState(last30Days);
   const [endDate, setEndDate] = useState(today);
 
-  useEffect(() => refreshWorkOrders(), [startDate, endDate])
-
-  function refreshWorkOrders() {
-
+  const refreshWorkOrders = useCallback((message = "") => {
+    setMessage(message);
     const after = startDate ? startDate.toISOString().substring(0, 10) : last30Days.toISOString().substring(0, 10);
     const before = endDate ? endDate.toISOString().substring(0, 10) : today.toISOString().substring(0, 10);
-
-    getFilteredWorkOrdersApi(undefined, after, before)
+    const status = 'CANCELLED';
+  
+    getFilteredWorkOrdersApi(undefined, after, before, status)
       .then(response => {
         setData(response.data);
       })
       .catch(error => console.log(error));
-  }
+    }, [startDate, endDate, last30Days, today, setMessage, setData]);
+  
+    useEffect(() => {
+      setMessage("");
+      refreshWorkOrders();
+    }, [refreshWorkOrders, setMessage, today, last30Days]);
 
-  function showWorkOrderDetails(workOrder) {
-    return () => {
-      setSelectedWorkOrder(workOrder);
-      handleShowDetailsModal();
-    }
-  }
+    const showWorkOrderDetails = useCallback((workOrder) => {
+      return () => {
+        setSelectedWorkOrder(workOrder);
+        handleShowDetailsModal();
+      }
+    }, [handleShowDetailsModal, setSelectedWorkOrder]);
 
-  function editWorkOrderDetails(workOrder) {
+  const editWorkOrderDetails = useCallback((workOrder) => {
     return () => {
       setSelectedWorkOrder(workOrder);
       handleShowEditModal();
     }
-  }
+  }, [handleShowEditModal, setSelectedWorkOrder]);
 
-  function showCreateWorkOrder() {
-    return () => {
-      handleShowCreateModal();
-    }
-  }
 
   const columns = useMemo(
     (props) => [
@@ -149,7 +153,7 @@ function ListAllWorkOrdersComponent() {
       },
 
     ],
-    [editWorkOrderDetails]
+    [editWorkOrderDetails, showWorkOrderDetails]
   )
 
 
@@ -164,9 +168,10 @@ function ListAllWorkOrdersComponent() {
             endDate={endDate}
             setEndDate={setEndDate} />
         </div>
-        <h2 style={{ marginLeft: "10px", flex: "1", textAlign: "center" }}>Work Orders</h2>
+        <h2 style={{ marginLeft: "10px", flex: "1", textAlign: "center" }}>Cancelled Work Orders</h2>
         <button type="button" className="btn btn-primary" style={{ marginRight: "43px" }} onClick={handleShowCreateModal}>Add new</button>
       </div>
+      {message && <div className="alert alert-success">{message}</div>}
       <TableContainer
         columns={columns}
         data={data}
@@ -184,14 +189,16 @@ function ListAllWorkOrdersComponent() {
         handleClose={handleCloseEditModal}
         selectedWorkOrder={selectedWorkOrder}
         refreshWorkOrders={refreshWorkOrders}
+        setMessage={setMessage}
       />
       <CreateWorkOrderModal
         show={showCreateModal}
         handleClose={handleCloseCreateModal}
         refreshWorkOrders={refreshWorkOrders}
+        setMessage={setMessage}        
       />
     </>
   );
 }
 
-export default ListAllWorkOrdersComponent
+export default ListCancelledWorkOrdersComponent

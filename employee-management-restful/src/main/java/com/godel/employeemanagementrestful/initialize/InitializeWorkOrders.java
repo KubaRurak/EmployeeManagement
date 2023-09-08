@@ -69,7 +69,7 @@ public class InitializeWorkOrders {
         return WorkOrder.builder()
 				.orderName(generateWorkOrderName())
 				.orderType(orderType)
-				.status(OrderStatus.UNASSIGNED)
+				.status(OrderStatus.ACTIVE)
 				.comments("")
 				.build();
 	}

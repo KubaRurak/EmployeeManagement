@@ -71,6 +71,19 @@ public class TimetableController {
 	public LocalTime getCheckOut(@PathVariable Long userId) {
 		return timetableService.getTodayCheckOutTime(userId);
 	}		
-	
+	@PutMapping("{userId}/{date}/editTimes")
+	public ResponseEntity<String> editCheckTimesForDate(@PathVariable Long userId, 
+	        @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, 
+	        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime checkIn,
+	        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime checkOut) {
+	    if (checkIn == null || checkOut == null) {
+		    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Both check-in and check-out times are required");
+		}
+		if (checkIn.isAfter(checkOut)) {
+		    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Check-in time must be before check-out time");
+		}
+		timetableService.editCheckTimesForDate(userId, date, checkIn, checkOut);
+		return ResponseEntity.ok("Check-in and check-out times edited successfully for the specified date");
+	}	
 
 }

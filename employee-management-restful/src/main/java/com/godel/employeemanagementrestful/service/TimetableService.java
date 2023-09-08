@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -89,5 +90,13 @@ public class TimetableService {
         return timetable.getCheckOut();
     }
     
+    public void editCheckTimesForDate(Long userId, LocalDate date, LocalTime checkIn, LocalTime checkOut) {
+        Timetable timetableRecord = timetableRepository.findByUserUserIdAndDate(userId, date);
+
+        timetableRecord.setCheckIn(checkIn);
+        timetableRecord.setCheckOut(checkOut);
+
+        timetableRepository.save(timetableRecord);
+    }
 
 }

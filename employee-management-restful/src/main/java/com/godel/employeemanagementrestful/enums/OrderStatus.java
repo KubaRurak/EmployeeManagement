@@ -4,5 +4,5 @@ public enum OrderStatus {
 	UNASSIGNED,
 	ACTIVE,
 	COMPLETED,
-	CANCELED
+	CANCELLED
 }

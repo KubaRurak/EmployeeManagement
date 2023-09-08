@@ -7,10 +7,10 @@ const DatePickerComponent = ({ startDate, setStartDate, endDate, setEndDate }) =
     <div style={{ width: 300 }} className="mb-3 p-2">
     <div className="row row-cols-2">
       <div className="col">
-        Modified after
+        After
       </div>
       <div className="col">
-        Modified before
+        Before
       </div>
       <div className="col">
         <DatePicker

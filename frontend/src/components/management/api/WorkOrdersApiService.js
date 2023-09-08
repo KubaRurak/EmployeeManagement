@@ -9,7 +9,7 @@ const apiClient = axios.create(
 export const retrieveAllWorkOrdersApi
     = () => apiClient.get(``)
 
-export const getFilteredWorkOrdersApi = (userId, after, before) => {
+export const getFilteredWorkOrdersApi = (userId, after, before,status) => {
     const params = {};
     if (userId) {
       params.userId = userId;
@@ -18,8 +18,12 @@ export const getFilteredWorkOrdersApi = (userId, after, before) => {
       params.after = after;
       params.before = before;
     }
+    if (status) {
+      params.status = status;
+    }
     return apiClient.get('',{ params });
   };
+
 
   export const getActiveWorkOrdersApi = (userId) => {
     const params = {};

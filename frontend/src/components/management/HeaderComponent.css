@@ -1,32 +1,41 @@
-.bi::before, [class^="bi-"]::before, [class*=" bi-"]::before {
-  margin-right:5px;
+.bi::before,
+[class^="bi-"]::before,
+[class*=" bi-"]::before {
+  margin-right: 5px;
 }
+
 .navbar-light .navbar-nav .nav-link:hover {
-    background-color: #79797a;
-    color: #f5f5f5;
+  background-color: #79797a;
+  color: #f5f5f5;
 }
-  .nav-link {
-    margin-right: 10px;
-  }
-  
-  @media (max-width: 1200px) {
-    .navbar-nav {
-      margin-left: 0;
-    }
-  
-    .nav-link {
-      margin-right: 0;
-    }
+
+.nav-link {
+  margin-right: 10px;
+}
+
+@media (max-width: 1200px) {
+  .navbar-nav {
+    margin-left: 0;
   }
 
-  .navbar {
-    background: linear-gradient(to top, #f2f2f2, #ffffff);
-    border: 1px solid #d0d0d0;
-    border-radius: 5px;
-    margin-left: 10px;
-    margin-right: 10px;
-    box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+  .nav-link {
+    margin-right: 0;
   }
+}
+
+.navbar {
+  background: linear-gradient(to top, #f2f2f2, #ffffff);
+  border: 1px solid #d0d0d0;
+  border-radius: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+  box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+}
+
+.wide-nav-link {
+  width: 200px; 
+  white-space: nowrap; 
+}
 
 
 .check-in,

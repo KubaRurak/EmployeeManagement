@@ -50,6 +50,26 @@ public class WorkOrderService{
 				LocalDateTime.of(before, LocalTime.MAX));
 	}
 	
+	public List<WorkOrder> getWorkOrdersByStatus(Long userId, LocalDate after, LocalDate before, OrderStatus status) {
+	    if (userId == null && after == null && before == null) {
+	        return workOrderRepository.findByStatus(status);
+	    }
+	    if (userId == null) {
+	        return workOrderRepository.findByStatusAndLastModificationTimeStampBetween(
+	                status,
+	                LocalDateTime.of(after, LocalTime.MIN),
+	                LocalDateTime.of(before, LocalTime.MAX));
+	    }
+	    if (after == null && before == null) {
+	        return workOrderRepository.findByUserUserIdAndStatus(userId, status);
+	    }
+	    return workOrderRepository.findByUserUserIdAndStatusAndLastModificationTimeStampBetween(
+	            userId,
+	            status,
+	            LocalDateTime.of(after, LocalTime.MIN),
+	            LocalDateTime.of(before, LocalTime.MAX));
+	}
+	
 	public List<WorkOrder> getActiveWorkOrders(Long userId) {
 		if (userId == null) {
 			return workOrderRepository.findByStatus(OrderStatus.ACTIVE);
@@ -70,7 +90,6 @@ public class WorkOrderService{
 		User user = userRepository.findById(userId).orElseThrow(null);
 		WorkOrder workOrder = workOrderRepository.findById(workOrderId).orElse(null);
 		workOrder.setUser(user);
-		workOrder.setStatus(OrderStatus.ACTIVE);
 		workOrder.setStartTimeStamp(LocalDateTime.now());
 		workOrder.setLastModificationTimeStamp(LocalDateTime.now());
 		userRepository.save(user);

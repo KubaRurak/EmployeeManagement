@@ -3,11 +3,13 @@ import LogoutComponent from './LogoutComponent'
 import HeaderComponent from './HeaderComponent'
 import ErrorComponent from './ErrorComponent'
 import LoginComponent from './LoginComponent'
-import ListActiveWorkOrdersComponent from './ListActiveWorkOrdersComponent'
-import ListAllWorkOrdersComponent from './ListAllWorkOrdersComponent'
+import ListActiveWorkOrdersComponent from './WorkOrder/ListActiveWorkOrdersComponent'
+import ListAllWorkOrdersComponent from './WorkOrder/ListAllWorkOrdersComponent'
+import ListCancelledWorkOrdersComponent from './WorkOrder/ListCancelledWorkOrdersComponent'
 import AuthProvider, { useAuth } from './security/AuthContext'
 import './EmployeeManagementApp.css'
-import TimetableComponent from './TimeTableComponent'
+import TimetableComponent from './Timetable/TimetableComponent'
+import PayrollComponent from './Payroll/PayrollComponent'
 
 function AuthenticatedRoute({children}) {
     const authContext = useAuth()
@@ -38,9 +40,19 @@ export default function EmployeeManagementApp() {
                                 <ListAllWorkOrdersComponent /> 
                             </AuthenticatedRoute>
                         } />
+                        <Route path='/cancelledworkorders' element={
+                            <AuthenticatedRoute>
+                                <ListCancelledWorkOrdersComponent /> 
+                            </AuthenticatedRoute>
+                        } />
                         <Route path='/timetables' element={
                             <AuthenticatedRoute>
                                 <TimetableComponent /> 
+                            </AuthenticatedRoute>
+                        } />
+                        <Route path='/payroll' element={
+                            <AuthenticatedRoute>
+                                <PayrollComponent /> 
                             </AuthenticatedRoute>
                         } />
                         <Route path='/logout' element={

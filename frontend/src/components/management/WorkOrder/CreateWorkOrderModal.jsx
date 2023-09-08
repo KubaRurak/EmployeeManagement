@@ -2,31 +2,27 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
-import { createWorkOrderApi } from "./api/WorkOrdersApiService";
-import { retrieveCustomersApi } from "./api/CustomerApiService";
-import { retrieveOrderTypesApi } from "./api/OrderTypeApiService";
-import { retrieveUserApi } from "./api/UserApiService";
-import { retrieveStatusTypesApi } from "./api/WorkOrderStatusApiService";
+import { createWorkOrderApi } from "../api/WorkOrdersApiService";
+import { retrieveCustomersApi } from "../api/CustomerApiService";
+import { retrieveOrderTypesApi } from "../api/OrderTypeApiService";
+import { retrieveUserApi } from "../api/UserApiService";
 import './WorkOrderDetailsModal.css'
 
-function CreateWorkOrderModal({ show, handleClose, refreshWorkOrders }) {
+function CreateWorkOrderModal({ show, handleClose, refreshWorkOrders, setMessage }) {
   const [customers, setCustomers] = useState();
   const [orderTypes, setOrderTypes] = useState();
   const [users, setUsers] = useState();
-  const [statusTypes, setStatusTypes] = useState();
 
   const fetchData = useCallback(async () => {
     try {
-      const [customerResponse, orderTypeResponse, userResponse, statusTypeResponse] = await Promise.all([
+      const [customerResponse, orderTypeResponse, userResponse] = await Promise.all([
         retrieveCustomersApi(),
         retrieveOrderTypesApi(),
         retrieveUserApi(),
-        retrieveStatusTypesApi()
       ]);
       setCustomers(customerResponse.data);
       setOrderTypes(orderTypeResponse.data);
       setUsers(userResponse.data);
-      setStatusTypes(statusTypeResponse.data);
     } catch (error) {
       console.error(error);
     }
@@ -36,7 +32,7 @@ function CreateWorkOrderModal({ show, handleClose, refreshWorkOrders }) {
     fetchData();
   }, [fetchData]);
 
-  const initialValues = {
+  const initialValues = useMemo(() => ({
     orderId: '',
     orderName: '',
     orderTypeId: '',
@@ -58,7 +54,7 @@ function CreateWorkOrderModal({ show, handleClose, refreshWorkOrders }) {
     customerLastName: '',
     customerEmail: '',
     customerCompanyName: '',
-  };
+  }), []);
 
   const onUserEmailChange = useCallback((event, setValues, values) => {
     const emailId = event.target.value;
@@ -112,42 +108,43 @@ function CreateWorkOrderModal({ show, handleClose, refreshWorkOrders }) {
   }, [customers]);
 
   const onSubmit = useCallback((values) => {
-    const workOrder = {
-      orderId: values.orderId,
-      orderName: values.orderName,
-      orderType: {
-        id: values.orderTypeId,
-        orderTypeName: values.orderTypeName,
-        expectedDays: values.expectedDays,
-        price: values.price,
-      },
-      status: values.status,
-      startTimeStamp: values.startTimeStamp,
-      endTimeStamp: values.endTimeStamp,
-      lastModificationTimeStamp: values.endTimeStamp,
-      comments: values.comments,
-      userId: values.userId,
-      userFirstName: values.userFirstName,
-      userLastName: values.userLastName,
-      userEmail: values.userEmail,
-      customerId: values.customerId,
-      customerFirstName: values.customerFirstName,
-      customerLastName: values.customerLastName,
-      customerEmail: values.customerEmail,
-      customerCompanyName: values.customerCompanyName,
-    };
-    console.log(workOrder);
+    const workOrder = createWorkOrderObject(values);
     createWorkOrderApi(workOrder)
       .then(response => {
         handleClose();
-        refreshWorkOrders();
-        console.log("submitted");
+        refreshWorkOrders("Work Order created successfully!");
+        setMessage("Work Order created successfully!");
       })
       .catch(error => {
         console.error(error);
-        // show error message to user
       });
-  }, [handleClose, refreshWorkOrders]);
+  }, [handleClose, refreshWorkOrders, setMessage]);
+
+  const createWorkOrderObject = (values) => ({
+    orderId: values.orderId,
+    orderName: values.orderName,
+    orderType: {
+      id: values.orderTypeId,
+      orderTypeName: values.orderTypeName,
+      expectedDays: values.expectedDays,
+      price: values.price,
+    },
+    status: values.status,
+    startTimeStamp: values.startTimeStamp,
+    endTimeStamp: values.endTimeStamp,
+    lastModificationTimeStamp: values.endTimeStamp,
+    comments: values.comments,
+    userId: values.userId,
+    userFirstName: values.userFirstName,
+    userLastName: values.userLastName,
+    userEmail: values.userEmail,
+    customerId: values.customerId,
+    customerFirstName: values.customerFirstName,
+    customerLastName: values.customerLastName,
+    customerEmail: values.customerEmail,
+    customerCompanyName: values.customerCompanyName,
+  });
+
 
 
   return (
