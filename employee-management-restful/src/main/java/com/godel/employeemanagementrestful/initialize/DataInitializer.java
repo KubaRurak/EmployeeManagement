@@ -14,7 +14,7 @@ public class DataInitializer implements CommandLineRunner {
 	private static final int numberOfUsers=10;
 	private static final int numberOfCustomers=4;
 	private static final int numberOfWorkOrders=1000;
-	private static final LocalDate startDate = LocalDate.of(2022,2,1);
+	private static final LocalDate startDate = LocalDate.of(2022,9,1);
 	private static final LocalDate endDate = LocalDate.now().minusDays(1);
 	
 	@Autowired
@@ -36,8 +36,8 @@ public class DataInitializer implements CommandLineRunner {
 		initializeWorkOrders.saveWorkOrders(numberOfWorkOrders);
 		initializeWorkOrders.randomizeTimeStampsForAllWorkOrders();
 		initializeTimeTable.populateTimetable(startDate, endDate);
-		initializeWorkOrders.saveWorkOrdersForUser(5, new Long(1));
-		initializeWorkOrders.saveWorkOrdersForUser(5, new Long(2));
+		initializeWorkOrders.saveWorkOrdersForUser(5, (long) 1);
+		initializeWorkOrders.saveWorkOrdersForUser(5, (long) 2);
 		
 	}
 

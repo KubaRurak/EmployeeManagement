@@ -2,14 +2,14 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
-import { editWorkOrderApi } from "./api/WorkOrdersApiService";
-import { retrieveCustomersApi } from "./api/CustomerApiService";
-import { retrieveOrderTypesApi } from "./api/OrderTypeApiService";
-import { retrieveUserApi } from "./api/UserApiService";
-import { retrieveStatusTypesApi } from "./api/WorkOrderStatusApiService";
+import { editWorkOrderApi } from "../api/WorkOrdersApiService";
+import { retrieveCustomersApi } from "../api/CustomerApiService";
+import { retrieveOrderTypesApi } from "../api/OrderTypeApiService";
+import { retrieveUserApi } from "../api/UserApiService";
+import { retrieveStatusTypesApi } from "../api/WorkOrderStatusApiService";
 import './WorkOrderDetailsModal.css'
 
-function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, refreshWorkOrders }) {
+function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, refreshWorkOrders, setMessage }) {
   const [customers, setCustomers] = useState();
   const [orderTypes, setOrderTypes] = useState();
   const [users, setUsers] = useState();
@@ -106,42 +106,56 @@ function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, refre
   }, [customers, initialValues]);
 
   const onSubmit = useCallback((values) => {
-    const workOrder = {
-      orderId: values.orderId,
-      orderName: values.orderName,
-      orderType: {
-        id: values.orderTypeId,
-        orderTypeName: values.orderTypeName,
-        expectedDays: values.expectedDays,
-        price: values.price,
-      },
-      status: values.status,
-      startTimeStamp: values.startTimeStamp,
-      endTimeStamp: values.endTimeStamp,
-      lastModificationTimeStamp: values.endTimeStamp,
-      comments: values.comments,
-      userId: values.userId,
-      userFirstName: values.firstName,
-      userLastName: values.lastName,
-      userEmail: values.emailId,
-      customerId: values.customerId,
-      customerFirstName: values.customerFirstName,
-      customerLastName: values.customerLastName,
-      customerEmail: values.customerEmail,
-      customerCompanyName: values.customerCompanyName,
-    };
+    const workOrder = createWorkOrderObject(values);
     editWorkOrderApi(values.orderId, workOrder)
       .then(response => {
         handleClose();
-        refreshWorkOrders();
-        console.log("submitted");
+        refreshWorkOrders("Work Order edited successfully!");
+        setMessage("Work Order edited successfully!");
       })
       .catch(error => {
         console.error(error);
         // show error message to user
       });
-  }, [handleClose, refreshWorkOrders, selectedWorkOrder]);
+  }, [handleClose, refreshWorkOrders, setMessage]);
 
+  const createWorkOrderObject = (values) => ({
+    orderId: values.orderId,
+    orderName: values.orderName,
+    orderType: {
+      id: values.orderTypeId,
+      orderTypeName: values.orderTypeName,
+      expectedDays: values.expectedDays,
+      price: values.price,
+    },
+    status: values.status,
+    startTimeStamp: values.startTimeStamp,
+    endTimeStamp: values.endTimeStamp,
+    lastModificationTimeStamp: values.endTimeStamp,
+    comments: values.comments,
+    userId: values.userId,
+    userFirstName: values.userFirstName,
+    userLastName: values.userLastName,
+    userEmail: values.userEmail,
+    customerId: values.customerId,
+    customerFirstName: values.customerFirstName,
+    customerLastName: values.customerLastName,
+    customerEmail: values.customerEmail,
+    customerCompanyName: values.customerCompanyName,
+  });
+
+  const onDelete = useCallback(() => {
+    const workOrder = createWorkOrderObject({ ...initialValues, status: 'CANCELLED' });
+    editWorkOrderApi(initialValues.orderId, workOrder)
+      .then(response => {
+        handleClose();
+        refreshWorkOrders("Work Order canceled successfully!");
+        setMessage("Work Order canceled successfully!");
+      })
+      .catch(error => {
+        console.error(error);
+      });
+}, [handleClose, refreshWorkOrders, setMessage, initialValues, createWorkOrderObject]);
 
   return (
     <div>
@@ -193,14 +207,14 @@ function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, refre
                           <tr>
                             <td><label>Status</label></td>
                             <td>
-                            <Field as="select" className="form-control" name="status">
-                              <option value="">Select status</option>
-                              {statusTypes && statusTypes.map((statusType, index) => (
-                                <option key={index} value={statusType}>
-                                  {statusType}
-                                </option>
-                              ))}
-                            </Field>
+                              <Field as="select" className="form-control" name="status">
+                                <option value="">Select status</option>
+                                {statusTypes && statusTypes.map((statusType, index) => (
+                                  <option key={index} value={statusType}>
+                                    {statusType}
+                                  </option>
+                                ))}
+                              </Field>
                             </td>
                           </tr>
                           <tr>
@@ -273,9 +287,10 @@ function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, refre
                       </table>
                     </Col>
                   </Row>
-                  <div className="form-group d-flex justify-content-between">
+                  <div className="form-group d-flex">
                     <Button variant="success" type="submit">Save</Button>
-                    <Button variant="secondary" onClick={handleClose} style={{ marginLeft: "10px" }}>Close<i className="bi-x"></i></Button>
+                    <Button variant="danger" onClick={onDelete} style={{ marginLeft: "10px" }}>Delete</Button>
+                    <Button variant="secondary" onClick={handleClose} style={{ marginLeft: "auto" }}>Close<i className="bi-x"></i></Button>
                   </div>
                 </Form>
               )

@@ -43,15 +43,24 @@ public class WorkOrderController {
 		
 	
 	@GetMapping("")
-    public ResponseEntity<List<WorkOrderDTO>> getFilteredWorkOrders(
-            @RequestParam(required = false) Long userId,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate after,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate before) {
-        List<WorkOrder> workOrders = workOrderService.getFilteredWorkOrders(userId, after, before);
-        List<WorkOrderDTO> workOrderDTOS = workOrders.stream()
-                .map(workOrder -> new WorkOrderDTO(workOrder))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(workOrderDTOS);
+	public ResponseEntity<List<WorkOrderDTO>> getFilteredWorkOrders(
+	        @RequestParam(required = false) Long userId,
+	        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate after,
+	        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate before,
+	        @RequestParam(required = false) OrderStatus status) {
+	    
+	    List<WorkOrder> workOrders;
+	    
+	    if(status != null) {
+	        workOrders = workOrderService.getWorkOrdersByStatus(userId, after, before, status);
+	    } else {
+	        workOrders = workOrderService.getFilteredWorkOrders(userId, after, before);
+	    }
+
+	    List<WorkOrderDTO> workOrderDTOS = workOrders.stream()
+	            .map(workOrder -> new WorkOrderDTO(workOrder))
+	            .collect(Collectors.toList());
+	    return ResponseEntity.ok(workOrderDTOS);
 	}
 	
 	@GetMapping("/active")
@@ -117,6 +126,12 @@ public class WorkOrderController {
 	        @RequestBody WorkOrderDTO workOrderDTO) {
 	    WorkOrder workOrder = workOrderRepository.findById(orderId).orElseThrow();
 	    OrderType orderType = orderTypeRepository.findById(workOrderDTO.getOrderType().getId()).get();
+	    if (workOrderDTO.getUserId() != null) {
+	        workOrderService.assignUserToWorkOrder(workOrderDTO.getUserId(), orderId);
+	    }
+	    if (workOrderDTO.getCustomerId() != null) {
+	        workOrderService.assignCustomerToWorkOrder(workOrderDTO.getCustomerId(), orderId);
+	    }
 	    workOrder.setOrderName(workOrderDTO.getOrderName());
 	    workOrder.setOrderType(orderType);
 	    workOrder.setStatus(workOrderDTO.getStatus());
@@ -126,12 +141,7 @@ public class WorkOrderController {
 	    workOrder.setComments(workOrderDTO.getComments());
 	    workOrderRepository.save(workOrder);
 	    orderTypeRepository.save(orderType);
-	    if (workOrderDTO.getUserId() != null) {
-	        workOrderService.assignUserToWorkOrder(workOrderDTO.getUserId(), orderId);
-	    }
-	    if (workOrderDTO.getCustomerId() != null) {
-	        workOrderService.assignCustomerToWorkOrder(workOrderDTO.getCustomerId(), orderId);
-	    }
+
 	    return new WorkOrderDTO(workOrder);	
 	}
 

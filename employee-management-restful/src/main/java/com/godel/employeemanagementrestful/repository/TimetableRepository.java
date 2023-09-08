@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -34,5 +35,6 @@ public interface TimetableRepository extends JpaRepository<Timetable, Long> {
 	List<Timetable> findByDateBetween(LocalDate after, LocalDate before);
 
 	List<Timetable> findByUserUserIdAndDateBetween(Long userId, LocalDate after, LocalDate before);
+
 
 }
