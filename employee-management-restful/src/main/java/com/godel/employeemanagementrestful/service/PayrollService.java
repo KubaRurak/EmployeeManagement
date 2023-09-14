@@ -7,12 +7,17 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
-import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.godel.employeemanagementrestful.dto.MonthlyStatsDTO;
+import com.godel.employeemanagementrestful.dto.PayrollStatisticsDTO;
+import com.godel.employeemanagementrestful.dto.YearlyStatsDTO;
 import com.godel.employeemanagementrestful.entity.Payroll;
 import com.godel.employeemanagementrestful.entity.Timetable;
 import com.godel.employeemanagementrestful.entity.User;
@@ -123,5 +128,7 @@ public class PayrollService {
 		}
 		return payrollRepository.findByUserUserIdAndPayrollMonth(userId,payrollMonth);
 	}
+	
+
 
 }

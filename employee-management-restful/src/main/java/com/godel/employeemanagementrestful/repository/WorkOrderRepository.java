@@ -39,5 +39,7 @@ public interface WorkOrderRepository extends JpaRepository<WorkOrder, Long> {
 	List<WorkOrder> findByUserUserIdAndStatusAndLastModificationTimeStampBetween(Long userId, OrderStatus status,
 			LocalDateTime of, LocalDateTime of2);
 
+	List<WorkOrder> findAllByOrderIdIn(List<Long> orderIds);
+
 
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Button, Row, Col } from 'react-bootstrap';
+import { Modal, Row, Col } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
 import { editWorkOrderApi } from "../api/WorkOrdersApiService";
 import { retrieveCustomersApi } from "../api/CustomerApiService";
@@ -155,7 +155,7 @@ function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, refre
       .catch(error => {
         console.error(error);
       });
-}, [handleClose, refreshWorkOrders, setMessage, initialValues, createWorkOrderObject]);
+  }, [handleClose, refreshWorkOrders, setMessage, initialValues, createWorkOrderObject]);
 
   return (
     <div>
@@ -254,9 +254,11 @@ function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, refre
                             <td><label>Name</label></td>
                             <td>{props.values.userName}</td>
                           </tr>
-                          <tr>
-                            <h5>Customer details</h5>
-                          </tr>
+                        </tbody>
+                      </table>
+                      <h5>Customer details</h5>
+                      <table className='table'>
+                        <tbody>
                           <tr>
                             <td><label>Email</label></td>
                             <td>
@@ -288,9 +290,9 @@ function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, refre
                     </Col>
                   </Row>
                   <div className="form-group d-flex">
-                    <Button variant="success" type="submit">Save</Button>
-                    <Button variant="danger" onClick={onDelete} style={{ marginLeft: "10px" }}>Delete</Button>
-                    <Button variant="secondary" onClick={handleClose} style={{ marginLeft: "auto" }}>Close<i className="bi-x"></i></Button>
+                    <button type="submit" className="btn btn-success">Save</button>
+                    <button type="button" className="btn btn-danger" onClick={onDelete} style={{ marginLeft: "10px" }}>Delete</button>
+                    <button type="button" className="btn btn-secondary" onClick={handleClose} style={{ marginLeft: "auto" }}>Close<i className="bi-x"></i></button>
                   </div>
                 </Form>
               )

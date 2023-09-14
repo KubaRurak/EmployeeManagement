@@ -8,3 +8,105 @@ footer {
     width: 90%;
     height: 40px;
 }
+
+.EmployeeManagementApp {
+    font-size: 16px;
+    color: rgb(34, 34, 34);
+    padding-top: 70px;
+    background: linear-gradient(to right, #f9fafb, #f7f7f7);
+}
+
+.EmployeeManagementApp.no-header {
+    padding-top: 0px !important;
+    background: none !important; /* or set to some other default if desired */
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #507fa3 !important;
+    border: none;
+    border-radius: 5px;
+    margin: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    background-color: #6a95bf !important; /* Slightly lighter shade for hover */
+  }
+
+  .btn-secondary {
+    color: #fff;
+    background-color: #8c8c8c !important; /* Toned down grey */
+    border: none;
+    border-radius: 5px;
+    margin: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #a0a0a0 !important;
+}
+
+.btn-danger {
+    color: #fff;
+    background-color: #c46666 !important; 
+    border: none;
+    border-radius: 5px;
+    margin: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-danger:hover {
+    background-color: #d47c7c !important;
+}
+
+.btn-success {
+    color: #fff;
+    background-color: #6ab27b !important;
+    border: none;
+    border-radius: 5px;
+    margin: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-success:hover {
+    background-color: #80c492 !important; 
+}
+.btn-secondary {
+    color: #fff;
+    background-color: #9c9c9c !important; /* Moderately toned grey */
+    border: none;
+    border-radius: 5px;
+    margin: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #b0b0b0 !important; /* Slightly lighter shade for hover */
+}
+
+.btn-danger {
+    color: #fff;
+    background-color: #d25555 !important; /* Moderately toned red */
+    border: none;
+    border-radius: 5px;
+    margin: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-danger:hover {
+    background-color: #e56b6b !important; /* Slightly lighter shade for hover */
+}
+
+.btn-success {
+    color: #fff;
+    background-color: #59bd59 !important; /* Moderately toned green */
+    border: none;
+    border-radius: 5px;
+    margin: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-success:hover {
+    background-color: #8cd58c !important; /* Slightly lighter shade for hover */
+}
