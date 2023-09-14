@@ -7,12 +7,11 @@
   color: rgb(34, 34, 34);
 }
 
-.table {
-  border: 1px;
-}
+
 
 th {
   background-color: #e2e2e7 !important;  /* Neutral grey shade for table headers */
+  font-size: 14px !important;
   color: rgb(34, 34, 34);
   padding: 12px 10px;
   text-align: left;
@@ -37,7 +36,6 @@ tr:hover td {
   background-color: #d9d9dd; /* Slightly darker grey for hover */
 }
 
-/* Input fields within the pagination */
 input, select {
   border: 1px solid #ccc;
   padding: 5px 10px;

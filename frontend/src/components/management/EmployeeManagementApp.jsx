@@ -11,23 +11,31 @@ import './EmployeeManagementApp.css'
 import TimetableComponent from './Timetable/TimetableComponent'
 import PayrollComponent from './Payroll/PayrollComponent'
 
-function AuthenticatedRoute({children}) {
-    const authContext = useAuth()
-    
-    if(authContext.isAuthenticated)
-        return children
-
-    return <Navigate to="/" />
-}
-
 export default function EmployeeManagementApp() {
+
+
     return (
-        <div className="EmployeeManagementApp">
             <AuthProvider>
                 <BrowserRouter>
-                    <HeaderComponent />
-                    <Routes>
-                        <Route path='/' element={ <LoginComponent /> } />
+                    <AppContent />
+                </BrowserRouter>
+            </AuthProvider>
+    );
+}
+
+function AppContent() {
+
+    const authContext = useAuth();
+    const appClassName = authContext.isAuthenticated ? "EmployeeManagementApp" : "EmployeeManagementApp no-header";
+
+    return (
+        <div className={appClassName}>
+            {authContext.isAuthenticated && <HeaderComponent />}
+            <Routes>
+                <Route path='/' element={ <LoginComponent /> } />
+                <Route path='/login' element={ <LoginComponent /> } />
+
+                <Route path='/' element={ <LoginComponent /> } />
                         <Route path='/login' element={ <LoginComponent /> } />
                         
                         <Route path='/activeworkorders' element={
@@ -62,10 +70,16 @@ export default function EmployeeManagementApp() {
                         } />
                         
                         <Route path='*' element={<ErrorComponent /> } />
-
-                    </Routes>
-                </BrowserRouter>
-            </AuthProvider>
+            </Routes>
         </div>
-    )
+    );
+}
+
+function AuthenticatedRoute({ children }) {
+    const authContext = useAuth();
+
+    if(authContext.isAuthenticated) {
+        return children;
+    }
+    return <Navigate to="/" replace />;
 }

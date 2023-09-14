@@ -2,10 +2,13 @@ package com.godel.employeemanagementrestful.controller;
 
 
 import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +34,8 @@ import com.godel.employeemanagementrestful.service.WorkOrderService;
 @RestController
 @RequestMapping("/api/v1/workorders")
 public class WorkOrderController {
+	
+	private static final Logger log = LoggerFactory.getLogger(WorkOrderController.class);
 	
 	@Autowired
 	private WorkOrderService workOrderService;
@@ -78,6 +83,16 @@ public class WorkOrderController {
 		WorkOrder workOrder = workOrderRepository.findByOrderId(orderId);
 		WorkOrderDTO workOrderDTO = new WorkOrderDTO(workOrder);
 		return workOrderDTO;
+	}
+	
+	@GetMapping("/batch")
+	public ResponseEntity<List<WorkOrderDTO>> fetchWorkOrdersByIds(@RequestParam List<Long> orderIds) {
+	    log.info("Received orderIds: " + orderIds);
+	    List<WorkOrder> workOrders = workOrderRepository.findAllByOrderIdIn(orderIds);
+	    List<WorkOrderDTO> workOrderDTOs = workOrders.stream()
+	            .map(WorkOrderDTO::new)
+	            .collect(Collectors.toList());
+	    return ResponseEntity.ok(workOrderDTOs);
 	}
 	
 	@PutMapping("/assign")

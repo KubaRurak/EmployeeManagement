@@ -114,7 +114,7 @@ function ListAllWorkOrdersComponent() {
         Cell: ({ cell }) => cell.value ? <div title={cell.value}>{cell.value.substring(0, 10)}...</div> : <div></div>,
       },
       {
-        Header: "Comments",
+        Header: "Comment",
         accessor: "comments",
         Cell: ({ cell }) => <div title={cell.value}>{cell.value.substring(0, 10)}...</div>,
         width: 100,
@@ -160,7 +160,7 @@ function ListAllWorkOrdersComponent() {
   return (
     <>
       <div style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", margin: "20px" }}>
-        <div style={{ position: "absolute", left: "0", marginLeft: "15px" }}>
+        <div style={{ position: "absolute", left: "0", marginLeft: "45px" }}>
           <DatePickerComponent
             startDate={startDate}
             setStartDate={setStartDate}
@@ -168,7 +168,7 @@ function ListAllWorkOrdersComponent() {
             setEndDate={setEndDate} />
         </div>
         <h2 style={{ marginLeft: "10px", flex: "1", textAlign: "center" }}>Work Orders</h2>
-        <button type="button" className="btn btn-primary" style={{ marginRight: "43px" }} onClick={handleShowCreateModal}>Add new</button>
+        <button type="button" className="btn btn-primary" style={{ marginRight: "73px" }} onClick={handleShowCreateModal}>Add new</button>
       </div>
       {message && <div className="alert alert-success">{message}</div>}
       <TableContainer

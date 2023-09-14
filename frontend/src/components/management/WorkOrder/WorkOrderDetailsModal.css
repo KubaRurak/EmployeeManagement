@@ -1,3 +1,36 @@
 .table td {
     vertical-Align: middle;
+    height: 40px;
 }
+
+.customer {
+    background-color: white;
+}
+
+.table tbody tr {
+    max-height: 40px !important;
+}
+
+.table tbody td {
+    height: 40px !important;
+}
+
+.table .customer h5 {
+    margin: 0; 
+}
+
+.table tr {
+    line-height: 1;
+}
+
+.table td {
+    overflow: hidden;
+}
+
+.table select, .table input, .table .form-control {
+    height: 35px; 
+    margin: 0px;
+    max-height: 100%; 
+}
+
+

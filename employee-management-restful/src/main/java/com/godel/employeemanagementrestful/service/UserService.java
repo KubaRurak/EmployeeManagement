@@ -36,9 +36,9 @@ public class UserService {
 	    if (optionalUser.isPresent()) {
 	        User savedUser = optionalUser.get();
 			timetableService.populateTimetable(
-	        		savedUser, LocalDate.of(2022,2,1), 
+	        		savedUser, LocalDate.of(2022,1,1), 
 	        		LocalDate.now().plusYears(1));
-			payrollService.generatePayrollForUser(YearMonth.of(2022, 2), 24, savedUser.getUserId());
+			payrollService.generatePayrollForUser(YearMonth.of(2022, 1), 24, savedUser.getUserId());
 			return savedUser;
 	    } else {
 	        throw new ResourceNotFoundException("User not found with id");

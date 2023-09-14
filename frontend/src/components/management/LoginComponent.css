@@ -3,7 +3,11 @@
   justify-content: center;
   align-items: center;
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 70px);  /* Assuming HeaderComponent height is 60px */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); 
 }
 
 .Auth-form {

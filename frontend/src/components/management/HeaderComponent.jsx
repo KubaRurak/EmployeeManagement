@@ -60,30 +60,12 @@ function HeaderComponent() {
 
     return (
         isAuthenticated &&
-        <header className="b-3 p-2">
-
-            <Navbar collapseOnSelect expand="lg" classname="navbar">
-                <Navbar.Collapse id="responsive-navbar-nav">
-                    <Nav className="me-auto p-1">
-                        {checkedInAt ?
-                            `Checked in at ${checkedInAt}` :
-                            <Nav.Link onClick={handleCheckInClick}>Check In</Nav.Link>
-                        }
-                    </Nav>
-                    {checkedInAt && (
-                        <Nav className="check-out">
-                            {checkedOutAt ?
-                                `Checked out at ${checkedOutAt}` :
-                                <Nav.Link onClick={handleCheckOutClick}>Check Out</Nav.Link>
-                            }
-                        </Nav>)}
-                </Navbar.Collapse>
-            </Navbar>
+        <header className="b-0 p-0">
             <Navbar collapseOnSelect expand="lg" bg="light">
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                <Navbar.Collapse id="responsive-navbar-nav">
-                    <Nav className="me-auto">
-                        <NavDropdown title={<><i className="bi-calendar3"></i> Work Orders</>} id="collasible-nav-dropdown">
+                <Navbar.Collapse id="responsive-navbar-nav" style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Nav style={{ paddingLeft: '50px' }}>
+                        <NavDropdown className="left-dropdown" title={<><i className="bi-calendar3"></i> Work Orders</>} id="collasible-nav-dropdown">
                             <Nav.Link as={Link} to="/activeworkorders" className='nav-link wide-nav-link'><i className="bi-alarm"></i> Your Work Orders</Nav.Link>
                             <Nav.Link as={Link} to="/workorders" className='nav-link wide-nav-link'><i className="bi-database"></i> All Work Orders</Nav.Link>
                             <Nav.Link as={Link} to="/cancelledworkorders" className='nav-link wide-nav-link'><i className="bi-trash"></i> Cancelled Work Orders</Nav.Link>
@@ -92,9 +74,27 @@ function HeaderComponent() {
                         <Nav.Link as={Link} to="/payroll"><i className="bi-wallet2" /> Payroll</Nav.Link>
                         <Nav.Link as={Link} to={"/todos"}><i className="bi-graph-up" /> Dashboard</Nav.Link>
                     </Nav>
-                    <Nav>
-                        <Nav.Link as={Link} to="/logout" onClick={logout}>Logout</Nav.Link>
+                    <Nav style={{ paddingRight: '50px' }}>
+                        <NavDropdown className="right-dropdown" align="end" title={<><i className="bi-person-circle"></i> {username || "Profile"}</>} id="user-nav-dropdown">
+                            <div className={`nav-link wide-nav-link ${checkedInAt ? 'disabled' : ''}`}>
+                                {checkedInAt ? (
+                                    `Checked in at ${checkedInAt}`
+                                ) : (
+                                    <NavDropdown.Item onClick={handleCheckInClick}>Check In</NavDropdown.Item>
+                                )}
+                            </div>
+                            <div className={`nav-link wide-nav-link ${checkedInAt && checkedOutAt ? 'disabled' : ''}`}>
+                                {checkedInAt && (checkedOutAt ? (
+                                    `Checked out at ${checkedOutAt}`
+                                ) : (
+                                    <NavDropdown.Item onClick={handleCheckOutClick}>Check Out</NavDropdown.Item>
+                                ))}
+                            </div>
+                            <NavDropdown.Divider />
+                            <Nav.Link as={Link} to="/logout" onClick={logout} className='nav-link wide-nav-link'>Logout</Nav.Link>
+                        </NavDropdown>
                     </Nav>
+
                 </Navbar.Collapse>
             </Navbar>
         </header>

@@ -1,45 +1,87 @@
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+}
+
 .bi::before,
 [class^="bi-"]::before,
 [class*=" bi-"]::before {
   margin-right: 5px;
-}
-
-.navbar-light .navbar-nav .nav-link:hover {
-  background-color: #79797a;
-  color: #f5f5f5;
-}
-
-.nav-link {
-  margin-right: 10px;
-}
-
-@media (max-width: 1200px) {
-  .navbar-nav {
-    margin-left: 0;
-  }
-
-  .nav-link {
-    margin-right: 0;
-  }
+  font-size: 1.1em;
 }
 
 .navbar {
-  background: linear-gradient(to top, #f2f2f2, #ffffff);
-  border: 1px solid #d0d0d0;
-  border-radius: 5px;
-  margin-left: 10px;
-  margin-right: 10px;
-  box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+  margin: 0;
+  background: linear-gradient(to right, #0f4c75, #3282b8);
+  border: none;
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.1), 0 6px 24px 0 rgba(0, 0, 0, 0.09);
+}
+
+
+.navbar-light .navbar-nav .nav-link {
+  color: white;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #e7e7e7;
+}
+
+.navbar-light .navbar-nav .nav-link:active {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ddd;
 }
 
 .wide-nav-link {
-  width: 200px; 
-  white-space: nowrap; 
+  width: 200px;
+  white-space: nowrap;
 }
-
 
 .check-in,
 .check-out {
-  margin-left: px;
+  margin-left: 10px;
   margin-right: 15px;
+}
+
+/* Base dropdown styles */
+.dropdown-menu {
+  background-color: #0f4c75;
+  color: white;
+  border-radius: 0.25rem;
+  border: none;
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.1), 0 6px 24px 0 rgba(0, 0, 0, 0.09);
+}
+
+.dropdown-menu .nav-link,
+.dropdown-menu .dropdown-item {
+  color: white !important; /* Ensuring dropdown items are always white; use of !important might be necessary to override any other conflicting styles */
+}
+
+.dropdown-menu .nav-link:hover,
+.dropdown-menu .dropdown-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white !important;
+}
+
+.dropdown-menu .nav-link:focus, /* Adding a focus state */
+.dropdown-menu .nav-link:active,
+.dropdown-menu .dropdown-item:focus, /* Adding a focus state */
+.dropdown-menu .dropdown-item:active {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white !important;
+}
+
+.left-dropdown .dropdown-menu {
+  background-color: #0f4c75;
+}
+
+.right-dropdown .dropdown-menu {
+  background-color: #3282b8;
+}
+
+.navbar-light .navbar-nav .dropdown-toggle:focus {
+  color: white !important;
 }

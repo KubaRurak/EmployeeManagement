@@ -13,8 +13,8 @@ public class DataInitializer implements CommandLineRunner {
 	
 	private static final int numberOfUsers=10;
 	private static final int numberOfCustomers=4;
-	private static final int numberOfWorkOrders=1000;
-	private static final LocalDate startDate = LocalDate.of(2022,9,1);
+	private static final int numberOfWorkOrders=1500;
+	private static final LocalDate startDate = LocalDate.of(2022,1,1);
 	private static final LocalDate endDate = LocalDate.now().minusDays(1);
 	
 	@Autowired

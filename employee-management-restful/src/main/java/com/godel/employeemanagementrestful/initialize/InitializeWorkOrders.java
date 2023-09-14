@@ -1,6 +1,7 @@
 package com.godel.employeemanagementrestful.initialize;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Random;
 
@@ -18,9 +19,6 @@ import com.godel.employeemanagementrestful.repository.UserRepository;
 import com.godel.employeemanagementrestful.repository.WorkOrderRepository;
 import com.godel.employeemanagementrestful.service.PayrollService;
 import com.godel.employeemanagementrestful.service.WorkOrderService;
-
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 
 @Component
 public class InitializeWorkOrders {
@@ -103,10 +101,11 @@ public class InitializeWorkOrders {
 	
 	public void randomizeTimeStampsForAllWorkOrders() {
 	    List<WorkOrder> workOrders = workOrderRepository.findAll();
+        long daysBetween = ChronoUnit.DAYS.between(LocalDateTime.of(2022,1,1, 0, 0), LocalDateTime.now());
+
 		for (WorkOrder workOrder : workOrders) {
-		    LocalDateTime startDate = LocalDateTime.now()
-		    		.minusYears(1)
-		    		.plusDays((long)(Math.random() * 364))
+		    LocalDateTime startDate = LocalDateTime.of(2022,1,1, 0, 0)
+		    		.plusDays((long)(Math.random() * (daysBetween-1)))
 		    		.plusHours((long)(Math.random() * 24))
 		    		.plusMinutes((long)(Math.random() * 60));
 		    workOrder.setStartTimeStamp(startDate);    

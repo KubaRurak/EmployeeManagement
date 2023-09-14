@@ -2,24 +2,35 @@ import { useEffect, useState, useMemo } from "react";
 import TableContainer from '../table/TableContainer';
 import { useAuth } from "../security/AuthContext";
 import { getFilteredPayrolls } from '../api/PayrollApiSerivce';
-
-// import WorkOrderDetailsModal from './WorkOrderDetailsModal';
+import PayrollDetailsModal from './PayrollDetailsModal';
 
 function PayrollComponent() {
 
     const authContext = useAuth();
 
+    const [workOrderIdsForMonth, setWorkOrderIdsForMonth] = useState([]);
+    const [selectedMonth, setSelectedMonth] = useState([]);
+    const [selectedPayrollData, setSelectedPayrollData] = useState([]);
     const [showWorkOrders, setShowWorkOrders] = useState(false);
-    const handleCloseWorkOrders = () => setShowWorkOrders(false);
-    const handleShowWorkOrders = month => {
-        setSelectedMonth(month);
+
+
+    const handleShowWorkOrders = (payrollMonth, workOrderIds, payrollData) => {
+        setSelectedMonth(payrollMonth);
+        setWorkOrderIdsForMonth(workOrderIds);
+        setSelectedPayrollData(payrollData);
         setShowWorkOrders(true);
+    };
+
+    const handleCloseWorkOrders = () => {
+        setSelectedMonth([]);
+        setWorkOrderIdsForMonth([]);
+        setSelectedPayrollData([]);
+        setShowWorkOrders(false);
     };
 
     const userId = authContext.userId;
 
     const [data, setData] = useState([]);
-    const [selectedMonth, setSelectedMonth] = useState(null);
 
     useEffect(() => {
         getFilteredPayrolls(userId)
@@ -32,6 +43,7 @@ function PayrollComponent() {
                 });
                 const sortedData = filteredData.sort((a, b) => new Date(b.payrollMonth) - new Date(a.payrollMonth));
                 setData(sortedData);
+                console.log(sortedData);
             })
             .catch(error => console.error("Error fetching payroll data:", error));
     }, [userId]);
@@ -57,7 +69,8 @@ function PayrollComponent() {
             {
                 Header: "Month",
                 accessor: "payrollMonth",
-                width: 100
+                width: 100,
+                Cell: ({ cell }) => cell.value.substring(0, 7),
             },
             {
                 Header: "Time Worked [h]",
@@ -73,7 +86,10 @@ function PayrollComponent() {
                 Header: "Details",
                 accessor: "workOrderIds",
                 Cell: ({ cell }) => (
-                    <button type="button" className="btn btn-primary" onClick={() => handleShowWorkOrders(cell.row.original.payrollMonth)}>
+                    <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={() => handleShowWorkOrders(cell.row.original.payrollMonth, cell.row.original.workOrderIds, cell.row.original)}>
                         <i className="bi bi-search"></i>
                     </button>
                 ),
@@ -86,18 +102,18 @@ function PayrollComponent() {
 
     return (
         <>      <div>
-            <h2>Payroll history </h2>
+            <h2>Your payroll history </h2>
         </div>
             <TableContainer
                 columns={columns}
                 data={data}
             />
-            {/* <WorkOrderDetailsModal
+            <PayrollDetailsModal
                 show={showWorkOrders}
                 handleClose={handleCloseWorkOrders}
-                selectedMonth={selectedMonth}
-            // Add more props if needed for the modal to fetch work order details
-            /> */}
+                data={selectedPayrollData}
+                workOrderIds={workOrderIdsForMonth}
+            />
         </>
     );
 }
