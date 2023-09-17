@@ -11,7 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,9 +28,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.godel.employeemanagementrestful.dto.WorkOrderDTO;
 import com.godel.employeemanagementrestful.entity.OrderType;
+import com.godel.employeemanagementrestful.entity.User;
 import com.godel.employeemanagementrestful.entity.WorkOrder;
 import com.godel.employeemanagementrestful.enums.OrderStatus;
 import com.godel.employeemanagementrestful.repository.OrderTypeRepository;
+import com.godel.employeemanagementrestful.repository.UserRepository;
 import com.godel.employeemanagementrestful.repository.WorkOrderRepository;
 import com.godel.employeemanagementrestful.service.PayrollService;
 import com.godel.employeemanagementrestful.service.WorkOrderService;
@@ -39,6 +45,9 @@ public class WorkOrderController {
 	
 	@Autowired
 	private WorkOrderService workOrderService;
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	@Autowired
 	private WorkOrderRepository workOrderRepository;
@@ -159,13 +168,19 @@ public class WorkOrderController {
 
 	    return new WorkOrderDTO(workOrder);	
 	}
-
+	@PreAuthorize("hasAnyAuthority('ENGINEER', 'OPERATOR', 'ADMIN')")
 	@PutMapping("/{orderId}/complete")
-	public WorkOrderDTO completeWorkOrder(@PathVariable Long orderId) {
+	public ResponseEntity<String> completeWorkOrder(@PathVariable Long orderId) {
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    String authenticatedEmail = authentication.getName();
+	    User user = userRepository.findByEmailId(authenticatedEmail).orElse(null);
 		WorkOrder workOrder = workOrderRepository.findByOrderId(orderId);
+		long userId = workOrder.getUser().getUserId();
+	    if (user == null || !user.getUserId().equals(userId)) {
+	        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You complete workorder for another user.");
+	    }
 		workOrderService.completeWorkOrder(workOrder);
-		WorkOrderDTO workOrderDTO = new WorkOrderDTO(workOrder);
-		return workOrderDTO;
+		return ResponseEntity.ok("Work order completed succesfully");
 	}
 
 	

@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -18,7 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.godel.employeemanagementrestful.dto.TimetableDTO;
 import com.godel.employeemanagementrestful.entity.Timetable;
+import com.godel.employeemanagementrestful.entity.User;
 import com.godel.employeemanagementrestful.exceptions.TimetableException;
+import com.godel.employeemanagementrestful.repository.UserRepository;
 import com.godel.employeemanagementrestful.service.TimetableService;
 
 @RestController
@@ -27,6 +32,9 @@ public class TimetableController {
 	
 	@Autowired
 	TimetableService timetableService;
+	
+	@Autowired
+	UserRepository userRepository;
 
 	
 	@GetMapping("")
@@ -40,9 +48,15 @@ public class TimetableController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(timetableDTOS);
 	}
-	
 	@PutMapping("{userId}/checkin")
 	public ResponseEntity<String> checkIn(@PathVariable Long userId) {
+		
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    String authenticatedEmail = authentication.getName();
+	    User user = userRepository.findByEmailId(authenticatedEmail).orElse(null);
+	    if (user == null || !user.getUserId().equals(userId)) {
+	        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can't check in for another user.");
+	    }
 		try {
 			timetableService.checkIn(userId);
 			return ResponseEntity.ok("Checked in successfully");
@@ -70,7 +84,9 @@ public class TimetableController {
 	@GetMapping("{userId}/checkout")
 	public LocalTime getCheckOut(@PathVariable Long userId) {
 		return timetableService.getTodayCheckOutTime(userId);
-	}		
+	}
+	
+	@PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMIN')")
 	@PutMapping("{userId}/{date}/editTimes")
 	public ResponseEntity<String> editCheckTimesForDate(@PathVariable Long userId, 
 	        @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, 
