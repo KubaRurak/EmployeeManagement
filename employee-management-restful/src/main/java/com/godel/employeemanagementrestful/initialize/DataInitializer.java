@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Profile("data-init")
 public class DataInitializer implements CommandLineRunner {
 	
-	private static final int numberOfUsers=10;
+	private static final int numberOfUsers=10; // will create at least 3
 	private static final int numberOfCustomers=4;
 	private static final int numberOfWorkOrders=1500;
 	private static final LocalDate startDate = LocalDate.of(2022,1,1);
