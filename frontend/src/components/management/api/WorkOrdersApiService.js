@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getAuthHeaders } from './AuthHeaders';
 
 const apiClient = axios.create(
   {
@@ -21,14 +22,15 @@ export const getFilteredWorkOrdersApi = (userId, after, before, status) => {
   if (status) {
     params.status = status;
   }
-  return apiClient.get('', { params });
+  return apiClient.get('', { params, headers: getAuthHeaders() });
 };
 
 export const fetchWorkOrdersByIdsApi = (orderIds) => {
   return apiClient.get('/batch', {
-      params: { orderIds },
-      paramsSerializer: { indexes: null }
-    });
+    params: { orderIds },
+    paramsSerializer: { indexes: null },
+    headers: getAuthHeaders()
+  });
 };
 
 export const getActiveWorkOrdersApi = (userId) => {
@@ -36,21 +38,36 @@ export const getActiveWorkOrdersApi = (userId) => {
   if (userId) {
     params.userId = userId;
   }
-  return apiClient.get('/active', { params });
+  return apiClient.get('/active', {
+    params,
+    headers: getAuthHeaders()
+  });
 };
 
-export const completeWorkOrderApi
-  = (orderId) => apiClient.put(`${orderId}/complete`)
+export const completeWorkOrderApi = (orderId) => {
+  return apiClient.put(`${orderId}/complete`, {}, {
+    headers: getAuthHeaders()
+  });
+}
 
-export const editWorkOrderApi
-  = (orderId, workOrder) => apiClient.put(`${orderId}`, workOrder)
+export const editWorkOrderApi = (orderId, workOrder) => {
+  return apiClient.put(`${orderId}`, workOrder, {
+    headers: getAuthHeaders()
+  });
+}
 
-export const createWorkOrderApi
-  = (workOrder) => apiClient.post('', workOrder)
+export const createWorkOrderApi = (workOrder) => {
+  return apiClient.post('', workOrder, {
+    headers: getAuthHeaders()
+  });
+}
 
 export const assignWorkOrderApi = (userId, orderId) => {
   const params = {};
   params.userId = userId;
   params.orderId = orderId;
-  return apiClient.put('/assign', { params });
+  return apiClient.put('/assign', {
+    params,
+    headers: getAuthHeaders()
+  });
 };

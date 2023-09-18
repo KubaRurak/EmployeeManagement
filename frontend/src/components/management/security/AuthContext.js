@@ -1,41 +1,82 @@
 import { createContext, useContext, useState } from "react";
+import axios from 'axios';
 
-//1: Create a Context
+const apiClient = axios.create(
+    {
+        baseURL: 'http://localhost:8080/api/v1/'
+    }
+);
+
 export const AuthContext = createContext()
 
 export const useAuth = () => useContext(AuthContext)
 
-//2: Share the created context with other components
 export default function AuthProvider({ children }) {
 
-    //3: Put some state in the context
     const [isAuthenticated, setAuthenticated] = useState(false)
-
     const [userId, setUserId] = useState(null)
-
     const [username, setUsername] = useState(null)
+    const [role, setRole] = useState(null)  // Add role state
+
+    
+
+    function fetchUserDetails(email, token) {
+        apiClient.get(`users/by-email?emailId=${email}`, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+            .then(response => {
+                console.log(response);
+                const userDetails = response.data;
+                setUsername(`${userDetails.firstName} ${userDetails.lastName}`);
+                setUserId(userDetails.userId);
+                setRole(userDetails.role);
+            })
+            .catch(error => {
+                console.error('Error fetching user details:', error);
+            });
+    }
 
     function login(username, password) {
-        if(username==='Godel' && password==='1234'){
-            setAuthenticated(true)
-            setUsername(username)
-            setUserId(1)
-            return true            
-        } else {
-            setAuthenticated(false)
-            setUsername(null)
-            setUserId(null)
-            return false
-        }        
+        return new Promise((resolve, reject) => {
+            apiClient.post('auth/login', {
+                emailId: username,
+                password: password
+            }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                console.log(response);
+                const token = response.data.accessToken;
+                localStorage.setItem('token', token);
+                setAuthenticated(true);
+                fetchUserDetails(username, token);
+                resolve(true);
+            })
+            .catch(error => {
+                setAuthenticated(false);
+                setUsername(null);
+                setUserId(null);
+                setRole(null);
+                reject(false);
+            });
+        });
     }
 
     function logout() {
-        setAuthenticated(false)
+        localStorage.removeItem('token');
+        setAuthenticated(false);
+        setUsername(null);
+        setUserId(null);
+        setRole(null); // Reset role on logout
     }
 
     return (
-        <AuthContext.Provider value={ {isAuthenticated, login, logout, username, userId}  }>
+        <AuthContext.Provider value={{ isAuthenticated, login, logout, username, userId, role}}>
             {children}
         </AuthContext.Provider>
     )
-} 
+}

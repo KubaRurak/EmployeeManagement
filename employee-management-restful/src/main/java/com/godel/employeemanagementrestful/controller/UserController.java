@@ -3,15 +3,18 @@ package com.godel.employeemanagementrestful.controller;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.godel.employeemanagementrestful.dto.UserDTO;
@@ -76,5 +79,19 @@ public class UserController {
 	public User editUser(@RequestBody User user) {
 		return userRepository.save(user);
 	}	
+	
+    @GetMapping("/by-email")
+    public ResponseEntity<UserDTO> fetchUserByEmail(@RequestParam String emailId) {
+        Optional<User> userOptional = userRepository.findByEmailId(emailId);
+        
+        if (!userOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        User user = userOptional.get();
+        UserDTO userDTO = new UserDTO(user);
+        
+        return ResponseEntity.ok(userDTO);
+    }
 	
 }

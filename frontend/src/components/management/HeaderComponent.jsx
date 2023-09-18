@@ -12,6 +12,7 @@ function HeaderComponent() {
 
     const authContext = useAuth()
     const isAuthenticated = authContext.isAuthenticated
+    const userRole = authContext.role; // Assuming you have role in your authContext
     const username = authContext.username
     const userId = authContext.userId
 
@@ -72,7 +73,9 @@ function HeaderComponent() {
                         </NavDropdown>
                         <Nav.Link as={Link} to="/timetables"><i className="bi-calendar3" /> Timetable</Nav.Link>
                         <Nav.Link as={Link} to="/payroll"><i className="bi-wallet2" /> Payroll</Nav.Link>
-                        <Nav.Link as={Link} to={"/todos"}><i className="bi-graph-up" /> Dashboard</Nav.Link>
+                        {(userRole === "Admin" || userRole === "Operator") && (
+                            <Nav.Link as={Link} to={"/todos"}><i className="bi-graph-up" /> Dashboard</Nav.Link>
+                        )}
                     </Nav>
                     <Nav style={{ paddingRight: '50px' }}>
                         <NavDropdown className="right-dropdown" align="end" title={<><i className="bi-person-circle"></i> {username || "Profile"}</>} id="user-nav-dropdown">
@@ -80,16 +83,22 @@ function HeaderComponent() {
                                 {checkedInAt ? (
                                     `Checked in at ${checkedInAt}`
                                 ) : (
-                                    <NavDropdown.Item onClick={handleCheckInClick}>Check In</NavDropdown.Item>
+                                    <NavDropdown.Item className="no-hover-effect" onClick={handleCheckInClick}>Check In</NavDropdown.Item>
                                 )}
                             </div>
-                            <div className={`nav-link wide-nav-link ${checkedInAt && checkedOutAt ? 'disabled' : ''}`}>
-                                {checkedInAt && (checkedOutAt ? (
-                                    `Checked out at ${checkedOutAt}`
-                                ) : (
-                                    <NavDropdown.Item onClick={handleCheckOutClick}>Check Out</NavDropdown.Item>
-                                ))}
-                            </div>
+
+                            {checkedInAt && !checkedOutAt && (
+                                <div className={`nav-link wide-nav-link`}>
+                                    <NavDropdown.Item className="no-hover-effect" onClick={handleCheckOutClick}>Check Out</NavDropdown.Item>
+                                </div>
+                            )}
+
+                            {checkedInAt && checkedOutAt && (
+                                <div className={`nav-link wide-nav-link disabled`}>
+                                    Checked out at {checkedOutAt}
+                                </div>
+                            )}
+
                             <NavDropdown.Divider />
                             <Nav.Link as={Link} to="/logout" onClick={logout} className='nav-link wide-nav-link'>Logout</Nav.Link>
                         </NavDropdown>

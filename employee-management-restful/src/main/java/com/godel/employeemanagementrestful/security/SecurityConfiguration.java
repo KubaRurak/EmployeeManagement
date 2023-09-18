@@ -13,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -21,13 +22,15 @@ public class SecurityConfiguration {
 
 	@Autowired
     private JwtAuthEntryPoint authEntryPoint;
-
+	@Autowired
+	CorsConfigurationSource corsConfigurationSource;
 	
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {	
 		http.authorizeHttpRequests(
 				auth -> {
-					auth.requestMatchers(HttpMethod.POST, "/api/v1/auth/**").hasAnyAuthority("ROLE_Admin", "ROLE_Engineer", "ROLE_Operator");
+		            auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+		            auth.requestMatchers("/api/v1/auth/login").permitAll();
 					auth.requestMatchers(HttpMethod.GET, "/api/v1/payroll/**").hasAnyAuthority("ROLE_Admin", "ROLE_Engineer", "ROLE_Operator");
 					auth.requestMatchers(HttpMethod.GET, "/api/v1/statistics/**").hasAnyAuthority("ROLE_Admin", "ROLE_Operator");
 					auth.requestMatchers("/api/v1/timetables/**").hasAnyAuthority("ROLE_Admin", "ROLE_Engineer", "ROLE_Operator");
@@ -47,8 +50,9 @@ public class SecurityConfiguration {
 		http.sessionManagement(
 				session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				);
-		http.httpBasic();
+//		http.httpBasic();
 		http.csrf().disable();
+		http.cors().configurationSource(corsConfigurationSource);
 		http.headers().frameOptions().sameOrigin();
 		http.exceptionHandling().authenticationEntryPoint(authEntryPoint);
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

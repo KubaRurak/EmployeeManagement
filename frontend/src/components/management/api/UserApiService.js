@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getAuthHeaders } from './AuthHeaders';
 
 const apiClient = axios.create(
     {
@@ -6,5 +7,18 @@ const apiClient = axios.create(
     }
 );
 
-export const retrieveUserApi
-    = () => apiClient.get(``)
+export const retrieveUserApi = () => {
+    return apiClient.get('', { headers: getAuthHeaders() });
+};
+
+export const fetchUserByEmailApi = (emailId) => {
+    return apiClient.get(`/by-email`, {
+        params: { emailId },
+        headers: getAuthHeaders()
+    });
+};
+
+
+
+
+

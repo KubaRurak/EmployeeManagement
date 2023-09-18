@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getAuthHeaders } from './AuthHeaders';
 
 const apiClient = axios.create(
   {
@@ -15,21 +16,35 @@ export const getFilteredTimeTableApi = (userId, after, before) => {
     params.after = after;
     params.before = before;
   }
-  return apiClient.get('', { params });
+  return apiClient.get('', { params, headers: getAuthHeaders() });
 };
 
 export const editCheckTimesForDateApi = (userId, date, checkIn, checkOut) => {
-  return apiClient.put(`/${userId}/${date}/editTimes?checkIn=${checkIn}&checkOut=${checkOut}`);
+  return apiClient.put(`/${userId}/${date}/editTimes?checkIn=${checkIn}&checkOut=${checkOut}`, {}, {
+    headers: getAuthHeaders()
+  });
 };
 
-export const checkInApi
-  = (userId) => apiClient.put(`/${userId}/checkin`)
+export const checkInApi = (userId) => {
+  return apiClient.put(`/${userId}/checkin`, {}, {
+    headers: getAuthHeaders()
+  });
+}
 
-export const checkOutApi
-  = (userId) => apiClient.put(`/${userId}/checkout`)
+export const checkOutApi = (userId) => {
+  return apiClient.put(`/${userId}/checkout`, {}, {
+    headers: getAuthHeaders()
+  });
+}
 
-export const getCheckInApi
-  = (userId) => apiClient.get(`/${userId}/checkin`)
+export const getCheckInApi = (userId) => {
+  return apiClient.get(`/${userId}/checkin`, {
+    headers: getAuthHeaders()
+  });
+}
 
-export const getCheckOutApi
-  = (userId) => apiClient.get(`/${userId}/checkout`)
+export const getCheckOutApi = (userId) => {
+  return apiClient.get(`/${userId}/checkout`, {
+    headers: getAuthHeaders()
+  });
+}
