@@ -9,6 +9,7 @@ function ListActiveWorkOrdersComponent() {
 
 
   const authContext = useAuth()
+  const userId = authContext.userId
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -27,7 +28,7 @@ function ListActiveWorkOrdersComponent() {
     setSelectedWorkOrder(null);
     setMessage(null)
   }
-  const userId = authContext.userId
+  
 
   const [data, setData] = useState([])
   const [selectedWorkOrder, setSelectedWorkOrder] = useState(null);

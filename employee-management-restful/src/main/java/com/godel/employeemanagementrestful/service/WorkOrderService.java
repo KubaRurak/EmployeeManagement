@@ -92,6 +92,7 @@ public class WorkOrderService{
 		workOrder.setUser(user);
 		workOrder.setStartTimeStamp(LocalDateTime.now());
 		workOrder.setLastModificationTimeStamp(LocalDateTime.now());
+		workOrder.setStatus(OrderStatus.ACTIVE);
 		userRepository.save(user);
 		workOrderRepository.save(workOrder);
 	}

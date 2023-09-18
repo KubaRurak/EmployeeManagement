@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo, useCallback } from "react"
 import { getFilteredWorkOrdersApi } from "../api/WorkOrdersApiService"
 import TableContainer from '../table/TableContainer'
-// import { useAuth } from "./security/AuthContext"
+import { useAuth } from "../security/AuthContext"
 import WorkOrderDetailsModal from './WorkOrderDetailsModal';
 import EditWorkOrderDetailsModal from './EditWorkOrderDetailsModal';
 import CreateWorkOrderModal from './CreateWorkOrderModal';
@@ -11,7 +11,8 @@ import DatePickerComponent from "../DatePickerComponent";
 function ListAllWorkOrdersComponent() {
 
 
-  // const authContext = useAuth()
+  const authContext = useAuth()
+  const userRole = authContext.role;
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const handleCloseDetailsModal = () => setShowDetailsModal(false);
   const handleShowDetailsModal = useCallback(() => setShowDetailsModal(true), []);
@@ -45,25 +46,25 @@ function ListAllWorkOrdersComponent() {
     setMessage(message);
     const after = startDate ? startDate.toISOString().substring(0, 10) : last30Days.toISOString().substring(0, 10);
     const before = endDate ? endDate.toISOString().substring(0, 10) : today.toISOString().substring(0, 10);
-  
+
     getFilteredWorkOrdersApi(undefined, after, before)
       .then(response => {
         setData(response.data);
       })
       .catch(error => console.log(error));
-    }, [startDate, endDate, last30Days, today, setMessage, setData]);
-  
-    useEffect(() => {
-      setMessage("");
-      refreshWorkOrders();
-    }, [refreshWorkOrders, setMessage, today, last30Days]);
+  }, [startDate, endDate, last30Days, today, setMessage, setData]);
 
-    const showWorkOrderDetails = useCallback((workOrder) => {
-      return () => {
-        setSelectedWorkOrder(workOrder);
-        handleShowDetailsModal();
-      }
-    }, [handleShowDetailsModal, setSelectedWorkOrder]);
+  useEffect(() => {
+    setMessage("");
+    refreshWorkOrders();
+  }, [refreshWorkOrders, setMessage, today, last30Days]);
+
+  const showWorkOrderDetails = useCallback((workOrder) => {
+    return () => {
+      setSelectedWorkOrder(workOrder);
+      handleShowDetailsModal();
+    }
+  }, [handleShowDetailsModal, setSelectedWorkOrder]);
 
   const editWorkOrderDetails = useCallback((workOrder) => {
     return () => {
@@ -121,7 +122,12 @@ function ListAllWorkOrdersComponent() {
       },
       {
         Header: "Assigned to",
-        accessor: cell => `${cell.userFirstName} ${cell.userLastName}`,
+        accessor: cell => {
+          if (!cell.userFirstName && !cell.userLastName) {
+            return "";
+          }
+          return `${cell.userFirstName || ''} ${cell.userLastName || ''}`.trim();
+        },
         width: 180,
       },
       {
@@ -145,7 +151,14 @@ function ListAllWorkOrdersComponent() {
       {
         Header: "  ",
         Cell: ({ cell }) => (
-          <button type="button" className="btn btn-primary" onClick={editWorkOrderDetails(cell.row.original)}><i className="bi bi-pencil"></i></button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={editWorkOrderDetails(cell.row.original)}
+            disabled={userRole === "Engineer"}
+          >
+            <i className="bi bi-pencil"></i>
+          </button>
         ),
         disableSortBy: true,
         width: 30,
@@ -168,7 +181,7 @@ function ListAllWorkOrdersComponent() {
             setEndDate={setEndDate} />
         </div>
         <h2 style={{ marginLeft: "10px", flex: "1", textAlign: "center" }}>Work Orders</h2>
-        <button type="button" className="btn btn-primary" style={{ marginRight: "73px" }} onClick={handleShowCreateModal}>Add new</button>
+        <button type="button" className="btn btn-primary" style={{ marginRight: "73px" }} disabled={userRole === "Engineer"} onClick={handleShowCreateModal}>Add new</button>
       </div>
       {message && <div className="alert alert-success">{message}</div>}
       <TableContainer
@@ -194,7 +207,7 @@ function ListAllWorkOrdersComponent() {
         show={showCreateModal}
         handleClose={handleCloseCreateModal}
         refreshWorkOrders={refreshWorkOrders}
-        setMessage={setMessage}        
+        setMessage={setMessage}
       />
     </>
   );

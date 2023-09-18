@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getAuthHeaders } from './AuthHeaders';
 
 const apiClient = axios.create(
     {
@@ -6,5 +7,7 @@ const apiClient = axios.create(
     }
 );
 
-export const retrieveOrderTypesApi
-    = () => apiClient.get(``)
+
+export const retrieveOrderTypesApi = () => {
+    return apiClient.get('', { headers: getAuthHeaders() });
+};

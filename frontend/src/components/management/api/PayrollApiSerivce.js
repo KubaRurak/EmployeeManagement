@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getAuthHeaders } from './AuthHeaders';
 
 const apiClient = axios.create(
     {
@@ -14,6 +15,6 @@ export const getFilteredPayrolls = (userId, payrollMonth) => {
     if (payrollMonth) {
       params.payrollMonth = payrollMonth;
     }
-    return apiClient.get('',{ params });
+    return apiClient.get('',{ params, headers: getAuthHeaders() });
   };
 

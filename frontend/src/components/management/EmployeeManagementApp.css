@@ -16,10 +16,6 @@ footer {
     background: linear-gradient(to right, #f9fafb, #f7f7f7);
 }
 
-.EmployeeManagementApp.no-header {
-    padding-top: 0px !important;
-    background: none !important; /* or set to some other default if desired */
-}
 
 .btn-primary {
     color: #fff;

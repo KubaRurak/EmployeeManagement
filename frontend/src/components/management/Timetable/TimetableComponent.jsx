@@ -3,14 +3,14 @@ import DatePickerComponent from "../DatePickerComponent";
 import { getFilteredTimeTableApi } from "../api/TimeTableApiService";
 import TableContainer from '../table/TableContainer';
 import EditTimetableModal from './EditTimetableModal';
+import { useAuth } from '../security/AuthContext'
 
 
 function TimetableComponent() {
 
 
-  // const authContext = useAuth()
-
-  // const userId = authContext.userId
+  const authContext = useAuth()
+  const userRole = authContext.role;
 
   const [showEditModal, setShowEditModal] = useState(false);
   const handleCloseEditModal = () => setShowEditModal(false);
@@ -88,7 +88,14 @@ function TimetableComponent() {
       {
         Header: "  ",
         Cell: ({ cell }) => (
-          <button type="button" className="btn btn-primary" onClick={editTimeTableDetails(cell.row.original)}><i className="bi bi-pencil"></i></button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={editTimeTableDetails(cell.row.original)}
+            disabled={userRole === "Engineer"}
+          >
+            <i className="bi bi-pencil"></i>
+          </button>
         ),
         disableSortBy: true,
         width: 30,
@@ -112,7 +119,7 @@ function TimetableComponent() {
         </div>
         <h2 style={{ marginLeft: "10px", flex: "1", textAlign: "center" }}>Time Table</h2>
       </div>
-            {message && <div className="alert alert-success">{message}</div>}
+      {message && <div className="alert alert-success">{message}</div>}
       <TableContainer
         columns={columns}
         data={data}
