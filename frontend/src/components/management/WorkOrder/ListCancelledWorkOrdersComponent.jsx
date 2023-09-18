@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo, useCallback } from "react"
 import { getFilteredWorkOrdersApi } from "../api/WorkOrdersApiService"
 import TableContainer from '../table/TableContainer'
-// import { useAuth } from "./security/AuthContext"
+import { useAuth } from "../security/AuthContext"
 import WorkOrderDetailsModal from './WorkOrderDetailsModal';
 import EditWorkOrderDetailsModal from './EditWorkOrderDetailsModal';
 import CreateWorkOrderModal from './CreateWorkOrderModal';
@@ -11,7 +11,8 @@ import DatePickerComponent from "../DatePickerComponent";
 function ListCancelledWorkOrdersComponent() {
 
 
-  // const authContext = useAuth()
+  const authContext = useAuth()
+  const userRole = authContext.role;
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const handleCloseDetailsModal = () => setShowDetailsModal(false);
   const handleShowDetailsModal = useCallback(() => setShowDetailsModal(true), []);
@@ -45,7 +46,7 @@ function ListCancelledWorkOrdersComponent() {
     setMessage(message);
     const after = startDate ? startDate.toISOString().substring(0, 10) : last30Days.toISOString().substring(0, 10);
     const before = endDate ? endDate.toISOString().substring(0, 10) : today.toISOString().substring(0, 10);
-    const status = 'CANCELLED';
+    const status = 'UNASSIGNED';
   
     getFilteredWorkOrdersApi(undefined, after, before, status)
       .then(response => {
@@ -122,7 +123,12 @@ function ListCancelledWorkOrdersComponent() {
       },
       {
         Header: "Assigned to",
-        accessor: cell => `${cell.userFirstName} ${cell.userLastName}`,
+        accessor: cell => {
+          if (!cell.userFirstName && !cell.userLastName) {
+            return "";
+          }
+          return `${cell.userFirstName || ''} ${cell.userLastName || ''}`.trim();
+        },
         width: 180,
       },
       {
@@ -161,15 +167,15 @@ function ListCancelledWorkOrdersComponent() {
   return (
     <>
       <div style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", margin: "20px" }}>
-        <div style={{ position: "absolute", left: "0", marginLeft: "15px" }}>
+        <div style={{ position: "absolute", left: "0", marginLeft: "45px" }}>
           <DatePickerComponent
             startDate={startDate}
             setStartDate={setStartDate}
             endDate={endDate}
             setEndDate={setEndDate} />
         </div>
-        <h2 style={{ marginLeft: "10px", flex: "1", textAlign: "center" }}>Cancelled Work Orders</h2>
-        <button type="button" className="btn btn-primary" style={{ marginRight: "43px" }} onClick={handleShowCreateModal}>Add new</button>
+        <h2 style={{ marginLeft: "10px", flex: "1", textAlign: "center" }}>Work Orders</h2>
+        <button type="button" className="btn btn-primary" style={{ marginRight: "73px" }} disabled={userRole === "Engineer"} onClick={handleShowCreateModal}>Add new</button>
       </div>
       {message && <div className="alert alert-success">{message}</div>}
       <TableContainer

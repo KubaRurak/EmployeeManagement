@@ -74,7 +74,7 @@ function HeaderComponent() {
                         <Nav.Link as={Link} to="/timetables"><i className="bi-calendar3" /> Timetable</Nav.Link>
                         <Nav.Link as={Link} to="/payroll"><i className="bi-wallet2" /> Payroll</Nav.Link>
                         {(userRole === "Admin" || userRole === "Operator") && (
-                            <Nav.Link as={Link} to={"/todos"}><i className="bi-graph-up" /> Dashboard</Nav.Link>
+                            <Nav.Link as={Link} to={"/dashboard"}><i className="bi-graph-up" /> Dashboard</Nav.Link>
                         )}
                     </Nav>
                     <Nav style={{ paddingRight: '50px' }}>

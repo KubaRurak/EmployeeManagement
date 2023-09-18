@@ -110,7 +110,7 @@ function TimetableComponent() {
   return (
     <>
       <div style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", margin: "20px" }}>
-        <div style={{ position: "absolute", left: "0", marginLeft: "15px" }}>
+        <div style={{ position: "absolute", left: "0", marginLeft: "45px" }}>
           <DatePickerComponent
             startDate={startDate}
             setStartDate={setStartDate}

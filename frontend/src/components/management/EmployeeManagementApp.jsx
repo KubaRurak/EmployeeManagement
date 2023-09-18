@@ -10,6 +10,7 @@ import AuthProvider, { useAuth } from './security/AuthContext'
 import './EmployeeManagementApp.css'
 import TimetableComponent from './Timetable/TimetableComponent'
 import PayrollComponent from './Payroll/PayrollComponent'
+import DashboardComponent from './DashboardComponent'
 
 export default function EmployeeManagementApp() {
 
@@ -66,6 +67,11 @@ function AppContent() {
                         <Route path='/logout' element={
                             <AuthenticatedRoute>
                                 <LogoutComponent /> 
+                            </AuthenticatedRoute>
+                        } />
+                        <Route path='/dashboard' element={
+                            <AuthenticatedRoute>
+                                <DashboardComponent /> 
                             </AuthenticatedRoute>
                         } />
                         

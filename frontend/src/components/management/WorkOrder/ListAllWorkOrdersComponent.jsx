@@ -6,7 +6,7 @@ import WorkOrderDetailsModal from './WorkOrderDetailsModal';
 import EditWorkOrderDetailsModal from './EditWorkOrderDetailsModal';
 import CreateWorkOrderModal from './CreateWorkOrderModal';
 import DatePickerComponent from "../DatePickerComponent";
-
+import {Chip} from '@mui/material';
 
 function ListAllWorkOrdersComponent() {
 
@@ -27,7 +27,12 @@ function ListAllWorkOrdersComponent() {
 
   const [message, setMessage] = useState("");
 
-  // const userId = authContext.userId
+  const statusColors = {
+    ACTIVE: 'primary.main',
+    UNASSIGNED: 'secondary.main',
+    CANCELLED: 'error.main',
+    COMPLETED: 'success.main'
+  };
 
   const [data, setData] = useState([])
   const [selectedWorkOrder, setSelectedWorkOrder] = useState(null);
@@ -94,13 +99,24 @@ function ListAllWorkOrdersComponent() {
       {
         Header: "Status",
         accessor: "status",
-        width: 100
+        width: 100,
+        Cell: ({ value }) => (
+          <Chip
+            sx={{
+              px: "4px",
+              backgroundColor: statusColors[value],
+              color: "#fff"
+            }}
+            size="small"
+            label={value}
+          />
+        )
       },
       {
         Header: "Start Time",
         accessor: "startTimeStamp",
         width: 100,
-        Cell: ({ cell }) => cell.value ? <div title={cell.value}>{cell.value.substring(0, 10)}...</div> : <div></div>, // textoverflowelipsis itp
+        Cell: ({ cell }) => cell.value ? <div title={cell.value}>{cell.value.substring(0, 10)}...</div> : <div></div>,
       },
       {
         Header: "End Time",
