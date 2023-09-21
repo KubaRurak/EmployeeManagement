@@ -3,6 +3,7 @@ package com.godel.employeemanagementrestful.service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,5 +118,9 @@ public class WorkOrderService{
         workOrder.setLastModificationTimeStamp(LocalDateTime.now());
         workOrderRepository.save(workOrder);
         return workOrderMapper.mapperEntityToDto(workOrder);
+    }
+    
+    public List<WorkOrder> getRecentWorkOrders() {
+        return workOrderRepository.findTop4ByOrderByLastModificationTimeStampDesc();
     }
 }

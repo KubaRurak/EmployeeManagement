@@ -26,11 +26,11 @@ tr {
 }
 
 tr:nth-child(even) {
-  background-color: #ececee; /* Light grey for alternate rows */
+  background-color: #ffffff; /* Light grey for alternate rows */
 }
 
 tr:nth-child(odd) {
-  background-color: #f4f4f6; /* Very light grey background for normal rows */
+  background-color: #ffffff; /* Very light grey background for normal rows */
 }
 
 tr:hover td {
@@ -52,4 +52,8 @@ input, select {
 
 .bi::before, [class^="bi-"]::before, [class*=" bi-"]::before {
   margin-right: 5px; /* Consistent with header icon spacing */
+}
+
+.padded-header, .sortable-column {
+  margin-bottom: 5px; /* You can adjust this value based on your requirement */
 }

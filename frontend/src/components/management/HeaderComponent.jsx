@@ -12,7 +12,7 @@ function HeaderComponent() {
 
     const authContext = useAuth()
     const isAuthenticated = authContext.isAuthenticated
-    const userRole = authContext.role; // Assuming you have role in your authContext
+    const userRole = authContext.role;
     const username = authContext.username
     const userId = authContext.userId
 
@@ -22,6 +22,9 @@ function HeaderComponent() {
 
 
     useEffect(() => {
+        if (!userId) {
+            return;
+        }
         Promise.all([
             getCheckInApi(userId),
             getCheckOutApi(userId)
@@ -34,7 +37,10 @@ function HeaderComponent() {
     }, [userId]);
 
 
-    const handleCheckInClick = async () => {
+    const handleCheckInClick = async (event) => {
+        // Stop the event from propagating up to parents
+        event.stopPropagation();
+    
         try {
             await checkInApi(userId);
             const currentTime = new Date().toLocaleTimeString();
@@ -43,8 +49,11 @@ function HeaderComponent() {
             console.error(error);
         }
     }
-
-    const handleCheckOutClick = async () => {
+    
+    const handleCheckOutClick = async (event) => {
+        // Stop the event from propagating up to parents
+        event.stopPropagation();
+    
         try {
             await checkOutApi(userId);
             const currentTime = new Date().toLocaleTimeString();
@@ -69,12 +78,12 @@ function HeaderComponent() {
                         <NavDropdown className="left-dropdown" title={<><i className="bi-calendar3"></i> Work Orders</>} id="collasible-nav-dropdown">
                             <Nav.Link as={Link} to="/activeworkorders" className='nav-link wide-nav-link'><i className="bi-alarm"></i> Your Work Orders</Nav.Link>
                             <Nav.Link as={Link} to="/workorders" className='nav-link wide-nav-link'><i className="bi-database"></i> All Work Orders</Nav.Link>
-                            <Nav.Link as={Link} to="/cancelledworkorders" className='nav-link wide-nav-link'><i className="bi-trash"></i> Cancelled Work Orders</Nav.Link>
+                            <Nav.Link as={Link} to="/cancelledworkorders" className='nav-link wide-nav-link'><i className="bi-card-checklist"></i> Unassigned Work Orders</Nav.Link>
                         </NavDropdown>
                         <Nav.Link as={Link} to="/timetables"><i className="bi-calendar3" /> Timetable</Nav.Link>
                         <Nav.Link as={Link} to="/payroll"><i className="bi-wallet2" /> Payroll</Nav.Link>
                         {(userRole === "Admin" || userRole === "Operator") && (
-                            <Nav.Link as={Link} to={"/todos"}><i className="bi-graph-up" /> Dashboard</Nav.Link>
+                            <Nav.Link as={Link} to={"/dashboard"}><i className="bi-graph-up" /> Dashboard</Nav.Link>
                         )}
                     </Nav>
                     <Nav style={{ paddingRight: '50px' }}>

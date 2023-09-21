@@ -1,17 +1,20 @@
 import { useEffect, useState, useMemo, useCallback } from "react"
 import { getFilteredWorkOrdersApi } from "../api/WorkOrdersApiService"
 import TableContainer from '../table/TableContainer'
-// import { useAuth } from "./security/AuthContext"
+import { useAuth } from "../security/AuthContext"
 import WorkOrderDetailsModal from './WorkOrderDetailsModal';
 import EditWorkOrderDetailsModal from './EditWorkOrderDetailsModal';
 import CreateWorkOrderModal from './CreateWorkOrderModal';
 import DatePickerComponent from "../DatePickerComponent";
+import statusColors from '../statusColors.js';
+import {Chip} from '@mui/material';
 
 
 function ListCancelledWorkOrdersComponent() {
 
 
-  // const authContext = useAuth()
+  const authContext = useAuth()
+  const userRole = authContext.role;
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const handleCloseDetailsModal = () => setShowDetailsModal(false);
   const handleShowDetailsModal = useCallback(() => setShowDetailsModal(true), []);
@@ -45,7 +48,7 @@ function ListCancelledWorkOrdersComponent() {
     setMessage(message);
     const after = startDate ? startDate.toISOString().substring(0, 10) : last30Days.toISOString().substring(0, 10);
     const before = endDate ? endDate.toISOString().substring(0, 10) : today.toISOString().substring(0, 10);
-    const status = 'CANCELLED';
+    const status = 'UNASSIGNED';
   
     getFilteredWorkOrdersApi(undefined, after, before, status)
       .then(response => {
@@ -79,7 +82,8 @@ function ListCancelledWorkOrdersComponent() {
       {
         Header: "Order Name",
         accessor: "orderName",
-        width: 130
+        width: 130,
+        Cell: ({ value }) => <div style={{fontWeight: 500}}>{value}</div>
       },
       {
         Header: "Type",
@@ -94,7 +98,18 @@ function ListCancelledWorkOrdersComponent() {
       {
         Header: "Status",
         accessor: "status",
-        width: 100
+        width: 150,
+        Cell: ({ value }) => (
+          <Chip
+            sx={{
+              px: "4px",
+              backgroundColor: statusColors[value],
+              color: "#fff"
+            }}
+            size="small"
+            label={value}
+          />
+        )
       },
       {
         Header: "Start Time",
@@ -122,7 +137,12 @@ function ListCancelledWorkOrdersComponent() {
       },
       {
         Header: "Assigned to",
-        accessor: cell => `${cell.userFirstName} ${cell.userLastName}`,
+        accessor: cell => {
+          if (!cell.userFirstName && !cell.userLastName) {
+            return "";
+          }
+          return `${cell.userFirstName || ''} ${cell.userLastName || ''}`.trim();
+        },
         width: 180,
       },
       {
@@ -146,7 +166,14 @@ function ListCancelledWorkOrdersComponent() {
       {
         Header: "  ",
         Cell: ({ cell }) => (
-          <button type="button" className="btn btn-primary" onClick={editWorkOrderDetails(cell.row.original)}><i className="bi bi-pencil"></i></button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={editWorkOrderDetails(cell.row.original)}
+            disabled={userRole === "Engineer"}
+          >
+            <i className="bi bi-pencil"></i>
+          </button>
         ),
         disableSortBy: true,
         width: 30,
@@ -161,15 +188,15 @@ function ListCancelledWorkOrdersComponent() {
   return (
     <>
       <div style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", margin: "20px" }}>
-        <div style={{ position: "absolute", left: "0", marginLeft: "15px" }}>
+        <div style={{ position: "absolute", left: "0", marginLeft: "45px" }}>
           <DatePickerComponent
             startDate={startDate}
             setStartDate={setStartDate}
             endDate={endDate}
             setEndDate={setEndDate} />
         </div>
-        <h2 style={{ marginLeft: "10px", flex: "1", textAlign: "center" }}>Cancelled Work Orders</h2>
-        <button type="button" className="btn btn-primary" style={{ marginRight: "43px" }} onClick={handleShowCreateModal}>Add new</button>
+        <h2 style={{ marginLeft: "10px", flex: "1", textAlign: "center" }}>Unassigned Work Orders</h2>
+        <button type="button" className="btn btn-primary" style={{ marginRight: "73px" }} disabled={userRole === "Engineer"} onClick={handleShowCreateModal}>Add new</button>
       </div>
       {message && <div className="alert alert-success">{message}</div>}
       <TableContainer
@@ -183,6 +210,7 @@ function ListCancelledWorkOrdersComponent() {
         handleClose={handleCloseDetailsModal}
         selectedWorkOrder={selectedWorkOrder}
         handleShowEditModal={handleShowEditModal}
+        userRole={userRole}
       />
       <EditWorkOrderDetailsModal
         show={showEditModal}

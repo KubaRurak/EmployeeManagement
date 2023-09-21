@@ -50,13 +50,10 @@ function TableContainer({ columns, data }) {
     };
 
     return (
-        <div className="card" style={{marginLeft:"50px", marginRight:"50px", marginTop:"20px"}}>
+        <div className="card" style={{marginLeft:"50px", marginRight:"50px", marginTop:"20px", marginBottom:"20px"}}>
           <div className="card-body">
             <table className="table"
-                     {...getTableProps()}
-                     defaultPageSize={10}
-                     pageSizeOptions={[10, 20, 30, 40, 50]}
-                     showPaginationBottom={true}>
+                     {...getTableProps()}>
               <thead>
                 {headerGroups.map((headerGroup) => (
                   <tr {...headerGroup.getHeaderGroupProps()}>
@@ -66,7 +63,7 @@ function TableContainer({ columns, data }) {
                             style: {minWidth: column.minWidth, width: column.width, maxWidth: column.maxWidth},
                         })}
                       >
-                        {column.render("Header")}
+                        <span className="padded-header">{column.render("Header")}</span>
                         {((headerGroup.headers.indexOf(column) !== headerGroup.headers.length - 1)
                         && (headerGroup.headers.indexOf(column) !== headerGroup.headers.length - 2)) && (
                         <span className="sortable-column">

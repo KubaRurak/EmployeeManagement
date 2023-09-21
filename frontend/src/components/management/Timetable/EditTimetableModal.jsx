@@ -13,8 +13,8 @@ function EditTimetableModal({ show, handleClose, selectedRecord, refreshTimetabl
   const initialValues = useMemo(() => ({
     timetableId: selectedRecord?.timetableId || "",
     date: selectedRecord?.date || "",
-    checkIn: selectedRecord?.checkIn || "",  // ensure a value even if null or undefined
-    checkOut: selectedRecord?.checkOut || "",  // ensure a value even if null or undefined
+    checkIn: selectedRecord?.checkIn || "",
+    checkOut: selectedRecord?.checkOut || "",
     hoursWorked: selectedRecord?.hoursWorked || "",
     trainingTime: selectedRecord?.trainingTime || "",
     onLeave: selectedRecord?.onLeave || false,
@@ -139,7 +139,7 @@ function EditTimetableModal({ show, handleClose, selectedRecord, refreshTimetabl
 EditTimetableModal.propTypes = {
   show: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  selectedRecord: PropTypes.object.isRequired,
+  selectedRecord: PropTypes.object,
   refreshTimetable: PropTypes.func.isRequired,
 };
 

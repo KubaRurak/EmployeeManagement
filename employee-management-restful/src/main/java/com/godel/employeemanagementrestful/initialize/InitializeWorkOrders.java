@@ -61,13 +61,13 @@ public class InitializeWorkOrders {
     	
     }
 
-	public WorkOrder generateWorkOrder() {
+	public WorkOrder generateWorkOrder(OrderStatus status) {
 		List<OrderType> orderTypes = orderTypeRepository.findAll();
 		OrderType orderType = orderTypes.get(new Random().nextInt(orderTypes.size()));
         return WorkOrder.builder()
 				.orderName(generateWorkOrderName())
 				.orderType(orderType)
-				.status(OrderStatus.ACTIVE)
+				.status(status)
 				.comments("")
 				.build();
 	}
@@ -76,7 +76,7 @@ public class InitializeWorkOrders {
 	    List<Customer> customers = customerRepository.findAll();
 	    List<User> users = userRepository.findAll();
 		for (int i=0;i<numberOfWorkOrders;i++) {
-			WorkOrder workOrder = generateWorkOrder();
+			WorkOrder workOrder = generateWorkOrder(OrderStatus.ACTIVE);
 			workOrderRepository.save(workOrder);
 			Long workOrderId = workOrder.getOrderId();
 	        workOrderService.assignCustomerToWorkOrder(
@@ -86,10 +86,22 @@ public class InitializeWorkOrders {
 	        		.getUserId(), workOrderId);
 		}
 	}
+	
+	public void saveUnassignedWorkOrders(int numberOfWorkOrders) {
+	    List<Customer> customers = customerRepository.findAll();
+		for (int i=0;i<numberOfWorkOrders;i++) {
+			WorkOrder workOrder = generateWorkOrder(OrderStatus.UNASSIGNED);
+			workOrderRepository.save(workOrder);
+			Long workOrderId = workOrder.getOrderId();
+	        workOrderService.assignCustomerToWorkOrder(
+	        		customers.get(new Random().nextInt(customers.size()))
+	        		.getCustomerId(), workOrderId);
+		}
+	}
 	public void saveWorkOrdersForUser(int numberOfWorkOrders, Long userId) {
 	    List<Customer> customers = customerRepository.findAll();
 		for (int i=0;i<numberOfWorkOrders;i++) {
-			WorkOrder workOrder = generateWorkOrder();
+			WorkOrder workOrder = generateWorkOrder(OrderStatus.ACTIVE);
 			workOrderRepository.save(workOrder);
 			Long workOrderId = workOrder.getOrderId();
 	        workOrderService.assignCustomerToWorkOrder(
@@ -117,6 +129,9 @@ public class InitializeWorkOrders {
 		        float daysToAdd = days*variance;
 		        int totalMinutesToAdd = (int) Math.ceil(daysToAdd * 24 * 60);
 		        endDate = startDate.plusMinutes(totalMinutesToAdd);
+		        if (endDate.isAfter(LocalDateTime.now())) {
+	                endDate = LocalDateTime.now();
+	            }
 		        workOrder.setEndTimeStamp(endDate);
 		        workOrder.setStatus(OrderStatus.COMPLETED);
 		        workOrder.setLastModificationTimeStamp(endDate);

@@ -6,7 +6,8 @@ import WorkOrderDetailsModal from './WorkOrderDetailsModal';
 import EditWorkOrderDetailsModal from './EditWorkOrderDetailsModal';
 import CreateWorkOrderModal from './CreateWorkOrderModal';
 import DatePickerComponent from "../DatePickerComponent";
-
+import {Chip} from '@mui/material';
+import statusColors from '../statusColors.js';
 
 function ListAllWorkOrdersComponent() {
 
@@ -27,7 +28,7 @@ function ListAllWorkOrdersComponent() {
 
   const [message, setMessage] = useState("");
 
-  // const userId = authContext.userId
+
 
   const [data, setData] = useState([])
   const [selectedWorkOrder, setSelectedWorkOrder] = useState(null);
@@ -79,7 +80,8 @@ function ListAllWorkOrdersComponent() {
       {
         Header: "Order Name",
         accessor: "orderName",
-        width: 130
+        width: 130,
+        Cell: ({ value }) => <div style={{fontWeight: 500}}>{value}</div>
       },
       {
         Header: "Type",
@@ -94,13 +96,24 @@ function ListAllWorkOrdersComponent() {
       {
         Header: "Status",
         accessor: "status",
-        width: 100
+        width: 150,
+        Cell: ({ value }) => (
+          <Chip
+            sx={{
+              px: "4px",
+              backgroundColor: statusColors[value],
+              color: "#fff"
+            }}
+            size="small"
+            label={value}
+          />
+        )
       },
       {
         Header: "Start Time",
         accessor: "startTimeStamp",
         width: 100,
-        Cell: ({ cell }) => cell.value ? <div title={cell.value}>{cell.value.substring(0, 10)}...</div> : <div></div>, // textoverflowelipsis itp
+        Cell: ({ cell }) => cell.value ? <div title={cell.value}>{cell.value.substring(0, 10)}...</div> : <div></div>,
       },
       {
         Header: "End Time",
@@ -165,7 +178,7 @@ function ListAllWorkOrdersComponent() {
       },
 
     ],
-    [editWorkOrderDetails, showWorkOrderDetails]
+    [editWorkOrderDetails, showWorkOrderDetails, userRole]
   )
 
 
@@ -195,6 +208,7 @@ function ListAllWorkOrdersComponent() {
         handleClose={handleCloseDetailsModal}
         selectedWorkOrder={selectedWorkOrder}
         handleShowEditModal={handleShowEditModal}
+        userRole={userRole}
       />
       <EditWorkOrderDetailsModal
         show={showEditModal}

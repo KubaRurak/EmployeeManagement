@@ -229,9 +229,11 @@ function CreateWorkOrderModal({ show, handleClose, refreshWorkOrders, setMessage
                             <td><label>Name</label></td>
                             <td>{props.values.userName}</td>
                           </tr>
-                          <tr>
-                            <h5>Customer details</h5>
-                          </tr>
+                        </tbody>
+                      </table>
+                      <h5>Customer details</h5>
+                      <table className='table'>
+                        <tbody>
                           <tr>
                             <td><label>Email</label></td>
                             <td>

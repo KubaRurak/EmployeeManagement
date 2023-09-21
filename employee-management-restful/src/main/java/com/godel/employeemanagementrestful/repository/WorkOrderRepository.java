@@ -41,5 +41,9 @@ public interface WorkOrderRepository extends JpaRepository<WorkOrder, Long> {
 
 	List<WorkOrder> findAllByOrderIdIn(List<Long> orderIds);
 
+	Long countByStatus(OrderStatus status);
+
+	List<WorkOrder> findTop4ByOrderByLastModificationTimeStampDesc();
+
 
 }

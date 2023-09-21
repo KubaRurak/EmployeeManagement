@@ -78,12 +78,15 @@ public class TimetableController {
 	}
 	
 	@GetMapping("{userId}/checkin")
-	public LocalTime getCheckIn(@PathVariable Long userId) {
-		return timetableService.getTodayCheckInTime(userId);
-	}	
+	public ResponseEntity<LocalTime> getCheckIn(@PathVariable Long userId) {
+	    LocalTime checkInTime = timetableService.getTodayCheckInTime(userId);
+	    return ResponseEntity.ok(checkInTime);
+	}
+
 	@GetMapping("{userId}/checkout")
-	public LocalTime getCheckOut(@PathVariable Long userId) {
-		return timetableService.getTodayCheckOutTime(userId);
+	public ResponseEntity<LocalTime> getCheckOut(@PathVariable Long userId) {
+	    LocalTime checkOutTime = timetableService.getTodayCheckOutTime(userId);
+	    return ResponseEntity.ok(checkOutTime);
 	}
 	
 	@PreAuthorize("hasAnyAuthority('OPERATOR', 'ADMIN')")

@@ -20,37 +20,37 @@ public class InitializeOrderTypes {
 		List<OrderType> orderTypes = Arrays.asList(
 		OrderType.builder()
 	                .orderTypeName("Type A")
-	                .price(new BigDecimal(5000))
+	                .price(new BigDecimal(10000))
 	                .expectedDays(10.0f)
 	                .build(),
 	    OrderType.builder()
 	                .orderTypeName("Type B")
-	                .price(new BigDecimal(1000))
-	                .expectedDays(3.0f)
-	                .build(),
-	    OrderType.builder()
-	                .orderTypeName("Type C")
-	                .price(new BigDecimal(1500))
+	                .price(new BigDecimal(3000))
 	                .expectedDays(4.0f)
 	                .build(),
 	    OrderType.builder()
+	                .orderTypeName("Type C")
+	                .price(new BigDecimal(5000))
+	                .expectedDays(5.0f)
+	                .build(),
+	    OrderType.builder()
 	                .orderTypeName("Type D")
-	                .price(new BigDecimal(400))
+	                .price(new BigDecimal(900))
 	                .expectedDays(1.0f)
 	                .build(),
 	    OrderType.builder()
 	                .orderTypeName("Type E")
-	                .price(new BigDecimal(600))
+	                .price(new BigDecimal(1300))
 	                .expectedDays(1.5f)
 	                .build(),
 	    OrderType.builder()
 	                .orderTypeName("Type F")
-	                .price(new BigDecimal(800))
+	                .price(new BigDecimal(1500))
 	                .expectedDays(1.3f)
 	                .build(),
 	    OrderType.builder()
 	                .orderTypeName("Type G")
-	                .price(new BigDecimal(2500))
+	                .price(new BigDecimal(4500))
 	                .expectedDays(5.0f)
 	                .build()           
 	    );

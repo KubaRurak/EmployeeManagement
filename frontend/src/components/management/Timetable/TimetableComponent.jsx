@@ -21,8 +21,7 @@ function TimetableComponent() {
   const [message, setMessage] = useState("");
 
 
-  const today = new Date();
-
+  const today = useMemo(() => new Date(), []);
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState(today);
 
@@ -33,9 +32,8 @@ function TimetableComponent() {
     }
   }, [handleShowEditModal]);
 
-  useEffect(() => refreshTimetable(), [startDate, endDate])
 
-  function refreshTimetable() {
+  const refreshTimetable = useCallback(() => {
 
     const after = startDate ? startDate.toISOString().substring(0, 10) : today.toISOString().substring(0, 10);
     const before = endDate ? endDate.toISOString().substring(0, 10) : today.toISOString().substring(0, 10);
@@ -45,25 +43,28 @@ function TimetableComponent() {
         setData(response.data);
       })
       .catch(error => console.log(error));
-  }
+    }, [startDate, endDate, today]);
+  
+  useEffect(() => refreshTimetable(), [startDate, endDate, refreshTimetable])
 
 
   const columns = useMemo(
     (props) => [
+      {
+        Header: "Employee",
+        accessor: cell => `${cell.userFirstName} ${cell.userLastName}`,
+        width: 130,
+        Cell: ({ value }) => <div style={{ fontWeight: 500 }}>{value}</div>
+      },
       {
         Header: "Office Code",
         accessor: "officeCode",
         width: 50,
       },
       {
-        Header: "Employee",
-        accessor: cell => `${cell.userFirstName} ${cell.userLastName}`,
-        width: 130,
-      },
-      {
         Header: "Email",
         accessor: "userEmail",
-        width: 150
+        width: 300
       },
       {
         Header: "Date",
@@ -102,7 +103,7 @@ function TimetableComponent() {
       },
 
     ],
-    []
+    [editTimeTableDetails, userRole]
   )
 
 
@@ -110,7 +111,7 @@ function TimetableComponent() {
   return (
     <>
       <div style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", margin: "20px" }}>
-        <div style={{ position: "absolute", left: "0", marginLeft: "15px" }}>
+        <div style={{ position: "absolute", left: "0", marginLeft: "45px" }}>
           <DatePickerComponent
             startDate={startDate}
             setStartDate={setStartDate}

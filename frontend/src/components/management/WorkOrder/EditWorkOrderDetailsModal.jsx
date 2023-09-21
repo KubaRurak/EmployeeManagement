@@ -27,7 +27,6 @@ function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, refre
       setOrderTypes(orderTypeResponse.data);
       setUsers(userResponse.data);
       setStatusTypes(statusTypeResponse.data);
-      console.log(statusTypeResponse);
     } catch (error) {
       console.error(error);
     }
@@ -37,7 +36,9 @@ function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, refre
     fetchData();
   }, [fetchData]);
 
-  const initialValues = useMemo(() => ({
+  const initialValues = useMemo(() => {
+
+    return {
     orderId: selectedWorkOrder?.orderId,
     orderName: selectedWorkOrder?.orderName,
     orderTypeId: selectedWorkOrder?.orderType.id,
@@ -56,7 +57,8 @@ function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, refre
     customerName: `${selectedWorkOrder?.customerFirstName} ${selectedWorkOrder?.customerLastName}`,
     customerEmail: selectedWorkOrder?.customerEmail,
     customerCompanyName: selectedWorkOrder?.customerCompanyName
-  }), [selectedWorkOrder]);
+    };
+  }, [selectedWorkOrder]);
 
   const onUserEmailChange = useCallback((event, setValues) => {
     const emailId = event.target.value;
@@ -64,12 +66,18 @@ function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, refre
     const userName = `${user.firstName} ${user.lastName}`;
 
     if (user) {
-      setValues({
+      const updatedValues = {
         ...initialValues,
         userId: user.userId,
         userName,
         userEmail: user.EmailId,
-      });
+      };
+
+      if (!initialValues.userId) {
+        updatedValues.status = 'ACTIVE';
+      }
+
+      setValues(updatedValues);
     }
   }, [users, initialValues]);
 
@@ -105,21 +113,7 @@ function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, refre
     }
   }, [customers, initialValues]);
 
-  const onSubmit = useCallback((values) => {
-    const workOrder = createWorkOrderObject(values);
-    editWorkOrderApi(values.orderId, workOrder)
-      .then(response => {
-        handleClose();
-        refreshWorkOrders("Work Order edited successfully!");
-        setMessage("Work Order edited successfully!");
-      })
-      .catch(error => {
-        console.error(error);
-        // show error message to user
-      });
-  }, [handleClose, refreshWorkOrders, setMessage]);
-
-  const createWorkOrderObject = (values) => ({
+  const createWorkOrderObject = useCallback((values) => ({
     orderId: values.orderId,
     orderName: values.orderName,
     orderType: {
@@ -142,7 +136,21 @@ function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, refre
     customerLastName: values.customerLastName,
     customerEmail: values.customerEmail,
     customerCompanyName: values.customerCompanyName,
-  });
+  }), []);
+
+  const onSubmit = useCallback((values) => {
+    const workOrder = createWorkOrderObject(values);
+    editWorkOrderApi(values.orderId, workOrder)
+      .then(response => {
+        handleClose();
+        refreshWorkOrders("Work Order edited successfully!");
+        setMessage("Work Order edited successfully!");
+      })
+      .catch(error => {
+        console.error(error);
+        // show error message to user
+      });
+  }, [handleClose, refreshWorkOrders, setMessage, createWorkOrderObject]);
 
   const onDelete = useCallback(() => {
     const workOrder = createWorkOrderObject({ ...initialValues, status: 'CANCELLED' });
@@ -155,7 +163,7 @@ function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, refre
       .catch(error => {
         console.error(error);
       });
-  }, [handleClose, refreshWorkOrders, setMessage, initialValues, createWorkOrderObject]);
+    }, [handleClose, refreshWorkOrders, setMessage, initialValues, createWorkOrderObject]);
 
   return (
     <div>
@@ -252,7 +260,7 @@ function EditWorkOrderDetailsModal({ show, handleClose, selectedWorkOrder, refre
                           </tr>
                           <tr>
                             <td><label>Name</label></td>
-                            <td>{props.values.userName}</td>
+                            <td>{props.values.userName === 'null null' ? '' : props.values.userName}</td>
                           </tr>
                         </tbody>
                       </table>
