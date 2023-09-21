@@ -25,17 +25,15 @@ public class InitializeUsers {
     public void saveUsers(int numberOfUsers) {
         Set<String> emails = new HashSet<>();
 
-        // If not the first initialization, seed the HashSet with existing emails
         List<User> existingUsers = userRepository.findAll();
         for (User existingUser : existingUsers) {
             emails.add(existingUser.getEmailId());
         }
         int begin = 0;
         if (existingUsers.size()==0) {
-	        User adminUser = PersonGenerator.generateSpecificUser(Role.Admin);
+        	User engineerUser = PersonGenerator.generateSpecificUser(Role.Engineer);
 	        User operatorUser = PersonGenerator.generateSpecificUser(Role.Operator);
-	        User engineerUser = PersonGenerator.generateSpecificUser(Role.Engineer);
-	
+	        User adminUser = PersonGenerator.generateSpecificUser(Role.Admin);
 	        emails.add(adminUser.getEmailId());
 	        emails.add(operatorUser.getEmailId());
 	        emails.add(engineerUser.getEmailId());

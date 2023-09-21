@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,12 +21,12 @@ public class CustomerController {
 	private CustomerRepository customerRepository;
 	
 	@GetMapping("")
-	public List<CustomerDTO> getAllCustomers() {
-		List<Customer> customers = customerRepository.findAll();
-		List<CustomerDTO> customerDTOs = customers.stream()
+	public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
+	    List<Customer> customers = customerRepository.findAll();
+	    List<CustomerDTO> customerDTOs = customers.stream()
 	            .map(customer -> new CustomerDTO(customer))
 	            .collect(Collectors.toList());
-		return customerDTOs;
+	    return ResponseEntity.ok(customerDTOs);
 	}
 //	@PostMapping("")
 //	public Customer saveCustomer(@RequestBody Customer customer) {

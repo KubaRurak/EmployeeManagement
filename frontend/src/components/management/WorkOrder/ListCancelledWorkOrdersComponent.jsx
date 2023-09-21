@@ -6,6 +6,8 @@ import WorkOrderDetailsModal from './WorkOrderDetailsModal';
 import EditWorkOrderDetailsModal from './EditWorkOrderDetailsModal';
 import CreateWorkOrderModal from './CreateWorkOrderModal';
 import DatePickerComponent from "../DatePickerComponent";
+import statusColors from '../statusColors.js';
+import {Chip} from '@mui/material';
 
 
 function ListCancelledWorkOrdersComponent() {
@@ -80,7 +82,8 @@ function ListCancelledWorkOrdersComponent() {
       {
         Header: "Order Name",
         accessor: "orderName",
-        width: 130
+        width: 130,
+        Cell: ({ value }) => <div style={{fontWeight: 500}}>{value}</div>
       },
       {
         Header: "Type",
@@ -95,7 +98,18 @@ function ListCancelledWorkOrdersComponent() {
       {
         Header: "Status",
         accessor: "status",
-        width: 100
+        width: 150,
+        Cell: ({ value }) => (
+          <Chip
+            sx={{
+              px: "4px",
+              backgroundColor: statusColors[value],
+              color: "#fff"
+            }}
+            size="small"
+            label={value}
+          />
+        )
       },
       {
         Header: "Start Time",
@@ -152,7 +166,14 @@ function ListCancelledWorkOrdersComponent() {
       {
         Header: "  ",
         Cell: ({ cell }) => (
-          <button type="button" className="btn btn-primary" onClick={editWorkOrderDetails(cell.row.original)}><i className="bi bi-pencil"></i></button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={editWorkOrderDetails(cell.row.original)}
+            disabled={userRole === "Engineer"}
+          >
+            <i className="bi bi-pencil"></i>
+          </button>
         ),
         disableSortBy: true,
         width: 30,
@@ -174,7 +195,7 @@ function ListCancelledWorkOrdersComponent() {
             endDate={endDate}
             setEndDate={setEndDate} />
         </div>
-        <h2 style={{ marginLeft: "10px", flex: "1", textAlign: "center" }}>Work Orders</h2>
+        <h2 style={{ marginLeft: "10px", flex: "1", textAlign: "center" }}>Unassigned Work Orders</h2>
         <button type="button" className="btn btn-primary" style={{ marginRight: "73px" }} disabled={userRole === "Engineer"} onClick={handleShowCreateModal}>Add new</button>
       </div>
       {message && <div className="alert alert-success">{message}</div>}
@@ -189,6 +210,7 @@ function ListCancelledWorkOrdersComponent() {
         handleClose={handleCloseDetailsModal}
         selectedWorkOrder={selectedWorkOrder}
         handleShowEditModal={handleShowEditModal}
+        userRole={userRole}
       />
       <EditWorkOrderDetailsModal
         show={showEditModal}

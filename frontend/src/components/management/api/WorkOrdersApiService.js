@@ -7,8 +7,15 @@ const apiClient = axios.create(
   }
 );
 
-export const retrieveAllWorkOrdersApi
-  = () => apiClient.get(``)
+export const retrieveWorkOrderNumbers = (status) => {
+  const params = status ? { status: status } : {};
+  return apiClient.get('/amount', { params, headers: getAuthHeaders() });
+};
+
+export const retrieveRecentWorkorders = () => {
+  return apiClient.get('/recent', { headers: getAuthHeaders() });
+};
+
 
 export const getFilteredWorkOrdersApi = (userId, after, before, status) => {
   const params = {};

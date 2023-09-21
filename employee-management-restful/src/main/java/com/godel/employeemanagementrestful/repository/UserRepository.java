@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.godel.employeemanagementrestful.entity.User;
+import com.godel.employeemanagementrestful.enums.Role;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>{
@@ -14,5 +15,6 @@ public interface UserRepository extends JpaRepository<User, Long>{
 
 	User findWithWorkOrdersByUserId(Long userId);
 
+    Long countByRoleNot(Role role);
 
 }

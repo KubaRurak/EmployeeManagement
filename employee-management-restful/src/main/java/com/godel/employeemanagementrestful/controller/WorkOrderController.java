@@ -55,6 +55,20 @@ public class WorkOrderController {
 	@Autowired
 	private OrderTypeRepository orderTypeRepository;
 		
+	@GetMapping("/amount")
+	public ResponseEntity<Long> getWorkOrderAmount(@RequestParam(required = false) OrderStatus status) {
+	    Long amountOfWorkOrders;
+	    System.out.println("Received orderStatus: " + status);
+
+	    if (status != null) {
+	        amountOfWorkOrders = workOrderRepository.countByStatus(status);
+	    } else {
+	        amountOfWorkOrders = workOrderRepository.count();
+	    }
+	    
+	    return ResponseEntity.ok(amountOfWorkOrders);
+	}
+	
 	
 	@GetMapping("")
 	public ResponseEntity<List<WorkOrderDTO>> getFilteredWorkOrders(
@@ -181,6 +195,15 @@ public class WorkOrderController {
 	    }
 		workOrderService.completeWorkOrder(workOrder);
 		return ResponseEntity.ok("Work order completed succesfully");
+	}
+	
+	@GetMapping("/recent")
+	public ResponseEntity<List<WorkOrderDTO>> getRecentWorkOrders() {
+	    List<WorkOrder> workOrders = workOrderService.getRecentWorkOrders();
+	    List<WorkOrderDTO> workOrderDTOs = workOrders.stream()
+	            .map(WorkOrderDTO::new)
+	            .collect(Collectors.toList());
+	    return ResponseEntity.ok(workOrderDTOs);
 	}
 
 	

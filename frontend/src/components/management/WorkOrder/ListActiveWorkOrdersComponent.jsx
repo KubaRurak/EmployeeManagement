@@ -1,15 +1,18 @@
-import { useEffect, useState, useMemo } from "react"
+import { useEffect, useState, useMemo, useCallback } from "react"
 import { getActiveWorkOrdersApi, completeWorkOrderApi } from "../api/WorkOrdersApiService"
 import TableContainer from '../table/TableContainer'
 import { useAuth } from "../security/AuthContext"
 import WorkOrderDetailsModal from './WorkOrderDetailsModal';
 import ConfirmationModal from './ConfirmationModal';
+import statusColors from '../statusColors.js';
+import { Chip } from '@mui/material';
 
 function ListActiveWorkOrdersComponent() {
 
 
   const authContext = useAuth()
   const userId = authContext.userId
+  const userRole = authContext.userRole
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -28,28 +31,23 @@ function ListActiveWorkOrdersComponent() {
     setSelectedWorkOrder(null);
     setMessage(null)
   }
-  
 
   const [data, setData] = useState([])
   const [selectedWorkOrder, setSelectedWorkOrder] = useState(null);
 
-  useEffect(() => refreshWorkOrders(), [])
-
-  function refreshWorkOrders() {
-
+  const refreshWorkOrders = useCallback(() => {
     getActiveWorkOrdersApi(userId)
       .then(response => {
         setData(response.data);
       })
       .catch(error => console.log(error));
-  }
+  }, [userId]);
 
-  function showWorkOrderDetails(workOrder) {
-    return () => {
-      setSelectedWorkOrder(workOrder);
-      handleShow();
+  useEffect(() => {
+    if (userId) {
+      refreshWorkOrders();
     }
-  }
+  }, [userId, refreshWorkOrders]);
 
   function completeWorkOrder() {
     if (!selectedWorkOrder) {
@@ -65,12 +63,15 @@ function ListActiveWorkOrdersComponent() {
     }
   }
 
-  function showConfirmationModal(workOrder) {
-    return () => {
-      setSelectedWorkOrder(workOrder);
-      handleShowConfirmation();
-    }
-  }
+  const showWorkOrderDetails = useCallback((workOrder) => () => {
+    setSelectedWorkOrder(workOrder);
+    handleShow();
+  }, []);
+
+  const showConfirmationModal = useCallback((workOrder) => () => {
+    setSelectedWorkOrder(workOrder);
+    handleShowConfirmation();
+  }, []);
 
   const [message, setMessage] = useState(null)
 
@@ -80,7 +81,8 @@ function ListActiveWorkOrdersComponent() {
       {
         Header: "Order Name",
         accessor: "orderName",
-        width: 130
+        width: 130,
+        Cell: ({ value }) => <div style={{fontWeight: 500}}>{value}</div>
       },
       {
         Header: "Type",
@@ -95,7 +97,18 @@ function ListActiveWorkOrdersComponent() {
       {
         Header: "Status",
         accessor: "status",
-        width: 100
+        width: 150,
+        Cell: ({ value }) => (
+          <Chip
+            sx={{
+              px: "4px",
+              backgroundColor: statusColors[value],
+              color: "#fff"
+            }}
+            size="small"
+            label={value}
+          />
+        )
       },
       {
         Header: "Start Time",
@@ -149,7 +162,7 @@ function ListActiveWorkOrdersComponent() {
       },
 
     ],
-    []
+    [showConfirmationModal, showWorkOrderDetails]
   )
 
 
@@ -169,6 +182,7 @@ function ListActiveWorkOrdersComponent() {
         selectedWorkOrder={selectedWorkOrder}
         completeWorkOrder={completeWorkOrder()}
         fromActive={true}
+        userRole={userRole}
       />
       <ConfirmationModal
         showConfirmation={showConfirmation}

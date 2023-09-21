@@ -2,7 +2,7 @@ import React from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
 import { Stack, Typography, Avatar, Fab } from '@mui/material';
-import { IconArrowDownRight, IconCurrencyDollar } from '@tabler/icons-react';
+import { IconArrowDownRight, IconCurrencyZloty } from '@tabler/icons-react';
 import DashboardCard from '../../../components/shared/DashboardCard';
 
 const MonthlyEarnings = () => {
@@ -40,6 +40,7 @@ const MonthlyEarnings = () => {
       size: 0,
     },
     tooltip: {
+      enabled: false,
       theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
     },
   };
@@ -56,7 +57,7 @@ const MonthlyEarnings = () => {
       title="Monthly Earnings"
       action={
         <Fab color="secondary" size="medium" sx={{color: '#ffffff'}}>
-          <IconCurrencyDollar width={24} />
+          <IconCurrencyZloty width={24} />
         </Fab>
       }
       footer={
@@ -65,7 +66,7 @@ const MonthlyEarnings = () => {
     >
       <>
         <Typography variant="h3" fontWeight="700" mt="-20px">
-          $6,820
+          6,820zł
         </Typography>
         <Stack direction="row" spacing={1} my={1} alignItems="center">
           <Avatar sx={{ bgcolor: errorlight, width: 27, height: 27 }}>

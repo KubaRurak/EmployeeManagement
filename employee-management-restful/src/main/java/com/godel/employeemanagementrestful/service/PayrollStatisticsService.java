@@ -8,11 +8,17 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.godel.employeemanagementrestful.dto.MonthlyEarningsDTO;
 import com.godel.employeemanagementrestful.dto.MonthlyStatsDTO;
 import com.godel.employeemanagementrestful.dto.MonthlyUserStats;
+import com.godel.employeemanagementrestful.dto.UserStatsDTO;
 import com.godel.employeemanagementrestful.dto.YearlyStatsDTO;
+import com.godel.employeemanagementrestful.entity.Payroll;
 import com.godel.employeemanagementrestful.repository.PayrollRepository;
 
 @Service
@@ -21,12 +27,48 @@ public class PayrollStatisticsService {
 	@Autowired
 	PayrollRepository payrollRepository;
 	
+	public List<UserStatsDTO> findTop3EmployeesByHoursWorkedForMonth(LocalDate month) {
+	    Pageable topThreeByHours = PageRequest.of(0, 3, Sort.by(Sort.Order.desc("timeWorked")));
+	    
+	    List<Payroll> topPayrollsByHours = payrollRepository.findByPayrollMonth(month, topThreeByHours);
+	    
+	    return topPayrollsByHours.stream()
+	            .map(payroll -> new UserStatsDTO(payroll.getUser(), payroll.getTimeWorked(), payroll.getMoneyGenerated()))
+	            .collect(Collectors.toList());
+	}
+
+	public List<UserStatsDTO> findTop3EmployeesByMoneyGeneratedForMonth(LocalDate month) {
+	    Pageable topThreeByMoney = PageRequest.of(0, 3, Sort.by(Sort.Order.desc("moneyGenerated")));
+	    
+	    List<Payroll> topPayrollsByMoney = payrollRepository.findByPayrollMonth(month, topThreeByMoney);
+	    
+	    return topPayrollsByMoney.stream()
+	            .map(payroll -> new UserStatsDTO(payroll.getUser(), payroll.getTimeWorked(), payroll.getMoneyGenerated()))
+	            .collect(Collectors.toList());
+	}
+    
+    public List<MonthlyEarningsDTO> getMonthlyEarningsForLastTwoYears() {
+        int currentYear = LocalDate.now().getYear();
+        List<Object[]> results = payrollRepository.findMonthlyEarningsForYears(currentYear, currentYear - 1);
+        
+        return results.stream()
+            .map(record -> new MonthlyEarningsDTO(
+                ((Number) record[0]).doubleValue(), 
+                ((Number) record[1]).intValue(), 
+                ((Number) record[2]).intValue()))
+            .collect(Collectors.toList());
+    }
+    
+    
+    
+    
+    
+    
 	
     
     public YearlyStatsDTO computeYearlyStats(int year) {
         YearlyStatsDTO yearlyStats = new YearlyStatsDTO();
 
-        // 1. Populate basic yearly stats
         Map<Long, BigDecimal> yearlyHours = convertToMap(payrollRepository.findYearlyHoursWorkedByUsers(year));
         Map<Long, BigDecimal> yearlyMoney = convertToMap(payrollRepository.findYearlyMoneyMadeByUsers(year));
 

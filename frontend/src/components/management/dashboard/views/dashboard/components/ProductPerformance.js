@@ -1,4 +1,5 @@
 import React from 'react';
+import { useEffect, useState } from 'react';
 import {
     Typography, Box,
     Table,
@@ -8,72 +9,34 @@ import {
     TableRow,
     Chip
 } from '@mui/material';
+import { getTop3EmployeesByMoney } from '../../../../api/StatisticsApiSerivce';
 import DashboardCard from '../../../components/shared/DashboardCard';
 
-const products = [
-    {
-        id: "1",
-        name: "Sunil Joshi",
-        post: "Web Designer",
-        pname: "Elite Admin",
-        priority: "Low",
-        pbg: "primary.main",
-        budget: "3.9",
-    },
-    {
-        id: "2",
-        name: "Andrew McDownland",
-        post: "Project Manager",
-        pname: "Real Homes WP Theme",
-        priority: "Medium",
-        pbg: "secondary.main",
-        budget: "24.5",
-    },
-    {
-        id: "3",
-        name: "Christopher Jamil",
-        post: "Project Manager",
-        pname: "MedicalPro WP Theme",
-        priority: "High",
-        pbg: "error.main",
-        budget: "12.8",
-    },
-    {
-        id: "4",
-        name: "Nirav Joshi",
-        post: "Frontend Engineer",
-        pname: "Hosting Press HTML",
-        priority: "Critical",
-        pbg: "success.main",
-        budget: "2.4",
-    },
-];
-
-
 const ProductPerformance = () => {
+
+    const [employees, setEmployees] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getTop3EmployeesByMoney(2023, 9);
+                setEmployees(response.data);
+            } catch (error) {
+                console.error('Error fetching top employees:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+
     return (
 
-        <DashboardCard title="Product Performance">
-            <Box sx={{ overflow: 'auto', width: { xs: '280px', sm: 'auto' } }}>
-                <Table
-                    aria-label="simple table"
-                    sx={{
-                        whiteSpace: "nowrap",
-                        mt: 2
-                    }}
-                >
+        <DashboardCard title="Best performance this month">
+            <Box sx={{ paddingBottom: '4px', overflow: 'auto', width: { xs: '280px', sm: 'auto' } }}>
+                <Table aria-label="simple table" sx={{ whiteSpace: "nowrap", mt: 2 }}>
                     <TableHead>
                         <TableRow>
-                            <TableCell>
-                                <Typography variant="subtitle2" fontWeight={600}>
-                                    Id
-                                </Typography>
-                            </TableCell>
-                            <TableCell>
-                                <Typography variant="subtitle2" fontWeight={600}>
-                                    Assigned
-                                </Typography>
-                            </TableCell>
                             <TableCell>
                                 <Typography variant="subtitle2" fontWeight={600}>
                                     Name
@@ -81,69 +44,41 @@ const ProductPerformance = () => {
                             </TableCell>
                             <TableCell>
                                 <Typography variant="subtitle2" fontWeight={600}>
-                                    Priority
+                                    Role
                                 </Typography>
                             </TableCell>
-                            <TableCell align="right">
+                            <TableCell>
                                 <Typography variant="subtitle2" fontWeight={600}>
-                                    Budget
+                                    Hours worked
+                                </Typography>
+                            </TableCell>
+                            <TableCell>
+                                <Typography variant="subtitle2" fontWeight={600}>
+                                    Profit
                                 </Typography>
                             </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {products.map((product) => (
-                            <TableRow key={product.name}>
+                        {employees.map((employee) => (
+                            <TableRow key={employee.userId}>
                                 <TableCell>
-                                    <Typography
-                                        sx={{
-                                            fontSize: "15px",
-                                            fontWeight: "500",
-                                        }}
-                                    >
-                                        {product.id}
+                                    <Typography variant="subtitle2" fontWeight={600}>
+                                        {employee.firstName} {employee.lastName}
                                     </Typography>
                                 </TableCell>
                                 <TableCell>
-                                    <Box
-                                        sx={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                        }}
-                                    >
-                                        <Box>
-                                            <Typography variant="subtitle2" fontWeight={600}>
-                                                {product.name}
-                                            </Typography>
-                                            <Typography
-                                                color="textSecondary"
-                                                sx={{
-                                                    fontSize: "13px",
-                                                }}
-                                            >
-                                                {product.post}
-                                            </Typography>
-                                        </Box>
-                                    </Box>
-                                </TableCell>
-                                <TableCell>
-                                    <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
-                                        {product.pname}
+                                    <Typography variant="subtitle2" fontWeight={400}>
+                                        {employee.role}
                                     </Typography>
                                 </TableCell>
                                 <TableCell>
-                                    <Chip
-                                        sx={{
-                                            px: "4px",
-                                            backgroundColor: product.pbg,
-                                            color: "#fff",
-                                        }}
-                                        size="small"
-                                        label={product.priority}
-                                    ></Chip>
+                                    <Typography variant="subtitle2" fontWeight={400}>
+                                        {employee.hoursWorked}
+                                    </Typography>
                                 </TableCell>
-                                <TableCell align="right">
-                                    <Typography variant="h6">${product.budget}k</Typography>
+                                <TableCell>
+                                    <Typography variant="subtitle2" fontWeight={600}>{employee.moneyGenerated} zł</Typography>
                                 </TableCell>
                             </TableRow>
                         ))}

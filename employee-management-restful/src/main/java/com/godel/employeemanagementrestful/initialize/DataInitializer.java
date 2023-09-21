@@ -35,6 +35,7 @@ public class DataInitializer implements CommandLineRunner {
 		initializeOrderTypes.saveOrderTypes();
 		initializeWorkOrders.saveWorkOrders(numberOfWorkOrders);
 		initializeWorkOrders.randomizeTimeStampsForAllWorkOrders();
+		initializeWorkOrders.saveUnassignedWorkOrders(25);
 		initializeTimeTable.populateTimetable(startDate, endDate);
 		initializeWorkOrders.saveWorkOrdersForUser(5, (long) 1);
 		initializeWorkOrders.saveWorkOrdersForUser(5, (long) 2);

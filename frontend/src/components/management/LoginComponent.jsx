@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from './security/AuthContext'
 import './LoginComponent.css';
@@ -8,8 +8,6 @@ function LoginComponent() {
   const [username, setUsername] = useState('admin@yourcompany.com')
 
   const [password, setPassword] = useState('')
-  const [loginAttempted, setLoginAttempted] = useState(false);
-  const [loggingIn, setLoggingIn] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false)
 
   const navigate = useNavigate()
@@ -71,7 +69,7 @@ function LoginComponent() {
             </button>
           </div>
           <p className="forgot-password text-right mt-2">
-            Forgot <a href="#">password?</a>
+            Forgot password?
           </p>
         </div>
       </form>

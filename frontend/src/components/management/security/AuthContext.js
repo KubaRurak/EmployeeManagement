@@ -16,7 +16,7 @@ export default function AuthProvider({ children }) {
     const [isAuthenticated, setAuthenticated] = useState(false)
     const [userId, setUserId] = useState(null)
     const [username, setUsername] = useState(null)
-    const [role, setRole] = useState(null)  // Add role state
+    const [role, setRole] = useState(null)
 
     
 
@@ -27,7 +27,6 @@ export default function AuthProvider({ children }) {
             }
         })
             .then(response => {
-                console.log(response);
                 const userDetails = response.data;
                 setUsername(`${userDetails.firstName} ${userDetails.lastName}`);
                 setUserId(userDetails.userId);
@@ -49,7 +48,6 @@ export default function AuthProvider({ children }) {
                 }
             })
             .then(response => {
-                console.log(response);
                 const token = response.data.accessToken;
                 localStorage.setItem('token', token);
                 setAuthenticated(true);

@@ -9,20 +9,17 @@ function PayrollComponent() {
     const authContext = useAuth();
 
     const [workOrderIdsForMonth, setWorkOrderIdsForMonth] = useState([]);
-    const [selectedMonth, setSelectedMonth] = useState([]);
     const [selectedPayrollData, setSelectedPayrollData] = useState([]);
     const [showWorkOrders, setShowWorkOrders] = useState(false);
 
 
-    const handleShowWorkOrders = (payrollMonth, workOrderIds, payrollData) => {
-        setSelectedMonth(payrollMonth);
+    const handleShowWorkOrders = (workOrderIds, payrollData) => {
         setWorkOrderIdsForMonth(workOrderIds);
         setSelectedPayrollData(payrollData);
         setShowWorkOrders(true);
     };
 
     const handleCloseWorkOrders = () => {
-        setSelectedMonth([]);
         setWorkOrderIdsForMonth([]);
         setSelectedPayrollData([]);
         setShowWorkOrders(false);
@@ -43,7 +40,6 @@ function PayrollComponent() {
                 });
                 const sortedData = filteredData.sort((a, b) => new Date(b.payrollMonth) - new Date(a.payrollMonth));
                 setData(sortedData);
-                console.log(sortedData);
             })
             .catch(error => console.error("Error fetching payroll data:", error));
     }, [userId]);
@@ -54,7 +50,8 @@ function PayrollComponent() {
                 Header: "Name",
                 accessor: data => `${data.userFirstName} ${data.userLastName}`,
                 id: "fullName",
-                width: 150
+                width: 150,
+                Cell: ({ value }) => <div style={{fontWeight: 500}}>{value}</div>
             },
             {
                 Header: "Email",
@@ -75,12 +72,16 @@ function PayrollComponent() {
             {
                 Header: "Time Worked [h]",
                 accessor: "timeWorked",
-                width: 100
+                width: 100,
+                Cell: ({ value }) => <div style={{fontWeight: 500}}>{value}</div>
+
             },
             {
-                Header: "Money Generated",
+                Header: "Profit Generated",
                 accessor: "moneyGenerated",
-                width: 150
+                width: 150,
+                Cell: ({ value }) => <div style={{fontWeight: 500}}>{value}</div>
+
             },
             {
                 Header: "Details",
@@ -89,7 +90,7 @@ function PayrollComponent() {
                     <button
                         type="button"
                         className="btn btn-primary"
-                        onClick={() => handleShowWorkOrders(cell.row.original.payrollMonth, cell.row.original.workOrderIds, cell.row.original)}>
+                        onClick={() => handleShowWorkOrders(cell.row.original.workOrderIds, cell.row.original)}>
                         <i className="bi bi-search"></i>
                     </button>
                 ),

@@ -1,6 +1,7 @@
 package com.godel.employeemanagementrestful.controller;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,8 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.godel.employeemanagementrestful.dto.MonthlyEarningsDTO;
 import com.godel.employeemanagementrestful.dto.MonthlyStatsDTO;
 import com.godel.employeemanagementrestful.dto.PayrollStatisticsDTO;
+import com.godel.employeemanagementrestful.dto.UserDTO;
+import com.godel.employeemanagementrestful.dto.UserStatsDTO;
 import com.godel.employeemanagementrestful.dto.YearlyStatsDTO;
 import com.godel.employeemanagementrestful.service.PayrollStatisticsService;
 
@@ -21,6 +25,28 @@ public class PayrollStatisticsController {
 	
     @Autowired
     private PayrollStatisticsService payrollStatisticsService;
+    
+    @GetMapping("/top3EmployeesByHours/{year}/{month}")
+    public ResponseEntity<List<UserStatsDTO>> getTop3EmployeesByHoursForMonth(@PathVariable int year, @PathVariable int month) {
+        LocalDate date = LocalDate.of(year, month, 1);
+        List<UserStatsDTO> top3EmployeesByHours = payrollStatisticsService.findTop3EmployeesByHoursWorkedForMonth(date);
+        
+        return ResponseEntity.ok(top3EmployeesByHours);
+    }
+
+    @GetMapping("/top3EmployeesByMoney/{year}/{month}")
+    public ResponseEntity<List<UserStatsDTO>> getTop3EmployeesByMoneyForMonth(@PathVariable int year, @PathVariable int month) {
+        LocalDate date = LocalDate.of(year, month, 1);
+        List<UserStatsDTO> top3EmployeesByMoney = payrollStatisticsService.findTop3EmployeesByMoneyGeneratedForMonth(date);
+        
+        return ResponseEntity.ok(top3EmployeesByMoney);
+    }
+    
+    @GetMapping("/monthly-earnings/last-two-years")
+    public ResponseEntity<List<MonthlyEarningsDTO>> getMonthlyEarningsForLastTwoYears() {
+        List<MonthlyEarningsDTO> monthlyEarnings = payrollStatisticsService.getMonthlyEarningsForLastTwoYears();
+        return ResponseEntity.ok(monthlyEarnings);
+    }
 
 
     @GetMapping("/yearly/{year}")

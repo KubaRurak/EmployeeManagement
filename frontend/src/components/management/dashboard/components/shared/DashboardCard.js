@@ -10,7 +10,7 @@ const DashboardCard = ({
   cardheading,
   headtitle,
   headsubtitle,
-  middlecontent,
+  middlecontent
 }) => {
 
   return (

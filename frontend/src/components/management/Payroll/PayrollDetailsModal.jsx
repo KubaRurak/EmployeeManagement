@@ -1,24 +1,22 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Modal, Row, Col, Table } from 'react-bootstrap';
+import { Modal, Row, Col } from 'react-bootstrap';
 import {fetchWorkOrdersByIdsApi} from '../api/WorkOrdersApiService';
 import TableContainerModal from '../table/TableContainerModal';
+import './PayrollDetailsModal.css'
+
 
 function PayrollDetailsModal({ show, handleClose, data, workOrderIds }) {
 
     const [workOrders, setWorkOrders] = useState([]);
-    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (workOrderIds && workOrderIds.length > 0) {
-            setLoading(true);
             fetchWorkOrdersByIdsApi(workOrderIds)
                 .then(response => {
                     setWorkOrders(response.data);
-                    setLoading(false);
                 })
                 .catch(error => {
                     console.error("Error fetching work order details:", error);
-                    setLoading(false);
                 });
         }
     }, [workOrderIds]);

@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -43,5 +44,15 @@ public interface PayrollRepository extends JpaRepository<Payroll, Long> {
 	       "WHERE YEAR(p.payrollMonth) = :year " +
 	       "GROUP BY p.user.id")
 	List<Object[]> findYearlyMoneyMadeByUsers(@Param("year") int year);
+
+
+	List<Payroll> findByPayrollMonth(LocalDate month, Pageable topThreeByHours);
+
+    @Query("SELECT SUM(p.moneyGenerated) as totalMoney, YEAR(p.payrollMonth) as year, MONTH(p.payrollMonth) as month " +
+            "FROM Payroll p " +
+            "WHERE YEAR(p.payrollMonth) IN ?1 " +
+            "GROUP BY YEAR(p.payrollMonth), MONTH(p.payrollMonth) " +
+            "ORDER BY YEAR(p.payrollMonth), MONTH(p.payrollMonth)")
+     List<Object[]> findMonthlyEarningsForYears(Integer... years);
 	
 }

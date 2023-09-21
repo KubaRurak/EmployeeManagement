@@ -7,6 +7,11 @@ const apiClient = axios.create(
     }
 );
 
+export const retrieveEmployeeAmount = () => {
+    return apiClient.get('/amount', { headers: getAuthHeaders() });
+};
+
+
 export const retrieveUserApi = () => {
     return apiClient.get('', { headers: getAuthHeaders() });
 };

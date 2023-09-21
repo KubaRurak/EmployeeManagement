@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
 
-function WorkOrderDetailsModal({ show, handleClose, handleShowEditModal, selectedWorkOrder, completeWorkOrder, fromActive}) {
+function WorkOrderDetailsModal({ show, handleClose, handleShowEditModal, selectedWorkOrder, completeWorkOrder, fromActive, userRole}) {
 
   const handleCompleteWorkOrder = () => {
     handleClose();
@@ -98,7 +98,7 @@ function WorkOrderDetailsModal({ show, handleClose, handleShowEditModal, selecte
         </Row>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="primary" onClick={handleEditWorkOrder} style = {{marginRight: "auto" }}>
+        <Button variant="primary" onClick={handleEditWorkOrder} style = {{marginRight: "auto" }} disabled={userRole==="Engineer"}>
           Edit
         </Button>
         <Button variant="success" onClick={handleCompleteWorkOrder} disabled={!fromActive}>

@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.godel.employeemanagementrestful.dto.UserDTO;
 import com.godel.employeemanagementrestful.entity.User;
+import com.godel.employeemanagementrestful.enums.OrderStatus;
+import com.godel.employeemanagementrestful.enums.Role;
 import com.godel.employeemanagementrestful.exceptions.ResourceNotFoundException;
 import com.godel.employeemanagementrestful.repository.UserRepository;
 import com.godel.employeemanagementrestful.service.TimetableService;
@@ -38,47 +40,49 @@ public class UserController {
 	@Autowired
 	private TimetableService timetableService;
 
-	@GetMapping("/full")
-	public List<User> fetchUserListFull() {
-		return userRepository.findAll();
+
+	@GetMapping("/amount")
+	public ResponseEntity<Long> getUserAmount() {
+		Long amountOfUsers = userRepository.countByRoleNot(Role.Admin);
+	    return ResponseEntity.ok(amountOfUsers);
 	}
 	
 	@GetMapping("")
-	public List<UserDTO> fetchUserList() {
+	public ResponseEntity<List<UserDTO>> fetchUserList() {
 		List<User> users = userRepository.findAll();
 		List<UserDTO> userDTOs = users.stream()
 	            .map(user -> new UserDTO(user))
 	            .collect(Collectors.toList());
-		return userDTOs;
+		return ResponseEntity.ok(userDTOs);
 	}
 
 	@GetMapping("/{userId}")
-	public UserDTO fetchUserById(@PathVariable Long userId) {
+	public ResponseEntity<UserDTO> fetchUserById(@PathVariable Long userId) {
 	    User user = userRepository.findById(userId)
-	    		.orElseThrow(() -> new ResourceNotFoundException("User not found with id " + userId));;
+	    		.orElseThrow(() -> new ResourceNotFoundException("User not found with id " + userId));
 	    UserDTO userDTO = new UserDTO(user);
-	    return userDTO;
-
+	    return ResponseEntity.ok(userDTO);
 	}
 
 	@PostMapping("")
-	public User saveUser(@RequestBody User user) {
-		return userService.saveUser(user);
+	public ResponseEntity<User> saveUser(@RequestBody User user) {
+		User savedUser = userService.saveUser(user);
+		return ResponseEntity.status(201).body(savedUser); 
 	}
 	
 	@PostMapping("/{userId}/generateTimetable")
-	public void generateTimeTable(@PathVariable Long userId) {
+	public ResponseEntity<Void> generateTimeTable(@PathVariable Long userId) {
 		User user = userRepository.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("User not found with id " + userId));
-		timetableService.populateTimetable(
-	        		user, LocalDate.now().minusYears(1), 
-	        		LocalDate.now().plusYears(1));
+		timetableService.populateTimetable(user, LocalDate.now().minusYears(1), LocalDate.now().plusYears(1));
+		return ResponseEntity.status(201).build();
 	}
 	
 	@PutMapping("/{userId}")
-	public User editUser(@RequestBody User user) {
-		return userRepository.save(user);
-	}	
+	public ResponseEntity<User> editUser(@RequestBody User user) {
+		User updatedUser = userRepository.save(user);
+		return ResponseEntity.ok(updatedUser);
+	}
 	
     @GetMapping("/by-email")
     public ResponseEntity<UserDTO> fetchUserByEmail(@RequestParam String emailId) {

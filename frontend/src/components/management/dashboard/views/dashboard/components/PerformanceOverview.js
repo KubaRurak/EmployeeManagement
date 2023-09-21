@@ -1,23 +1,52 @@
 import React from 'react';
-import { Select, MenuItem } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { getMonthlyEarningsForLastTwoYears } from '../../../../api/StatisticsApiSerivce';
 import { useTheme } from '@mui/material/styles';
 import DashboardCard from '../../../components/shared/DashboardCard';
 import Chart from 'react-apexcharts';
 
 
-const SalesOverview = () => {
+const PerformanceOverview = () => {
 
-    // select
-    const [month, setMonth] = React.useState('1');
+    const [monthlyEarnings, setMonthlyEarnings] = useState({ currentYear: [], lastYear: [] });
 
-    const handleChange = (event) => {
-        setMonth(event.target.value);
-    };
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getMonthlyEarningsForLastTwoYears();
+                const data = response.data;
+
+
+                let currentYearEarnings = Array(12).fill(0);
+                let lastYearEarnings = Array(12).fill(0);
+
+                const currentYear = new Date().getFullYear();
+
+                data.forEach(item => {
+                    if (item.year === currentYear) {
+                        currentYearEarnings[item.month - 1] = item.totalMoney;
+                    } else {
+                        lastYearEarnings[item.month - 1] = item.totalMoney;
+                    }
+                });
+
+                setMonthlyEarnings({
+                    currentYear: currentYearEarnings,
+                    lastYear: lastYearEarnings
+                });
+            } catch (error) {
+                console.error('Error fetching monthly earnings:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
 
     // chart color
     const theme = useTheme();
     const primary = theme.palette.primary.main;
-    const secondary = theme.palette.secondary.main;
+    const secondary = theme.palette.secondary.light;
 
     // chart
     const optionscolumnchart = {
@@ -67,7 +96,7 @@ const SalesOverview = () => {
             tickAmount: 4,
         },
         xaxis: {
-            categories: ['16/08', '17/08', '18/08', '19/08', '20/08', '21/08', '22/08', '23/08'],
+            categories: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
             axisBorder: {
                 show: false,
             },
@@ -79,38 +108,26 @@ const SalesOverview = () => {
     };
     const seriescolumnchart = [
         {
-            name: 'Eanings this month',
-            data: [355, 390, 300, 350, 390, 180, 355, 390],
+            name: `Earnings ${new Date().getFullYear()}`,
+            data: monthlyEarnings.currentYear,
         },
         {
-            name: 'Expense this month',
-            data: [280, 250, 325, 215, 250, 310, 280, 250],
+            name: `Earnings ${new Date().getFullYear() - 1}`,
+            data: monthlyEarnings.lastYear,
         },
     ];
 
     return (
 
-        <DashboardCard title="Sales Overview" action={
-            <Select
-                labelId="month-dd"
-                id="month-dd"
-                value={month}
-                size="small"
-                onChange={handleChange}
-            >
-                <MenuItem value={1}>March 2023</MenuItem>
-                <MenuItem value={2}>April 2023</MenuItem>
-                <MenuItem value={3}>May 2023</MenuItem>
-            </Select>
-        }>
+        <DashboardCard title="Earnings Overview">
             <Chart
                 options={optionscolumnchart}
                 series={seriescolumnchart}
                 type="bar"
-                height="370px"
+                height="433px"
             />
         </DashboardCard>
     );
 };
 
-export default SalesOverview;
+export default PerformanceOverview;
