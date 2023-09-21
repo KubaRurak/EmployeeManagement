@@ -64,7 +64,7 @@ public class Customer {
 	@JsonIgnore
 	@OneToMany(
 			mappedBy = "customer",
-			cascade = CascadeType.ALL,
+			cascade = {CascadeType.PERSIST, CascadeType.MERGE},
 			fetch = FetchType.LAZY
 			)
 	private List<WorkOrder> workOrders;

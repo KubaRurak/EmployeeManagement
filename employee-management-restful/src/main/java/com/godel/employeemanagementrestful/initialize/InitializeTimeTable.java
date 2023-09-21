@@ -35,11 +35,7 @@ public class InitializeTimeTable {
 	            continue;
 	        }
 	        Long userId = timetable.getUser().getUserId();
-
-	        // Set random check-in time between 7:00am and 10:00am
 	        timetable.setCheckIn(LocalTime.of(7 + new Random().nextInt(3), new Random().nextInt(60)));
-
-	        // Set random check-out time after 7-9 hours of work
 	        LocalTime checkOutTime = timetable.getCheckIn().plusHours(7 + new Random().nextInt(3));
 	        timetable.setCheckOut(checkOutTime);
 	        payrollService.updatePayrollTime(userId,timetable);

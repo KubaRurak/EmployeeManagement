@@ -150,7 +150,7 @@ public class WorkOrderController {
 	    workOrder.setLastModificationTimeStamp(LocalDateTime.now());
 	    workOrderRepository.save(workOrder);
 	    if (workOrderDTO.getUserId() != null) {
-	        assignUserToWorkOrder(workOrderDTO.getUserId(), workOrder.getOrderId());
+	        workOrderService.assignUserToWorkOrder(workOrderDTO.getUserId(), workOrder.getOrderId());
 	    }
 	    if (workOrderDTO.getCustomerId() != null) {
 	        workOrderService.assignCustomerToWorkOrder(workOrderDTO.getCustomerId(), workOrder.getOrderId());
@@ -164,6 +164,7 @@ public class WorkOrderController {
 	        @RequestBody WorkOrderDTO workOrderDTO) {
 	    WorkOrder workOrder = workOrderRepository.findById(orderId).orElseThrow();
 	    OrderType orderType = orderTypeRepository.findById(workOrderDTO.getOrderType().getId()).get();
+	    boolean wasUnassigned = OrderStatus.UNASSIGNED.equals(workOrder.getStatus());
 	    if (workOrderDTO.getUserId() != null) {
 	        workOrderService.assignUserToWorkOrder(workOrderDTO.getUserId(), orderId);
 	    }
@@ -173,15 +174,19 @@ public class WorkOrderController {
 	    workOrder.setOrderName(workOrderDTO.getOrderName());
 	    workOrder.setOrderType(orderType);
 	    workOrder.setStatus(workOrderDTO.getStatus());
-	    workOrder.setStartTimeStamp(workOrderDTO.getStartTimeStamp());
+	    if (wasUnassigned && workOrderDTO.getUserId() != null) {
+	        workOrder.setStartTimeStamp(LocalDateTime.now());
+	    } else {
+	        workOrder.setStartTimeStamp(workOrderDTO.getStartTimeStamp());
+	    }
 	    workOrder.setEndTimeStamp(workOrderDTO.getEndTimeStamp());
 	    workOrder.setLastModificationTimeStamp(LocalDateTime.now());
 	    workOrder.setComments(workOrderDTO.getComments());
 	    workOrderRepository.save(workOrder);
 	    orderTypeRepository.save(orderType);
-
-	    return new WorkOrderDTO(workOrder);	
+	    return new WorkOrderDTO(workOrder);    
 	}
+	
 	@PreAuthorize("hasAnyAuthority('ENGINEER', 'OPERATOR', 'ADMIN')")
 	@PutMapping("/{orderId}/complete")
 	public ResponseEntity<String> completeWorkOrder(@PathVariable Long orderId) {

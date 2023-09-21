@@ -1,5 +1,6 @@
 package com.godel.employeemanagementrestful.initialize;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -7,14 +8,17 @@ import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.godel.employeemanagementrestful.entity.Customer;
 import com.godel.employeemanagementrestful.entity.OrderType;
+import com.godel.employeemanagementrestful.entity.Payroll;
 import com.godel.employeemanagementrestful.entity.User;
 import com.godel.employeemanagementrestful.entity.WorkOrder;
 import com.godel.employeemanagementrestful.enums.OrderStatus;
 import com.godel.employeemanagementrestful.repository.CustomerRepository;
 import com.godel.employeemanagementrestful.repository.OrderTypeRepository;
+import com.godel.employeemanagementrestful.repository.PayrollRepository;
 import com.godel.employeemanagementrestful.repository.UserRepository;
 import com.godel.employeemanagementrestful.repository.WorkOrderRepository;
 import com.godel.employeemanagementrestful.service.PayrollService;
@@ -34,9 +38,7 @@ public class InitializeWorkOrders {
 	@Autowired
 	UserRepository userRepository;
 	@Autowired
-	PayrollService payrollService;
-//    @PersistenceContext
-//    private EntityManager entityManager;
+	PayrollRepository payrollRepository;
 	
 	private static final String[] ORDER_NAME_PREFIX = {"WAR", "GDA", "BRA", "LOD", "BEL",
 			"GRO", "LGI", "OTW", "POL", "RAD", "KAT", "BIA", "SUW"};
@@ -72,45 +74,60 @@ public class InitializeWorkOrders {
 				.build();
 	}
 
-	public void saveWorkOrders(int numberOfWorkOrders) {
-	    List<Customer> customers = customerRepository.findAll();
-	    List<User> users = userRepository.findAll();
-		for (int i=0;i<numberOfWorkOrders;i++) {
-			WorkOrder workOrder = generateWorkOrder(OrderStatus.ACTIVE);
-			workOrderRepository.save(workOrder);
-			Long workOrderId = workOrder.getOrderId();
-	        workOrderService.assignCustomerToWorkOrder(
-	        		customers.get(new Random().nextInt(customers.size()))
-	        		.getCustomerId(), workOrderId);
-	        workOrderService.assignUserToWorkOrder(users.get(new Random().nextInt(users.size()))
-	        		.getUserId(), workOrderId);
-		}
-	}
-	
+	@Transactional
 	public void saveUnassignedWorkOrders(int numberOfWorkOrders) {
 	    List<Customer> customers = customerRepository.findAll();
-		for (int i=0;i<numberOfWorkOrders;i++) {
-			WorkOrder workOrder = generateWorkOrder(OrderStatus.UNASSIGNED);
-			workOrderRepository.save(workOrder);
-			Long workOrderId = workOrder.getOrderId();
-	        workOrderService.assignCustomerToWorkOrder(
-	        		customers.get(new Random().nextInt(customers.size()))
-	        		.getCustomerId(), workOrderId);
-		}
+	    for (int i = 0; i < numberOfWorkOrders; i++) {
+	        WorkOrder workOrder = generateWorkOrder(OrderStatus.UNASSIGNED);
+	        workOrder = workOrderRepository.save(workOrder); 
+	        Customer randomCustomer = customers.get(new Random().nextInt(customers.size()));
+	        assignCustomerWithoutSaving(randomCustomer, workOrder);
+	        workOrderRepository.save(workOrder); 
+	    }
 	}
+
+	@Transactional
 	public void saveWorkOrdersForUser(int numberOfWorkOrders, Long userId) {
 	    List<Customer> customers = customerRepository.findAll();
-		for (int i=0;i<numberOfWorkOrders;i++) {
-			WorkOrder workOrder = generateWorkOrder(OrderStatus.ACTIVE);
-			workOrderRepository.save(workOrder);
-			Long workOrderId = workOrder.getOrderId();
-	        workOrderService.assignCustomerToWorkOrder(
-	        		customers.get(new Random().nextInt(customers.size()))
-	        		.getCustomerId(), workOrderId);
-	        workOrderService.assignUserToWorkOrder(userId, workOrderId);
-		}
+	    for (int i = 0; i < numberOfWorkOrders; i++) {
+	        WorkOrder workOrder = generateWorkOrder(OrderStatus.ACTIVE);
+	        workOrder = workOrderRepository.save(workOrder); 
+	        Customer randomCustomer = customers.get(new Random().nextInt(customers.size()));
+	        assignCustomerWithoutSaving(randomCustomer, workOrder);
+	        User user = userRepository.findById(userId).orElse(null); 
+	        if (user != null) {
+	            assignUserWithoutSaving(user, workOrder);
+	        }
+	        workOrderRepository.save(workOrder); 
+	    }
 	}
 	
+    @Transactional
+    public void saveWorkOrders(int numberOfWorkOrders) {
+        List<Customer> customers = customerRepository.findAll();
+        List<User> users = userRepository.findAll();
+        for (int i=0; i<numberOfWorkOrders; i++) {
+            WorkOrder workOrder = generateWorkOrder(OrderStatus.ACTIVE);
+            workOrder = workOrderRepository.save(workOrder); 
+            Customer randomCustomer = customers.get(new Random().nextInt(customers.size()));
+            assignCustomerWithoutSaving(randomCustomer, workOrder);
+            User randomUser = users.get(new Random().nextInt(users.size()));
+            assignUserWithoutSaving(randomUser, workOrder);
+            workOrderRepository.save(workOrder);  
+        }
+    }
+
+    private void assignCustomerWithoutSaving(Customer customer, WorkOrder workOrder) {
+        workOrder.setCustomer(customer);
+        workOrder.setLastModificationTimeStamp(LocalDateTime.now());
+    }
+
+    private void assignUserWithoutSaving(User user, WorkOrder workOrder) {
+        workOrder.setUser(user);  // Assuming you have a setUser method on WorkOrder
+        workOrder.setLastModificationTimeStamp(LocalDateTime.now());
+    }
+	
+	@Transactional
 	public void randomizeTimeStampsForAllWorkOrders() {
 	    List<WorkOrder> workOrders = workOrderRepository.findAll();
         long daysBetween = ChronoUnit.DAYS.between(LocalDateTime.of(2022,1,1, 0, 0), LocalDateTime.now());
@@ -131,12 +148,19 @@ public class InitializeWorkOrders {
 		        endDate = startDate.plusMinutes(totalMinutesToAdd);
 		        if (endDate.isAfter(LocalDateTime.now())) {
 	                endDate = LocalDateTime.now();
-	            }
-		        workOrder.setEndTimeStamp(endDate);
-		        workOrder.setStatus(OrderStatus.COMPLETED);
-		        workOrder.setLastModificationTimeStamp(endDate);
+	            }	    
+		        LocalDate payrollMonth = endDate.toLocalDate().withDayOfMonth(1); 
+	    	    Payroll payroll = payrollRepository.findByUserAndPayrollMonth(workOrder.getUser(), payrollMonth);
+	    	    if (payroll == null) {
+	    	        // This will log the user for which payroll wasn't found.
+	    	        // It's a debugging step, and should help in identifying the cause.
+	    	        System.out.println("No payroll found for user: " + workOrder.getUser().getUserId() + " for month: " + payrollMonth);
+	    	        continue;  // skip processing this WorkOrder or handle this scenario as per your requirement
+	    	    }
+	    	    workOrder.setPayroll(payroll);
+		        workOrder.complete();
 		        workOrderRepository.save(workOrder);
-		        payrollService.updatePayrollMoney(workOrder);
+//		        payrollService.updatePayrollMoney(workOrder);
 		    }
 	    }
 	}
