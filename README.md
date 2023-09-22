@@ -8,15 +8,10 @@ This application aims to bridge the gap between employers and employees, ensurin
 ## Table of Contents
 - [Features](#features)
 - [Prerequisites](#prerequisites)
-- [Installation & Setup](#installation--setup)
-  - [Backend](#backend)
-  - [Frontend](#frontend)
+- [Installation steps](#installation-steps)
 - [Usage](#usage)
-  - [API Endpoints](#api-endpoints)
+  - [API Documentation](#api-documentation)
   - [React App](#react-app)
-- [Testing](#testing)
-- [Deployment](#deployment)
-- [Contributing](#contributing)
 - [License](#license)
 - [Acknowledgments](#acknowledgments)
 
@@ -112,6 +107,7 @@ To successfully run and develop the Employee Management App, ensure the followin
 </details>
 <details>
   <summary>Click to expand/collapse Customers API</summary>
+  
 ## Customers API
 
 **Base URL**: `/api/v1/customers`
@@ -152,6 +148,7 @@ To successfully run and develop the Employee Management App, ensure the followin
 </details>
 <details>
   <summary>Click to expand/collapse Payroll API</summary>
+  
 ## Payroll API
 
 **Base URL**: `/api/v1/payroll`
@@ -293,20 +290,154 @@ To successfully run and develop the Employee Management App, ensure the followin
   - **Query Parameter**: `emailId` (User's email address)
     
 </details>
+<details>
+  <summary>Click to expand/collapse Work orders API</summary>
+  
+## Work orders API
 
-### React App
+**Base URL**: `/api/v1/workorders`
 
-1. **Login Page:** 
-    - Description of how to login, features on this page, etc.
-2. **Dashboard:** 
-    - Description of features and functionality present on the dashboard.
+### Endpoints:
 
-... [More app views and features]
+- **Endpoint**: `/amount`
+  - **HTTP Method**: GET
+  - **Description**: Retrieve the count of work orders. Optionally filter by `OrderStatus`.
+  - **Query Parameter**: `status` (optional, `OrderStatus` enum value)
+
+- **Endpoint**: `""`
+  - **HTTP Method**: GET
+  - **Description**: Fetch a list of filtered work orders.
+  - **Query Parameters**:
+    - `userId` (optional, User ID)
+    - `after` (optional, Date filter, ISO format)
+    - `before` (optional, Date filter, ISO format)
+    - `status` (optional, `OrderStatus` enum value)
+
+- **Endpoint**: `/active`
+  - **HTTP Method**: GET
+  - **Description**: Fetch a list of active work orders.
+  - **Query Parameter**: `userId` (optional, User ID)
+
+- **Endpoint**: `/{orderId}`
+  - **HTTP Method**: GET
+  - **Description**: Fetch a specific work order by its order ID.
+  - **Path Variable**: `orderId` (Order's ID)
+
+- **Endpoint**: `/batch`
+  - **HTTP Method**: GET
+  - **Description**: Fetch a batch of work orders by their order IDs.
+  - **Query Parameter**: `orderIds` (List of order IDs)
+
+- **Endpoint**: `/assign`
+  - **HTTP Method**: PUT
+  - **Description**: Assign a user to a specific work order.
+  - **Query Parameters**:
+    - `userId` (required, User ID)
+    - `orderId` (required, Order ID)
+
+- **Endpoint**: `/{orderId}`
+  - **HTTP Method**: DELETE
+  - **Description**: Delete a work order by its order ID.
+  - **Path Variable**: `orderId` (Order's ID)
+
+- **Endpoint**: `""`
+  - **HTTP Method**: POST
+  - **Description**: Create a new work order.
+  - **Request Body**: Work order details in JSON format (`WorkOrderDTO`).
+
+- **Endpoint**: `/{orderId}`
+  - **HTTP Method**: PUT
+  - **Description**: Update a specific work order by its order ID.
+  - **Path Variable**: `orderId` (Order's ID)
+  - **Request Body**: Work order details in JSON format (`WorkOrderDTO`).
+
+- **Endpoint**: `/{orderId}/complete`
+  - **HTTP Method**: PUT
+  - **Description**: Complete a work order by its order ID.
+  - **Path Variable**: `orderId` (Order's ID)
+
+- **Endpoint**: `/recent`
+  - **HTTP Method**: GET
+  - **Description**: Fetch a list of recent work orders.
+
+- **Endpoint**: `/profit-per-orderType`
+  - **HTTP Method**: GET
+  - **Description**: Get the profit per order type.
+</details>
+<details>
+  <summary>Click to expand/collapse Work order status API</summary>
+  
+## WorkOrderStatus API
+
+**Base URL**: `/api/v1/statustypes`
+
+### Endpoints:
+
+- **Endpoint**: `""`
+  - **HTTP Method**: GET
+  - **Description**: Retrieve all the available `OrderStatus` values.
+
+---
+</details>
+<details>
+  <summary>Click to expand/collapse Work order type API</summary>
+  
+## WorkOrderType API
+
+**Base URL**: `/api/v1/ordertypes`
+
+### Endpoints:
+
+- **Endpoint**: `""`
+  - **HTTP Method**: GET
+  - **Description**: Fetch a list of all work order types.
+
+- **Endpoint**: `""`
+  - **HTTP Method**: POST
+  - **Description**: Create a new work order type.
+  - **Request Body**: Work order type details in JSON format (`OrderType`).
+
+- **Endpoint**: `/{id}`
+  - **HTTP Method**: PUT
+  - **Description**: Edit an existing work order type by its ID.
+  - **Path Variable**: `id` (OrderType's ID)
+  - **Request Body**: Updated work order type details in JSON format (`OrderType`).
+---
+</details>
+
+## React App
+
+### Logging In 
+
+### Step 1: Navigate to the Login Page.
+- Start by accessing the main page of our application.
+
+### Step 2: Choose the User Role.
+Select one of the user profiles based on your intended role:
+
+#### Admin User:
+- **Email**: `admin@yourcompany.com`
+- **Password**: `adminPass`
+
+#### Operator User:
+- **Email**: `operator@yourcompany.com`
+- **Password**: `operatorPass`
+
+#### Engineer User:
+- **Email**: `engineer@yourcompany.com`
+- **Password**: `engineerPass`
+
+### Step 3: Enter the Credentials.
+Input the email and password for the user role you've chosen.
+
+### Step 4: Click the "Login" Button.
+You should now be redirected to the dashboard or main view of your chosen role.
+
+> **Note**: These credentials are for demonstration and testing.
+
+2. **Video demonstration:** 
 
 
-## Contributing
-
-Information about how others can contribute to the project.
 
 ## License
 
