@@ -202,6 +202,7 @@ function ListCancelledWorkOrdersComponent() {
       <TableContainer
         columns={columns}
         data={data}
+        nonSortableLastColumns={2}
         defaultPageSize={10}
         pageSizeOptions={[10, 20, 30, 40, 50]}
         showPaginationBottom={true} />

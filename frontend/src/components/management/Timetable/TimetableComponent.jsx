@@ -124,6 +124,7 @@ function TimetableComponent() {
       <TableContainer
         columns={columns}
         data={data}
+        nonSortableLastColumns={1}
         defaultPageSize={10}
         pageSizeOptions={[10, 20, 30, 40, 50]}
         showPaginationBottom={true} />

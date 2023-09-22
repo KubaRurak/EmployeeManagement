@@ -3,7 +3,7 @@ import { useMemo} from "react"
 import DefaultColumnFilter from './DefaultColumnFilter'
 import './TableContainer.css';
 
-function TableContainer({ columns, data }) {
+function TableContainer({ columns, data, nonSortableLastColumns = 1 }) {
 
     const defaultColumn = useMemo(
         () => ({
@@ -64,8 +64,7 @@ function TableContainer({ columns, data }) {
                         })}
                       >
                         <span className="padded-header">{column.render("Header")}</span>
-                        {((headerGroup.headers.indexOf(column) !== headerGroup.headers.length - 1)
-                        && (headerGroup.headers.indexOf(column) !== headerGroup.headers.length - 2)) && (
+                        {(headerGroup.headers.indexOf(column) < headerGroup.headers.length - nonSortableLastColumns) && (
                         <span className="sortable-column">
                             {column.isSorted ? (column.isSortedDesc ?
                              <i className="bi bi-arrow-down"></i> :

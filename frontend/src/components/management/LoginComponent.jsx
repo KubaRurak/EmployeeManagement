@@ -22,19 +22,21 @@ function LoginComponent() {
     setPassword(event.target.value)
   }
 
-  function handleSubmit() {
+  function handleSubmit(event) {
+    event.preventDefault();
+
     authContext.login(username, password)
-    .then(success => {
-        if(success) {
-            navigate(`/activeWorkOrders`);
+      .then(success => {
+        if (success) {
+          navigate(`/activeWorkOrders`);
         } else {
-            setShowErrorMessage(true);
+          setShowErrorMessage(true);
         }
-    })
-    .catch(() => {
+      })
+      .catch(() => {
         setShowErrorMessage(true);
-    });
-}
+      });
+  }
 
   return (
     <div className="Auth-form-container">
@@ -64,12 +66,12 @@ function LoginComponent() {
             />
           </div>
           <div className="d-grid gap-2 mt-3">
-            <button type="button" name="login" className="btn btn-primary" onClick={handleSubmit}>
+            <button type="submit" name="login" className="btn btn-primary" onClick={handleSubmit}>
               Submit
             </button>
           </div>
           <p className="forgot-password text-right mt-2">
-            Forgot password?
+            {/* Forgot password? */}
           </p>
         </div>
       </form>
