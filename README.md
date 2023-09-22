@@ -439,7 +439,7 @@ You should now be redirected to the dashboard or main view of your chosen role.
 > 
 </details>
 
-2. **Video demonstration:** 
+### Video demonstration:
 
 
 ## Acknowledgments
