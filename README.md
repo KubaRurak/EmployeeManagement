@@ -88,11 +88,211 @@ To successfully run and develop the Employee Management App, ensure the followin
 
 ## Usage
 
-### API Endpoints
+## API documentation
 
-- `GET /api/entity`: Description of what this endpoint does.
-- `POST /api/entity`: Description.
-... [More endpoints]
+<details>
+  <summary>Click to expand/collapse Authentication API</summary>
+
+## Authentication API
+
+**Base URL**: `/api/v1/auth`
+
+- **Endpoint**: `/login`
+  - **HTTP Method**: POST
+  - **Description**: Authenticate a user and retrieve JWT token.
+  - **Request Body**: 
+    ```json
+    {
+      "emailId": "user@email.com",
+      "password": "password123"
+    }
+    ```
+  - **Response**: AuthResponseDTO containing the JWT token.
+
+</details>
+<details>
+  <summary>Click to expand/collapse Customers API</summary>
+## Customers API
+
+**Base URL**: `/api/v1/customers`
+
+### Endpoints:
+
+- **Endpoint**: `/`
+  - **HTTP Method**: GET
+  - **Description**: Retrieve all customers.
+  
+- **Endpoint**: `/`
+  - **HTTP Method**: POST
+  - **Description**: Save a new customer.
+  - **Request Body**: 
+    ```json
+    {
+      "emailId": "...",
+      "firstName": "...",
+      "lastName": "...",
+      "companyName": "..."
+    }
+    ```
+  
+- **Endpoint**: `/{id}`
+  - **HTTP Method**: PUT
+  - **Description**: Update an existing customer.
+  - **Path Variable**: `id` (Customer ID)
+  - **Request Body**: 
+    ```json
+    {
+      "customerId": 1,
+      "emailId": "...",
+      "firstName": "...",
+      "lastName": "...",
+      "companyName": "..."
+    }
+    ```
+</details>
+<details>
+  <summary>Click to expand/collapse Payroll API</summary>
+## Payroll API
+
+**Base URL**: `/api/v1/payroll`
+
+- **Endpoint**: `/`
+  - **HTTP Method**: GET
+  - **Description**: Retrieve filtered payrolls based on userId and/or payrollMonth.
+  - **Query Parameters**: `userId` (optional), `payrollMonth` (optional, format: `YYYY-MM-DD`)
+
+</details>
+<details>
+  <summary>Click to expand/collapse Payroll Statistics API</summary>
+  
+## Payroll Statistics API
+
+**Base URL**: `/api/v1/statistics`
+
+### Endpoints:
+
+- **Endpoint**: `/lastMonthProfit`
+  - **HTTP Method**: GET
+  - **Description**: Retrieve the total profit for the last month.
+
+- **Endpoint**: `/totalProfit`
+  - **HTTP Method**: GET
+  - **Description**: Retrieve the total profit.
+
+- **Endpoint**: `/top3EmployeesByHours/{year}/{month}`
+  - **HTTP Method**: GET
+  - **Description**: Retrieve the top 3 employees by hours worked for a specific month.
+  - **Path Variables**: `year` (Year, e.g., 2023), `month` (Month, e.g., 12 for December)
+
+- **Endpoint**: `/top3EmployeesByMoney/{year}/{month}`
+  - **HTTP Method**: GET
+  - **Description**: Retrieve the top 3 employees by money generated for a specific month.
+  - **Path Variables**: `year` (Year, e.g., 2023), `month` (Month, e.g., 12 for December)
+
+- **Endpoint**: `/monthly-earnings/last-two-years`
+  - **HTTP Method**: GET
+  - **Description**: Retrieve monthly earnings for the last two years.
+
+- **Endpoint**: `/yearly/{year}`
+  - **HTTP Method**: GET
+  - **Description**: Retrieve yearly statistics for a specific year.
+  - **Path Variable**: `year` (Year, e.g., 2023)
+
+- **Endpoint**: `/monthly/{year}/{month}`
+  - **HTTP Method**: GET
+  - **Description**: Retrieve monthly statistics for a specific month of a specific year.
+  - **Path Variables**: `year` (Year, e.g., 2023), `month` (Month, e.g., 12 for December)
+</details>
+<details>
+  <summary>Click to expand/collapse Timetables API</summary>
+  
+## Timetables API
+**Base URL**: `/api/v1/timetables`
+
+### Endpoints:
+
+- **Endpoint**: `""`
+  - **HTTP Method**: GET
+  - **Description**: Retrieve timetables based on filters provided.
+  - **Query Parameters**: 
+    - `userId` (optional): User's ID
+    - `after` (optional): Retrieve timetables after this date
+    - `before` (optional): Retrieve timetables before this date
+
+- **Endpoint**: `"{userId}/checkin"`
+  - **HTTP Method**: PUT
+  - **Description**: Check in for a specific user.
+  - **Path Variable**: `userId` (User's ID)
+
+- **Endpoint**: `"{userId}/checkout"`
+  - **HTTP Method**: PUT
+  - **Description**: Check out for a specific user.
+  - **Path Variable**: `userId` (User's ID)
+
+- **Endpoint**: `"{userId}/checkin"`
+  - **HTTP Method**: GET
+  - **Description**: Retrieve check-in time for a specific user.
+  - **Path Variable**: `userId` (User's ID)
+
+- **Endpoint**: `"{userId}/checkout"`
+  - **HTTP Method**: GET
+  - **Description**: Retrieve check-out time for a specific user.
+  - **Path Variable**: `userId` (User's ID)
+
+- **Endpoint**: `"{userId}/{date}/editTimes"`
+  - **HTTP Method**: PUT
+  - **Description**: Edit check-in and check-out times for a specific user on a specific date.
+  - **Path Variables**: 
+    - `userId` (User's ID)
+    - `date` (Date, e.g., 2023-09-21)
+  - **Query Parameters**: 
+    - `checkIn` (Check-in time, e.g., 09:00)
+    - `checkOut` (Check-out time, e.g., 17:00)
+</details>   
+<details>
+  <summary>Click to expand/collapse Users API</summary>
+  
+## Users API
+
+**Base URL**: `/api/v1/users`
+
+### Endpoints:
+
+- **Endpoint**: `/amount`
+  - **HTTP Method**: GET
+  - **Description**: Retrieve the count of users excluding those with the role `Admin`.
+
+- **Endpoint**: `""`
+  - **HTTP Method**: GET
+  - **Description**: Fetch a list of users.
+
+- **Endpoint**: `/{userId}`
+  - **HTTP Method**: GET
+  - **Description**: Fetch a specific user by their ID.
+  - **Path Variable**: `userId` (User's ID)
+
+- **Endpoint**: `""`
+  - **HTTP Method**: POST
+  - **Description**: Save a new user.
+  - **Request Body**: User details in JSON format.
+
+- **Endpoint**: `/{userId}/generateTimetable`
+  - **HTTP Method**: POST
+  - **Description**: Generate a timetable for a specific user for the past year up to the next year.
+  - **Path Variable**: `userId` (User's ID)
+
+- **Endpoint**: `/{userId}`
+  - **HTTP Method**: PUT
+  - **Description**: Update user details.
+  - **Path Variable**: `userId` (User's ID)
+  - **Request Body**: User details in JSON format.
+
+- **Endpoint**: `/by-email`
+  - **HTTP Method**: GET
+  - **Description**: Fetch a user by their email address.
+  - **Query Parameter**: `emailId` (User's email address)
+    
+</details>
 
 ### React App
 
