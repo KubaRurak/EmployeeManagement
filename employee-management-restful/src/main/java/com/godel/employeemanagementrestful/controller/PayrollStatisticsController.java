@@ -1,5 +1,6 @@
 package com.godel.employeemanagementrestful.controller;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -25,6 +26,16 @@ public class PayrollStatisticsController {
 	
     @Autowired
     private PayrollStatisticsService payrollStatisticsService;
+
+    @GetMapping("/lastMonthProfit")
+    public ResponseEntity<BigDecimal> getTotalProfitForLastMonth() {
+        return ResponseEntity.ok(payrollStatisticsService.getTotalProfitForLastMonth());
+    }
+    
+    @GetMapping("/totalProfit")
+    public ResponseEntity<BigDecimal> getTotalProfit() {
+        return ResponseEntity.ok(payrollStatisticsService.getTotalProfit());
+    }
     
     @GetMapping("/top3EmployeesByHours/{year}/{month}")
     public ResponseEntity<List<UserStatsDTO>> getTop3EmployeesByHoursForMonth(@PathVariable int year, @PathVariable int month) {

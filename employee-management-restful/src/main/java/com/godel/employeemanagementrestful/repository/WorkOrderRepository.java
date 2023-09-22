@@ -5,7 +5,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
+import com.godel.employeemanagementrestful.dto.OrderTypeProfitDTO;
 import com.godel.employeemanagementrestful.entity.User;
 import com.godel.employeemanagementrestful.entity.WorkOrder;
 import com.godel.employeemanagementrestful.enums.OrderStatus;
@@ -44,6 +46,11 @@ public interface WorkOrderRepository extends JpaRepository<WorkOrder, Long> {
 	Long countByStatus(OrderStatus status);
 
 	List<WorkOrder> findTop4ByOrderByLastModificationTimeStampDesc();
+	
+    @Query("SELECT new com.godel.employeemanagementrestful.dto.OrderTypeProfitDTO(wo.orderType.orderTypeName, SUM(wo.orderType.price)) " +
+            "FROM WorkOrder wo " +
+            "GROUP BY wo.orderType.orderTypeName")
+     List<OrderTypeProfitDTO> findProfitPerOrderType();
 
 
 }

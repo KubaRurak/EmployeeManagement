@@ -27,6 +27,15 @@ public class PayrollStatisticsService {
 	@Autowired
 	PayrollRepository payrollRepository;
 	
+    public BigDecimal getTotalProfitForLastMonth() {
+        LocalDate lastMonth = LocalDate.now().minusMonths(1).withDayOfMonth(1);
+        return payrollRepository.findTotalProfitForMonth(lastMonth);
+    }
+	
+	public BigDecimal getTotalProfit() {
+		return payrollRepository.findTotalProfits();
+	}
+	
 	public List<UserStatsDTO> findTop3EmployeesByHoursWorkedForMonth(LocalDate month) {
 	    Pageable topThreeByHours = PageRequest.of(0, 3, Sort.by(Sort.Order.desc("timeWorked")));
 	    
@@ -58,14 +67,7 @@ public class PayrollStatisticsService {
                 ((Number) record[2]).intValue()))
             .collect(Collectors.toList());
     }
-    
-    
-    
-    
-    
-    
-	
-    
+
     public YearlyStatsDTO computeYearlyStats(int year) {
         YearlyStatsDTO yearlyStats = new YearlyStatsDTO();
 

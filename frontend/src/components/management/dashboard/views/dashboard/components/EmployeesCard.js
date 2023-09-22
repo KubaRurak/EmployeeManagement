@@ -2,22 +2,22 @@ import { IconUsers } from '@tabler/icons-react';
 import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/material';
 import { retrieveEmployeeAmount } from '../../../../api/UserApiService';
 import React, { useState, useEffect } from 'react';
+import BlankCard from '../../../components/shared/BlankCard';
 
-const UnassignedEmployeesCard = () => {
+const EmployeesCard = () => {
 
   const [amountEmployees, setAmountEmployees] = useState(0);
 
   useEffect(() => {
-    retrieveEmployeeAmount('UNASSIGNED').then(response => {
-        console.log(response.data);
-        setAmountEmployees(response.data);
+    retrieveEmployeeAmount().then(response => {
+      setAmountEmployees(response.data);
     }).catch(error => {
-        console.error("Error fetching work order numbers:", error);
+      console.error("Error fetching work order numbers:", error);
     });
-}, []);
+  }, []);
 
   return (
-    <Card>
+    <BlankCard>
       <CardContent>
         <Stack
           alignItems="flex-start"
@@ -30,7 +30,7 @@ const UnassignedEmployeesCard = () => {
               color="text.secondary"
               variant="overline"
             >
-              UNASSIGNED WORK ORDERS
+              TOTAL EMPLOYEES
             </Typography>
             <Typography variant="h3">
               {amountEmployees}
@@ -38,7 +38,7 @@ const UnassignedEmployeesCard = () => {
           </Stack>
           <Avatar
             sx={{
-              backgroundColor: 'secondary.main',
+              backgroundColor: '#f44336',
               height: 56,
               width: 56
             }}
@@ -49,10 +49,10 @@ const UnassignedEmployeesCard = () => {
           </Avatar>
         </Stack>
       </CardContent>
-    </Card>
+    </BlankCard>
   );
 };
 
-export default UnassignedEmployeesCard;
+export default EmployeesCard;
 
 

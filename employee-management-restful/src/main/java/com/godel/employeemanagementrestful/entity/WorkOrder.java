@@ -59,27 +59,33 @@ public class WorkOrder {
 	@Builder.Default
 	private LocalDateTime lastModificationTimeStamp=LocalDateTime.now();
 	private String comments;
-	@ManyToOne(
-			cascade = CascadeType.ALL)
+	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(
 			name="user_id",
 			referencedColumnName = "userId"
 			)
 	private User user;
-	@ManyToOne(
-			cascade = CascadeType.MERGE)
+	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(
 			name="customer_id",
 			referencedColumnName = "customerId"
 			)	
 	private Customer customer;
-	@ManyToOne(
-			cascade = CascadeType.ALL)
+	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(
 			name="payroll_id",
 			referencedColumnName = "payrollId"
 			)
 	private Payroll payroll;
+	
+	public void complete() {
+	    this.setEndTimeStamp(LocalDateTime.now());
+	    this.setLastModificationTimeStamp(LocalDateTime.now());
+	    this.setStatus(OrderStatus.COMPLETED);
+	    if (this.payroll != null) {
+	        this.payroll.addAmount(this.getOrderType().getPrice());
+	    }
+	}
 	
 
 }

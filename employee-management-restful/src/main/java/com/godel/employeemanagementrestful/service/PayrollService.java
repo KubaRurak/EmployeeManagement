@@ -86,7 +86,6 @@ public class PayrollService {
 
 	@Transactional
 	public void generatePayrollForAll(YearMonth startMonth, int numMonths) {
-
 		List<User> users = userRepository.findAll();
 		for (User user : users) {
 			generatePayrollForUser(startMonth, numMonths, user.getUserId());
@@ -95,17 +94,6 @@ public class PayrollService {
 	}
 
 	@Transactional
-	public void updatePayrollMoney(WorkOrder workOrder) {
-		Payroll payroll = payrollRepository.findByUserAndPayrollMonth(
-				workOrder.getUser(), workOrder.getEndTimeStamp().toLocalDate().withDayOfMonth(1));
-		payroll.addAmount(workOrder.getOrderType().getPrice());
-		WorkOrder updateWorkOrder = workOrderRepository.findById(workOrder.getOrderId()).orElse(null);
-		updateWorkOrder.setPayroll(payroll);
-		payrollRepository.save(payroll);
-		workOrderRepository.save(updateWorkOrder);
-
-	}
-
 	public void updatePayrollTime(Long userId, Timetable timetable) {
 		LocalDate date = timetable.getDate().withDayOfMonth(1);	
 		List<Payroll> payrolls = payrollRepository.findByUserUserIdAndPayrollMonth(userId, date);

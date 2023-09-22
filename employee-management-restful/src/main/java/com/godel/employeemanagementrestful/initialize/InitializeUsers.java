@@ -37,10 +37,9 @@ public class InitializeUsers {
 	        emails.add(adminUser.getEmailId());
 	        emails.add(operatorUser.getEmailId());
 	        emails.add(engineerUser.getEmailId());
-	
-	        userService.saveUser(adminUser);
-	        userService.saveUser(operatorUser);
 	        userService.saveUser(engineerUser);
+	        userService.saveUser(operatorUser);
+	        userService.saveUser(adminUser);
 	        begin = 3;
         }
         for (int i = begin; i < numberOfUsers; i++) { 

@@ -7,6 +7,14 @@ const apiClient = axios.create(
     }
 );
 
+export const getLastMonthProfit = () => {
+  return apiClient.get('/lastMonthProfit', { headers: getAuthHeaders() });
+};
+
+export const getTotalProfit = () => {
+  return apiClient.get('/totalProfit', { headers: getAuthHeaders() });
+};
+
 export const getMonthlyEarningsForLastTwoYears = () => {
   return apiClient.get('/monthly-earnings/last-two-years', { headers: getAuthHeaders() });
 };

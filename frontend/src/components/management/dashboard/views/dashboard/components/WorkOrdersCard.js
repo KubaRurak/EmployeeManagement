@@ -2,6 +2,7 @@ import { IconChecklist } from '@tabler/icons-react';
 import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/material';
 import { retrieveWorkOrderNumbers } from '../../../../api/WorkOrdersApiService';
 import React, { useState, useEffect } from 'react';
+import BlankCard from '../../../components/shared/BlankCard';
 
 const WorkOrdersCard = () => {
 
@@ -16,7 +17,7 @@ const WorkOrdersCard = () => {
 }, []);
 
   return (
-    <Card>
+    <BlankCard>
       <CardContent>
         <Stack
           alignItems="flex-start"
@@ -48,7 +49,7 @@ const WorkOrdersCard = () => {
           </Avatar>
         </Stack>
       </CardContent>
-    </Card>
+    </BlankCard>
   );
 };
 

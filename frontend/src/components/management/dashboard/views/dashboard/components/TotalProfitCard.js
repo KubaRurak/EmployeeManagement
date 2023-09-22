@@ -1,10 +1,32 @@
-import { IconCurrencyZloty } from '@tabler/icons-react';
+import { IconCash } from '@tabler/icons-react';
 import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/material';
+import { getTotalProfit } from '../../../../api/StatisticsApiSerivce';
+import React, { useState, useEffect } from 'react';
+import BlankCard from '../../../components/shared/BlankCard';
 
 const TotalProfitCard = () => {
 
+  const [totalProfit, setTotalProfit] = useState(0);
+
+
+  useEffect(() => {
+    getTotalProfit().then(response => {
+      setTotalProfit(response.data);
+    }).catch(error => {
+      console.error("Error fetching work order numbers:", error);
+    });
+  }, []);
+  const formatToK = (num) => {
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(3) + 'm';
+    }
+    return num.toString();
+  };
+
+  const formattedTotalProfit = formatToK(totalProfit);
+
   return (
-    <Card>
+    <BlankCard>
       <CardContent>
         <Stack
           alignItems="flex-start"
@@ -20,7 +42,7 @@ const TotalProfitCard = () => {
               TOTAL PROFIT
             </Typography>
             <Typography variant="h3">
-              235k
+              {formattedTotalProfit} zł
             </Typography>
           </Stack>
           <Avatar
@@ -31,12 +53,12 @@ const TotalProfitCard = () => {
             }}
           >
             <SvgIcon>
-              <IconCurrencyZloty />
+              <IconCash />
             </SvgIcon>
           </Avatar>
         </Stack>
       </CardContent>
-    </Card>
+    </BlankCard>
   );
 };
 
