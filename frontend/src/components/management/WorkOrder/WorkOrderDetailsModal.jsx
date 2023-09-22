@@ -98,7 +98,7 @@ function WorkOrderDetailsModal({ show, handleClose, handleShowEditModal, selecte
         </Row>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="primary" onClick={handleEditWorkOrder} style = {{marginRight: "auto" }} disabled={userRole==="Engineer"}>
+        <Button variant="primary" onClick={handleEditWorkOrder} style = {{marginRight: "auto" }} disabled={userRole==="Engineer" || fromActive}>
           Edit
         </Button>
         <Button variant="success" onClick={handleCompleteWorkOrder} disabled={!fromActive}>

@@ -6,23 +6,20 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 @SpringBootApplication
 public class EmployeeManagementRestfulApplication {
 
 	public static void main(String[] args) {
+		
+        Dotenv dotenv = Dotenv.load();
+        System.setProperty("DB_URL", dotenv.get("DB_URL"));
+        System.setProperty("DB_USERNAME", dotenv.get("DB_USERNAME"));
+        System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
+        System.setProperty("PROFILE", dotenv.get("PROFILE"));
+        
 		SpringApplication.run(EmployeeManagementRestfulApplication.class, args);
-	}
-	
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-	    return new WebMvcConfigurer() {
-	        @Override
-	        public void addCorsMappings(CorsRegistry registry) {
-	            registry.addMapping("/**")
-	                    .allowedMethods("*")
-	                    .allowedOrigins("http://localhost:3000");
-	        }
-	    };
 	}
 
 }
