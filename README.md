@@ -1,9 +1,8 @@
 # Employee Management App
 
-A comprehensive full-stack solution for managing employees and their work orders. Tailored with three distinct access roles - Admin, Operator, and Employee - it streamlines various functionalities essential for modern businesses.
+A comprehensive full-stack solution for managing employees and their work orders. Tailored with three distinct access roles - Admin, Operator, and Engineer - it streamlines various functionalities essential for modern businesses.
+Main purpose of the application is ensuring that tasks are efficiently managed and productivity is tracked in a user-friendly manner.
 
-## Purpose
-This application aims to bridge the gap between employers and employees, ensuring that tasks are efficiently managed and productivity is tracked in a user-friendly manner.
 
 ## Table of Contents
 - [Features](#features)
