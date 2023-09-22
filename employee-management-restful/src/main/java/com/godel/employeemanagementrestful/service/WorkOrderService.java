@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.godel.employeemanagementrestful.dto.OrderTypeProfitDTO;
 import com.godel.employeemanagementrestful.dto.WorkOrderDTO;
 import com.godel.employeemanagementrestful.entity.Customer;
 import com.godel.employeemanagementrestful.entity.Payroll;
@@ -129,4 +130,12 @@ public class WorkOrderService{
     public List<WorkOrder> getRecentWorkOrders() {
         return workOrderRepository.findTop4ByOrderByLastModificationTimeStampDesc();
     }
+    
+    public List<OrderTypeProfitDTO> getProfitPerOrderType() {
+        return workOrderRepository.findProfitPerOrderType();
+    }
+    
+
+    
+    
 }

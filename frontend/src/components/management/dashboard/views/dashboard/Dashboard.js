@@ -11,6 +11,7 @@ import MonthlyEarnings from './components/MonthlyEarnings';
 import WorkOrdersCard from './components/WorkOrdersCard';
 import TotalProfitCard from './components/TotalProfitCard';
 import UnassignedWorkOrdersCard from './components/UnassignedWorkOrderCard';
+import EmployeesCard from './components/EmployeesCard';
 
 const Dashboard = () => {
   return (
@@ -24,7 +25,7 @@ const Dashboard = () => {
             <UnassignedWorkOrdersCard />
           </Grid>
           <Grid item xs={12} lg={3}>
-            <WorkOrdersCard />
+            <EmployeesCard />
           </Grid>
           <Grid item xs={12} lg={3}>
             <TotalProfitCard />

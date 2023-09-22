@@ -54,5 +54,11 @@ public interface PayrollRepository extends JpaRepository<Payroll, Long> {
             "GROUP BY YEAR(p.payrollMonth), MONTH(p.payrollMonth) " +
             "ORDER BY YEAR(p.payrollMonth), MONTH(p.payrollMonth)")
      List<Object[]> findMonthlyEarningsForYears(Integer... years);
+     
+     @Query("SELECT SUM(p.moneyGenerated) FROM Payroll p")
+     BigDecimal findTotalProfits();
+     
+     @Query("SELECT SUM(p.moneyGenerated) FROM Payroll p WHERE p.payrollMonth = ?1")
+     BigDecimal findTotalProfitForMonth(LocalDate month);
 	
 }

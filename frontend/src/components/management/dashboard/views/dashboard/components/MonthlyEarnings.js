@@ -1,12 +1,23 @@
-import React from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
 import { Stack, Typography, Avatar, Fab } from '@mui/material';
 import { IconArrowDownRight, IconCurrencyZloty } from '@tabler/icons-react';
 import DashboardCard from '../../../components/shared/DashboardCard';
+import { getLastMonthProfit } from '../../../../api/StatisticsApiSerivce';
+import React, { useState, useEffect } from 'react';
 
 const MonthlyEarnings = () => {
-  // chart color
+
+  const [monthProfit, setMonthProfit] = useState(0);
+
+  useEffect(() => {
+    getLastMonthProfit().then(response => {
+        setMonthProfit(response.data);
+    }).catch(error => {
+        console.error("Error fetching work order numbers:", error);
+    });
+}, []);
+
   const theme = useTheme();
   const secondary = theme.palette.secondary.main;
   const secondarylight = '#f5fcff';
@@ -61,12 +72,12 @@ const MonthlyEarnings = () => {
         </Fab>
       }
       footer={
-        <Chart options={optionscolumnchart} series={seriescolumnchart} type="area" height="60px" />
+        <Chart options={optionscolumnchart} series={seriescolumnchart} type="area" height="55px" />
       }
     >
       <>
         <Typography variant="h3" fontWeight="700" mt="-20px">
-          6,820zł
+          {monthProfit} zł
         </Typography>
         <Stack direction="row" spacing={1} my={1} alignItems="center">
           <Avatar sx={{ bgcolor: errorlight, width: 27, height: 27 }}>

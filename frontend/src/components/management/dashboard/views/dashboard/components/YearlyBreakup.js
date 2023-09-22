@@ -1,17 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
 import { Grid, Stack, Typography, Avatar } from '@mui/material';
 import { IconArrowUpLeft } from '@tabler/icons-react';
+import { retrieveProfitByOrderType } from '../../../../api/WorkOrdersApiService';
 
 import DashboardCard from '../../../components/shared/DashboardCard';
 
 const YearlyBreakup = () => {
   // chart color
   const theme = useTheme();
-  const primary = theme.palette.primary.main;
-  const primarylight = '#ecf2ff';
   const successlight = theme.palette.success.light;
+
+  
+  const [profitData, setProfitData] = useState([]);
+  const [mostProfitable, setMostProfitable] = useState({});
+
+  useEffect(() => {
+    retrieveProfitByOrderType().then(response => {
+      const data = response.data;
+      setProfitData(data);
+      console.log(data);
+
+      if (data.length) {
+        const sortedData = [...data].sort((a, b) => b.totalProfit - a.totalProfit);
+        setMostProfitable(sortedData[0]);
+      }
+    }).catch(error => {
+      console.error("Failed to fetch profit data", error);
+    });
+  }, []);
+  const orderTypeNames = profitData.map(item => item.orderTypeName);
 
   // chart
   const optionscolumnchart = {
@@ -24,7 +43,7 @@ const YearlyBreakup = () => {
       },
       height: 155,
     },
-    colors: [primary, primarylight, '#F9F9FD'],
+    colors: ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6', '#E6B333', '#3366E6', '#999966', '#99E6E6', '#66998D'],
     plotOptions: {
       pie: {
         startAngle: 0,
@@ -35,9 +54,15 @@ const YearlyBreakup = () => {
         },
       },
     },
+    labels: orderTypeNames,
     tooltip: {
       theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
-      fillSeriesColor: false,
+      fillSeriesColor: true,
+      y: {
+        formatter: function (val) {
+          return val + " zł";
+        }
+      }
     },
     stroke: {
       show: false,
@@ -59,43 +84,27 @@ const YearlyBreakup = () => {
       },
     ],
   };
-  const seriescolumnchart = [38, 40, 25];
+
+  const seriescolumnchart = profitData.map(item => item.totalProfit);
 
   return (
-    <DashboardCard title="Yearly Breakup">
+    <DashboardCard title="Profit By Order Type">
       <Grid container spacing={3}>
         {/* column */}
         <Grid item xs={7} sm={7}>
-          <Typography variant="h3" fontWeight="700">
-            $36,358
+          <Typography variant="h4" fontWeight="600">
+            Most profitable {mostProfitable.orderTypeName}
           </Typography>
           <Stack direction="row" spacing={1} mt={1} alignItems="center">
-            <Avatar sx={{ bgcolor: successlight, width: 27, height: 27 }}>
-              <IconArrowUpLeft width={20} color="#39B69A" />
+            <Avatar sx={{ bgcolor: "#FF6633", width: 27, height: 27 }}>
+              <IconArrowUpLeft width={20} color="#FF6633" />
             </Avatar>
             <Typography variant="subtitle2" fontWeight="600">
-              +9%
-            </Typography>
-            <Typography variant="subtitle2" color="textSecondary">
-              last year
+              {mostProfitable.totalProfit} zł
             </Typography>
           </Stack>
           <Stack spacing={3} mt={5} direction="row">
             <Stack direction="row" spacing={1} alignItems="center">
-              <Avatar
-                sx={{ width: 9, height: 9, bgcolor: primary, svg: { display: 'none' } }}
-              ></Avatar>
-              <Typography variant="subtitle2" color="textSecondary">
-                2022
-              </Typography>
-            </Stack>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <Avatar
-                sx={{ width: 9, height: 9, bgcolor: primarylight, svg: { display: 'none' } }}
-              ></Avatar>
-              <Typography variant="subtitle2" color="textSecondary">
-                2023
-              </Typography>
             </Stack>
           </Stack>
         </Grid>
@@ -105,7 +114,7 @@ const YearlyBreakup = () => {
             options={optionscolumnchart}
             series={seriescolumnchart}
             type="donut"
-            height="150px"
+            height="160px"
           />
         </Grid>
       </Grid>

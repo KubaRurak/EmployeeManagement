@@ -93,18 +93,6 @@ public class PayrollService {
 
 	}
 
-//	@Transactional
-//	public void updatePayrollMoney(WorkOrder workOrder) {
-//		Payroll payroll = payrollRepository.findByUserAndPayrollMonth(
-//				workOrder.getUser(), workOrder.getEndTimeStamp().toLocalDate().withDayOfMonth(1));
-//		payroll.addAmount(workOrder.getOrderType().getPrice());
-//		WorkOrder updateWorkOrder = workOrderRepository.findById(workOrder.getOrderId()).orElse(null);
-//		updateWorkOrder.setPayroll(payroll);
-//		payrollRepository.save(payroll);
-//		workOrderRepository.save(updateWorkOrder);
-//
-//	}
-	
 	@Transactional
 	public void updatePayrollTime(Long userId, Timetable timetable) {
 		LocalDate date = timetable.getDate().withDayOfMonth(1);	

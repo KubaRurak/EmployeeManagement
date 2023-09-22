@@ -61,5 +61,4 @@ public class OrderType {
 			)
 	private List<WorkOrder> workOrders;
 	
-
 }

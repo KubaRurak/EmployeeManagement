@@ -16,6 +16,10 @@ export const retrieveRecentWorkorders = () => {
   return apiClient.get('/recent', { headers: getAuthHeaders() });
 };
 
+export const retrieveProfitByOrderType = () => {
+  return apiClient.get('/profit-per-orderType', { headers: getAuthHeaders() });
+};
+
 
 export const getFilteredWorkOrdersApi = (userId, after, before, status) => {
   const params = {};

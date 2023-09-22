@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.godel.employeemanagementrestful.dto.OrderTypeProfitDTO;
 import com.godel.employeemanagementrestful.dto.WorkOrderDTO;
 import com.godel.employeemanagementrestful.entity.OrderType;
 import com.godel.employeemanagementrestful.entity.User;
@@ -102,10 +103,10 @@ public class WorkOrderController {
 	}
 	
 	@GetMapping("/{orderId}")
-	public WorkOrderDTO fetchWorkOrderById(@PathVariable Long orderId) {
+	public ResponseEntity<WorkOrderDTO> fetchWorkOrderById(@PathVariable Long orderId) {
 		WorkOrder workOrder = workOrderRepository.findByOrderId(orderId);
 		WorkOrderDTO workOrderDTO = new WorkOrderDTO(workOrder);
-		return workOrderDTO;
+		return ResponseEntity.ok(workOrderDTO);
 	}
 	
 	@GetMapping("/batch")
@@ -136,7 +137,7 @@ public class WorkOrderController {
 
 	
 	@PostMapping("")
-	public WorkOrderDTO createWorkOrder(@RequestBody WorkOrderDTO workOrderDTO) {
+	public ResponseEntity<WorkOrderDTO> createWorkOrder(@RequestBody WorkOrderDTO workOrderDTO) {
 	    WorkOrder workOrder = new WorkOrder();
 	    workOrder.setOrderName(workOrderDTO.getOrderName());
 	    OrderType orderType = orderTypeRepository.findById(workOrderDTO.getOrderType().getId())
@@ -155,11 +156,11 @@ public class WorkOrderController {
 	    if (workOrderDTO.getCustomerId() != null) {
 	        workOrderService.assignCustomerToWorkOrder(workOrderDTO.getCustomerId(), workOrder.getOrderId());
 	    }
-	    return new WorkOrderDTO(workOrder);
+	    return ResponseEntity.status(HttpStatus.CREATED).body(new WorkOrderDTO(workOrder));
 	}
 	
 	@PutMapping("/{orderId}")
-	public WorkOrderDTO updateWorkOrderById(
+	public ResponseEntity<WorkOrderDTO> updateWorkOrderById(
 	        @PathVariable Long orderId,
 	        @RequestBody WorkOrderDTO workOrderDTO) {
 	    WorkOrder workOrder = workOrderRepository.findById(orderId).orElseThrow();
@@ -184,7 +185,7 @@ public class WorkOrderController {
 	    workOrder.setComments(workOrderDTO.getComments());
 	    workOrderRepository.save(workOrder);
 	    orderTypeRepository.save(orderType);
-	    return new WorkOrderDTO(workOrder);    
+	    return ResponseEntity.ok(new WorkOrderDTO(workOrder));    
 	}
 	
 	@PreAuthorize("hasAnyAuthority('ENGINEER', 'OPERATOR', 'ADMIN')")
@@ -211,5 +212,10 @@ public class WorkOrderController {
 	    return ResponseEntity.ok(workOrderDTOs);
 	}
 
+	@GetMapping("/profit-per-orderType")
+	public ResponseEntity<List<OrderTypeProfitDTO>> getProfitPerOrderType() {
+	    List<OrderTypeProfitDTO> result = workOrderService.getProfitPerOrderType();
+	    return ResponseEntity.ok(result);
+	}
 	
 }
