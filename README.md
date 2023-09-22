@@ -46,38 +46,45 @@ This application aims to bridge the gap between employers and employees, ensurin
 
 ## Prerequisites
 
-- Node.js
-- Java [version]
-- [Other software or tools]
+To successfully run and develop the Employee Management App, ensure the following are installed:
 
-## Installation & Setup
+### Backend Prerequisites:
 
-### Backend
+1. **Java**: Version 17 or higher.
+2. **Maven**: Ensure you have a recent version of Maven installed.
+3. **MySQL**: Ensure you have MySQL set up and accessible, as the project uses `mysql-connector-j`.
 
-1. Clone the repository:
+### Frontend Prerequisites:
 
-git clone [repository-link]
+1. **Node.js**: Ensure you have a recent version of Node.js installed.
+2. **npm**: Ensure npm is installed (usually comes bundled with Node.js).
 
-2. Navigate to the backend directory:
-cd [backend-directory]
+### Database and Environment Configuration:
 
+1. **Database**: Set up your MySQL instance and create a database for the project.
+2. **Environment File**: 
+   - Create an `.env` file in the root directory of the backend project.
+   - Populate it with your database details:
+     ```
+     DB_URL=your_database_url
+     DB_USERNAME=your_database_username
+     DB_PASSWORD=your_database_password
+     PROFILE=default
+     ```
+   - For the first run and dummy data initialization, set `PROFILE=data-init`.
 
-3. Install dependencies:
-mvn install
+### Installation Steps:
 
-4. Start the application:
-mvn spring-boot:run
+1. **Backend**:
+   - Navigate to the backend directory.
+   - Run `mvn clean install` to install the required dependencies from the `pom.xml`.
+   - Start the Spring Boot application.
 
-### Frontend
+2. **Frontend**:
+   - Navigate to the frontend directory.
+   - Run `npm install` to fetch and install the required packages from `package.json`.
+   - Use `npm start` to start the frontend development server.
 
-1. Navigate to the frontend directory:
-cd [frontend-directory]
-
-2. Install dependencies:
-npm install
-
-3. Start the React app:
-npm start
 
 ## Usage
 
