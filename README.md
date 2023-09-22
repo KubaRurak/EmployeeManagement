@@ -407,6 +407,9 @@ To successfully run and develop the Employee Management App, ensure the followin
 
 ## React App
 
+<details>
+  <summary>Click to expand/collapse Logging in</summary>
+
 ### Logging In 
 
 ### Step 1: Navigate to the Login Page.
@@ -434,15 +437,38 @@ Input the email and password for the user role you've chosen.
 You should now be redirected to the dashboard or main view of your chosen role.
 
 > **Note**: These credentials are for demonstration and testing.
+> 
+</details>
 
 2. **Video demonstration:** 
 
 
+## Acknowledgments
+
+The dashboard used in our application is adapted from the **Modernize Free React MUI Dashboard**. 
+
+- License: **MIT**
+- Attribution is kindly provided to the original creators.
+
+[View the original template here](https://adminmart.com/product/modernize-free-react-mui-dashboard/)
+
+This project uses several open-source libraries and tools:
+
+- [**MUI**](https://mui.com/): A popular React UI framework.
+- [**react-bootstrap**](https://react-bootstrap.github.io/): Bootstrap components built with React.
+- [**react-table**](https://react-table.tanstack.com/): Hooks for building lightweight, fast, and extendable data-grid for React.
+- [**Bootstrap**](https://getbootstrap.com/): The world's most popular front-end toolkit.
+
+I am grateful to the developers and maintainers of these tools for their invaluable contributions to the community.
 
 ## License
 
-Specify the license or link to it.
+### The MIT License (MIT)
 
-## Acknowledgments
+Copyright (c) 2023 Jakub Rurak
 
-Credit to libraries, tools, or tutorials used in the project.
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
