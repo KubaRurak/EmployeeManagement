@@ -3,6 +3,9 @@
 A comprehensive full-stack solution for managing employees and their work orders. Tailored with three distinct access roles - Admin, Operator, and Engineer - it streamlines various functionalities essential for modern businesses.
 Main purpose of the application is ensuring that tasks are efficiently managed and productivity is tracked in a user-friendly manner.
 
+# Demonstration
+
+[![Video presentation](http://img.youtube.com/vi/tN4L_krZGnk/0.jpg)](https://www.youtube.com/watch?v=tN4L_krZGnk)
 
 ## Table of Contents
 - [Features](#features)
