@@ -444,7 +444,7 @@ You should now be redirected to the dashboard or main view of your chosen role.
 
 ### Video demonstration:
 
-[![Video presentation](http://img.youtube.com/vi/tN4L_krZGnk/0.jpg)](https://www.youtube.com/watch?v=tN4L_krZGnk)
+[![Video presentation](http://img.youtube.com/vi/rKXFXcX8Xfw/0.jpg)](https://www.youtube.com/watch?v=rKXFXcX8Xfw)
 
 ## Acknowledgments
 
