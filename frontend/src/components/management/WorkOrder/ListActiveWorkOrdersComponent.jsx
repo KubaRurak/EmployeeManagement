@@ -175,7 +175,8 @@ function ListActiveWorkOrdersComponent() {
       </div>
       <TableContainer
         columns={columns}
-        data={data} />
+        data={data}
+        nonSortableLastColumns={2} />
       <WorkOrderDetailsModal
         show={show}
         handleClose={handleClose}

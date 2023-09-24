@@ -51,7 +51,7 @@ function PayrollComponent() {
                 accessor: data => `${data.userFirstName} ${data.userLastName}`,
                 id: "fullName",
                 width: 150,
-                Cell: ({ value }) => <div style={{fontWeight: 500}}>{value}</div>
+                Cell: ({ value }) => <div style={{ fontWeight: 500 }}>{value}</div>
             },
             {
                 Header: "Email",
@@ -73,19 +73,18 @@ function PayrollComponent() {
                 Header: "Time Worked [h]",
                 accessor: "timeWorked",
                 width: 100,
-                Cell: ({ value }) => <div style={{fontWeight: 500}}>{value}</div>
+                Cell: ({ value }) => <div style={{ fontWeight: 500 }}>{value}</div>
 
             },
             {
                 Header: "Profit Generated",
                 accessor: "moneyGenerated",
                 width: 150,
-                Cell: ({ value }) => <div style={{fontWeight: 500}}>{value}</div>
+                Cell: ({ value }) => <div style={{ fontWeight: 500 }}>{value}</div>
 
             },
             {
-                Header: "Details",
-                accessor: "workOrderIds",
+                Header: " ",
                 Cell: ({ cell }) => (
                     <button
                         type="button"
@@ -108,6 +107,7 @@ function PayrollComponent() {
             <TableContainer
                 columns={columns}
                 data={data}
+                nonSortableLastColumns={1}
             />
             <PayrollDetailsModal
                 show={showWorkOrders}

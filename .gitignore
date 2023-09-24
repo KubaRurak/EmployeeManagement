@@ -1,2 +1,3 @@
 
 employee-management-restful/.env
+employee-management-restful/src/test/resources/application-test.properties

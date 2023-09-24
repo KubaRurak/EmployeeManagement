@@ -98,6 +98,8 @@ public class InitializeWorkOrders {
 	        if (user != null) {
 	            assignUserWithoutSaving(user, workOrder);
 	        }
+	        workOrder.setStartTimeStamp(LocalDateTime.now());
+	        workOrder.setLastModificationTimeStamp(LocalDateTime.now());
 	        workOrderRepository.save(workOrder); 
 	    }
 	}
@@ -152,13 +154,17 @@ public class InitializeWorkOrders {
 		        LocalDate payrollMonth = endDate.toLocalDate().withDayOfMonth(1); 
 	    	    Payroll payroll = payrollRepository.findByUserAndPayrollMonth(workOrder.getUser(), payrollMonth);
 	    	    if (payroll == null) {
-	    	        // This will log the user for which payroll wasn't found.
-	    	        // It's a debugging step, and should help in identifying the cause.
 	    	        System.out.println("No payroll found for user: " + workOrder.getUser().getUserId() + " for month: " + payrollMonth);
-	    	        continue;  // skip processing this WorkOrder or handle this scenario as per your requirement
+	    	        continue; 
+	    	    }
+	    	    
+	    	    workOrder.setEndTimeStamp(endDate);
+	    	    workOrder.setLastModificationTimeStamp(endDate);
+	    	    workOrder.setStatus(OrderStatus.COMPLETED);
+	    	    if (payroll != null) {
+	    	        payroll.addAmount(workOrder.getOrderType().getPrice());
 	    	    }
 	    	    workOrder.setPayroll(payroll);
-		        workOrder.complete();
 		        workOrderRepository.save(workOrder);
 //		        payrollService.updatePayrollMoney(workOrder);
 		    }

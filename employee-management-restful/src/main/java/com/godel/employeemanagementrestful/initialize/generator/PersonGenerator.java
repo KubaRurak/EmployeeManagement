@@ -81,20 +81,20 @@ public class PersonGenerator {
         switch (role) {
             case Admin:
                 firstName = "Admin";
-                lastName = "User";
+                lastName = "Admin";
                 email = "admin@yourcompany.com";
                 password = "adminPass";
                 break;
             case Operator:
                 firstName = "Operator";
-                lastName = "User";
+                lastName = "Operator";
                 email = "operator@yourcompany.com";
                 password = "operatorPass";
                 break;
             case Engineer:
             default:
                 firstName = "Engineer";
-                lastName = "User";
+                lastName = "Engineer";
                 email = "engineer@yourcompany.com";
                 password = "engineerPass";
         }
