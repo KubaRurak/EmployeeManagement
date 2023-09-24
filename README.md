@@ -5,7 +5,7 @@ Main purpose of the application is ensuring that tasks are efficiently managed a
 
 # Demonstration
 
-[![Video presentation](http://img.youtube.com/vi/tN4L_krZGnk/0.jpg)](https://www.youtube.com/watch?v=tN4L_krZGnk)
+[![Video presentation](http://img.youtube.com/vi/rKXFXcX8Xfw/0.jpg)](https://www.youtube.com/watch?v=rKXFXcX8Xfw)
 
 ## Table of Contents
 - [Features](#features)
