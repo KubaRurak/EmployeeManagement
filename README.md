@@ -54,7 +54,7 @@ To successfully run and develop the Employee Management App, ensure the followin
 ### Frontend Prerequisites:
 
 1. **Node.js**: Ensure you have a recent version of Node.js installed.
-2. **npm**: Ensure npm is installed (usually comes bundled with Node.js).
+2. **npm**: Ensure npm is installed.
 
 ### Database and Environment Configuration:
 
