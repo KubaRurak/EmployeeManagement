@@ -3,7 +3,7 @@ import { useMemo} from "react"
 import DefaultColumnFilter from './DefaultColumnFilter'
 import './TableContainer.css';
 
-function TableContainer({ columns, data, nonSortableLastColumns = 1 }) {
+function TableContainer({ columns, data, nonSortableLastColumns = 0 }) {
 
     const defaultColumn = useMemo(
         () => ({
