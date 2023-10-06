@@ -70,16 +70,16 @@ header {
 
 .dropdown-item:disabled, .dropdown-item.disabled {
   pointer-events: none;
-  background-color: transparent !important;
-  color: #6c757d !important;
+  background-color: transparent;
+  color: #6c757d;
 }
 
 .dropdown-item:hover {
-  background-color: transparent !important;
+  background-color: transparent;
 }
 
 .navbar-light .navbar-nav .dropdown-toggle:focus {
-  color: white !important;
+  color: white;
 }
 
 

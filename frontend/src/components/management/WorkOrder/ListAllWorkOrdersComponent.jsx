@@ -27,9 +27,6 @@ function ListAllWorkOrdersComponent() {
   const handleShowCreateModal = useCallback(() => setShowCreateModal(true), []);
 
   const [message, setMessage] = useState("");
-
-
-
   const [data, setData] = useState([])
   const [selectedWorkOrder, setSelectedWorkOrder] = useState(null);
 

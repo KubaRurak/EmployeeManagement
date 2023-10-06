@@ -8,11 +8,11 @@
 }
 
 .table tbody tr {
-    max-height: 40px !important;
+    max-height: 40px;
 }
 
 .table tbody td {
-    height: 40px !important;
+    height: 40px;
 }
 
 .table .customer h5 {
