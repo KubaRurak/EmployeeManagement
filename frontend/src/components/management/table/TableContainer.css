@@ -1,8 +1,8 @@
 .card-body {
-  padding: 0 !important;
+  padding: 0;
   background-color: #f4f4f6; 
   border: none;
-  border-radius: 8px; /* Preserved the border radius to keep the card corners rounded */
+  border-radius: 8px;
   font-size: 15px;
   color: rgb(34, 34, 34);
 }
@@ -12,7 +12,7 @@
 }
 
 th {
-  background-color: #e2e2e7 !important;  /* Neutral grey shade for table headers */
+  background-color: #e2e2e7;
   color: rgb(34, 34, 34);
   padding: 12px 10px;
   text-align: left;
@@ -26,18 +26,17 @@ tr {
 }
 
 tr:nth-child(even) {
-  background-color: #ffffff; /* Light grey for alternate rows */
+  background-color: #ffffff; 
 }
 
 tr:nth-child(odd) {
-  background-color: #ffffff; /* Very light grey background for normal rows */
+  background-color: #ffffff;
 }
 
 tr:hover td {
-  background-color: #d9d9dd; /* Slightly darker grey for hover */
+  background-color: #d9d9dd; 
 }
 
-/* Input fields within the pagination */
 input, select {
   border: 1px solid #ccc;
   padding: 5px 10px;
@@ -51,9 +50,9 @@ input, select {
 }
 
 .bi::before, [class^="bi-"]::before, [class*=" bi-"]::before {
-  margin-right: 5px; /* Consistent with header icon spacing */
+  margin-right: 5px;
 }
 
 .padded-header, .sortable-column {
-  margin-bottom: 5px; /* You can adjust this value based on your requirement */
+  margin-bottom: 5px; 
 }
